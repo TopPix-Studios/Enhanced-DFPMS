@@ -1,0 +1,319 @@
+.ann-page {
+    display: grid;
+    grid-template-columns: auto 20vw;
+    gap: 20px;
+}
+
+.announcement-block-view {
+    grid-column: 1 / 2;
+}
+
+.announcement-filter {
+    grid-column: 2 / 3;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.announcement-filter h2 {
+    margin-bottom: 1rem;
+}
+
+.announcement-filter ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.announcement-filter ul li {
+    margin: 10px 0;
+}
+
+.announcement-filter ul li a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.announcement-filter form {
+    margin-top: 20px;
+}
+
+.announcement-filter form input[type="text"] {
+    width: 13.5rem;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.announcement-filter form input.date-input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.announcement-filter form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #005A82;
+    font-weight: bold;
+}
+
+.announcement-filter form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #87BFD9;
+    font-weight: bold;
+    color: #005A82;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.announcement-filter form button:hover {
+    background: #005A82;
+    color: #fff;
+}
+
+.tag-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 5px;
+    margin-bottom: 1rem;
+}
+
+.tag-card {
+    background: #87BFD9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 5px;
+    text-align: center;
+    font-size: 0.85em;
+}
+
+.tag-link {
+    text-decoration: none;
+    color: #005A82;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.tag-link:hover {
+    color: #0056b3;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination .step-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pagination .pagination-link, .pagination .current {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #007bff;
+    background: #fff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination .pagination-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .current {
+    background-color: #87BFD9;
+    color: #005A82;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.announcement-detail-page {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.announcement-content {
+    background-color: #DCF0FA;
+    padding: 30px;
+    border-radius: 14.1px;
+    overflow-wrap: break-word;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+.announcement-content h1 {
+    color: #005A82;
+}
+
+.other-posts {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 14.1px;
+}
+
+.other-posts h2 {
+    margin-bottom: 15px;
+}
+
+.small-announcement-container {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.small-announcement-container h3 {
+    margin: 0;
+    font-size: 1em;
+}
+
+.small-announcement-container p {
+    margin: 5px 0;
+}
+
+.small-ann-con-header {
+    margin-bottom: 10px;
+}
+
+.tags-container {
+    margin-top: 20px;
+}
+
+.tag-p {
+    color: #005A82;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.tag-box {
+    background-color: #87BFD9;
+    border: none;
+    color: #005A82;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 2px;
+    justify-self: flex-end;
+}
+
+.tag-box:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.back-link {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #87BFD9;
+    color: #005A82;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    float: right;
+}
+
+.back-link:hover {
+    background-color: #0056b3;
+}
+
+
+/* Add this CSS to your stylesheet */
+.date-input {
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.styled-input {
+    background-color: #f9f9f9;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.styled-input:focus {
+    background-color: #fff;
+    border-color: #007bff;
+    outline: none;
+}
+
+.styled-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.styled-button:hover {
+    background-color: #0056b3;
+}
+
+.filters {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters form {
+    display: flex;
+    flex-direction: column;
+}
+
+.filters form div {
+    margin-bottom: 10px;
+}
+
+.filters form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filters form input,
+.filters form select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.filters form button {
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.filters form button:hover {
+    background: #0056b3;
+}

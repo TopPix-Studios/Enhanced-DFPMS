@@ -1,0 +1,293 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/generatePDF.js' %}"></script> <!-- Include the reusable generatePDF script -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="stylesheet" href="{% static 'graphs.css' %}">
+<!-- Select2 CSS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+  /* Limit the height of the dropdown and make it scrollable */
+  .ts-wrapper.multi .ts-control {
+    max-height: 120px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 6px;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+  }
+
+  /* Add padding to tags and spacing */
+  .ts-wrapper .item {
+    margin: 2px;
+    padding: 4px 8px;
+    background-color: #e5f0ff;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+
+  /* Make the dropdown menu scrollable */
+  .ts-dropdown {
+    max-height: 250px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+  }
+
+  /* Prevent dropdown from getting too wide */
+  .ts-wrapper {
+    max-width: 100%;
+  }
+
+  /* Optional: Adjust container spacing */
+  #skill-container {
+    margin-bottom: 1rem;
+  }
+</style>
+
+
+
+<!-- jQuery (required for Select2) -->
+
+<!-- Select2 JS -->
+
+<div class="content">
+    <h1>Skills Chart<i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h1>
+    
+    <!-- Filter Form -->
+    <form method="get" class="filter-form">
+        <h5 class="text-bold">Location Filters:</h5>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="region">Region:</label>
+                <select id="region" name="region" class="form-control">
+                    <option value="">All Regions</option>
+                    {% for region in regions %}
+                        <option value="{{ region.region_id }}">{{ region.region }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="province">Province:</label>
+                <select id="province" name="province" class="form-control">
+                    <option value="">All Provinces</option>
+                    {% for province in provinces %}
+                        <option value="{{ province.province_id }}" data-region="{{ province.region_id }}">{{ province.province }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select id="city" name="city" class="form-control">
+                    <option value="">All Cities</option>
+                    {% for city in cities %}
+                        <option value="{{ city.city_id }}" data-province="{{ city.province_id }}">{{ city.city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="barangay">Barangay:</label>
+                <select id="barangay" name="barangay" class="form-control">
+                    <option value="">All Barangays</option>
+                    {% for barangay in barangays %}
+                        <option value="{{ barangay.barangay_id }}" data-city="{{ barangay.city_id }}">{{ barangay.barangay }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>`
+        <hr>
+        <h5 class="text-bold">Skill Filter:</h5>
+        <div class="mb-3" style="width: 100%;">
+            <label for="skill" class="fw-bold mb-2">Skill Filter:</label>
+            <select id="skill" name="skill" multiple placeholder="Select Skills" style="width: 100%;">
+                {% for skill in all_skills %}
+                <option value="{{ skill }}" {% if skill in selected_skills %}selected{% endif %}>{{ skill }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" id="clear-skills" class="btn btn-sm btn-outline-secondary ms-2 mt-2">
+                Clear 
+            </button>
+
+        </div>
+
+
+        <hr>
+        <div class="form-group d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+    
+    <!-- Chart -->
+    <canvas id="skillsChart" width="960" height="540"></canvas>
+    <hr>
+    
+    <!-- Analysis Section -->
+    <div class="analysis-section">
+        <h2 class="text-bold">Analysis of Skills Distribution Chart</h2>
+        <p>This section provides insights into the trends and patterns observed in the Skills Distribution Chart.</p>
+        <ul>
+            {% for insight in insights %}
+                <li>{{ insight|safe }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- Export Button -->
+    <form id="exportForm">
+        <div class="form-group d-flex flex-row justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary mx-2 w-50" onclick="exportToPDF(skills, counts)">Export to PDF</button>
+            <button type="button" class="btn btn-primary mx-2 w-50" onclick="exportToExcel()">Export to Excel</button>
+        </div>
+    </form>
+    
+    
+</div>
+
+<script>
+    const genderBreakdown = {{ gender_breakdown|safe }};
+    const barangayBreakdown = {{ barangay_breakdown|safe }};
+    const ageGroupBreakdown = {{ age_breakdown|safe }};
+    
+</script>
+
+<script>
+    tippy('#chartInfoIcon', {
+        content: 'This chart shows the number of freelancers with specific skills. Use the filters above for custom data views.',
+        placement: 'top',
+    });
+
+    const skills = {{ skills|safe }};
+    const counts = {{ counts|safe }};
+
+    // Initialize Chart
+    const ctx = document.getElementById('skillsChart').getContext('2d');
+    const skillsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: skills,
+            datasets: [{
+                label: '# of Users',
+                data: counts,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // Export to PDF Functionality
+    function exportToPDF(skills, counts) {
+        const canvas = document.getElementById('skillsChart');
+
+        // Sort and get the top 10 skills for the chart
+        const sortedData = skills.map((skill, index) => ({ skill, count: counts[index] }))
+                                .sort((a, b) => b.count - a.count)
+                                .slice(0, 10);
+
+        const top10Skills = sortedData.map(item => item.skill);
+        const top10Counts = sortedData.map(item => item.count);
+
+        // Temporarily update the chart
+        const originalLabels = skillsChart.data.labels;
+        const originalData = skillsChart.data.datasets[0].data;
+
+        skillsChart.data.labels = top10Skills;
+        skillsChart.data.datasets[0].data = top10Counts;
+        skillsChart.update();
+
+        setTimeout(() => {
+            const chartImageData = canvas.toDataURL('image/png');
+            
+            // Restore original chart
+            skillsChart.data.labels = originalLabels;
+            skillsChart.data.datasets[0].data = originalData;
+            skillsChart.update();
+
+            const filters = `Region: {{ request.GET.region|default:'ALL' }} | Province: {{ request.GET.province|default:'ALL' }} | City: {{ request.GET.city|default:'ALL' }} | Barangay: {{ request.GET.barangay|default:'ALL' }} | Skill: {{ request.GET.skill|default:'ALL' }}`;
+
+            const tableHeaders = ['Skill', '# of Users'];
+            const tableData = skills.map((skill, index) => [skill, counts[index]]);
+            generatePDF({
+                title: 'Skills Report',
+                chartImageData,
+                filters,
+                tableHeaders: ['Skill', '# of Users'],
+                tableData,
+                fileName: 'skills_report.pdf',
+                breakdowns: {
+                    gender: genderBreakdown,
+                    barangay: barangayBreakdown,
+                    age: ageGroupBreakdown
+                }
+            });
+            
+        }, 2000); // Delay for chart update
+    }
+
+    function exportToExcel() {
+        const formData = new FormData(document.getElementById('exportForm'));
+    
+        fetch('/export-skills-excel/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'skills_count.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    
+    // CSRF token helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script>
+    const skillSelect = new TomSelect('#skill', {
+        plugins: ['remove_button'],
+        maxItems: null,
+        create: false,
+        placeholder: 'Select Skills'
+    });
+    document.getElementById('clear-skills').addEventListener('click', () => {
+        skillSelect.clear();  // clears selected items
+        document.getElementById('filter-form').submit();  // replace with your form ID
+    });
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,267 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+{% block content %}
+<!-- Include Chart.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<style>
+    .collapsible-content {
+        display: none;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="{% static 'admin-content-1.css' %}">
+<div class="container-fluid mt-1">
+    <h1 class="mb-4">Barangay Breakdown for {{ barangay_name }}</h1>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="card-counter primary">
+                <i class="fas fa-users"></i>
+                <span class="count-numbers">{{ freelancer_count }}</span>
+                <span class="count-name">Unique Freelancers</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter success">
+                <i class="fas fa-tools"></i>
+                <span class="count-numbers">{{ skills|length }}</span>
+                <span class="count-name">Unique Skills</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter warning">
+                <i class="fas fa-language"></i>
+                <span class="count-numbers">{{ languages|length }}</span>
+                <span class="count-name">Unique Languages</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter danger">
+                <i class="fas fa-briefcase"></i>
+                <span class="count-numbers">{{ specializations|length }}</span>
+                <span class="count-name">Unique Specializations</span>
+            </div>
+        </div>
+    </div>
+
+        
+    {% if freelancer_count != '0' %}
+   
+    <h2>People</h2>
+    <div class="mb-3 collapsible">
+        <button type="button" class="btn btn-secondary mb-3 collapsible-btn">Toggle Profiles Table</button>
+        <div class="collapsible-content">
+            <table id="people-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Skills</th>
+                        <th>Specialization</th>
+                        <th>Languages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for person in people %}
+                    <tr onclick="window.location.href='{% url 'admin_profile_detail' person.df_id %}'" style="cursor: pointer;">
+                        <td>{{ person.first_name }} {{ person.last_name }}</td>
+                        <td>
+                            <ul>
+                                {% for skill in person.bg_id.skills.all %}
+                                <li>{{ skill.skill }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <p>{{ person.bg_id.specialization }}</p>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for language in person.bg_id.language.all %}
+                                <li>{{ language.language }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <h2>Skills</h2>
+    <div class="mb-3 collapsible">
+        <button type="button" class="btn btn-secondary mb-3 collapsible-btn">Toggle Skills Table</button>
+        <div class="collapsible-content">
+            <canvas id="skills-chart"></canvas>
+            <table id="skills-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 300px;">Skill</th>
+                        <th style="width: 300px;">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for skill in skills %}
+                    <tr>
+                        <td>{{ skill.bg_id__skills__skill }}</td>
+                        <td>{{ skill.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>Languages</h2>
+    <div class="mb-3 collapsible">
+        <button type="button" class="btn btn-secondary mb-3 collapsible-btn">Toggle Languages Table</button>
+        <div class="collapsible-content">
+            <canvas id="languages-chart"></canvas>
+            <table id="languages-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 300px;">Language</th>
+                        <th style="width: 300px;">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for language in languages %}
+                    <tr>
+                        <td>{{ language.bg_id__language__language }}</td>
+                        <td>{{ language.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>Specializations</h2>
+    <div class="mb-3 collapsible">
+        <button type="button" class="btn btn-secondary mb-3 collapsible-btn">Toggle Specializations Table</button>
+        <div class="collapsible-content">
+            <canvas id="specializations-chart"></canvas>
+            <table id="specializations-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 300px;" >Specialization</th>
+                        <th style="width: 300px;">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for specialization in specializations %}
+                    <tr>
+                        <td>{{ specialization.bg_id__specialization__specialization }}</td>
+                        <td>{{ specialization.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a href="{% url 'admin:index' %}" class="btn btn-primary">Back to Dashboard</a>
+</div>
+
+<script>
+    document.querySelectorAll('.collapsible-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            let content = this.nextElementSibling;
+            content.style.display = (content.style.display === 'none' || content.style.display === '') ? 'block' : 'none';
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Skills chart
+        var skillsData = {
+            labels: [{% for skill in skills %}"{{ skill.bg_id__skills__skill }}",{% endfor %}],
+            datasets: [{
+                label: 'Count',
+                data: [{% for skill in skills %}{{ skill.count }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var skillsChart = new Chart(document.getElementById('skills-chart'), {
+            type: 'bar',
+            data: skillsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Languages chart
+        var languagesData = {
+            labels: [{% for language in languages %}"{{ language.bg_id__language__language }}",{% endfor %}],
+            datasets: [{
+                label: 'Count',
+                data: [{% for language in languages %}{{ language.count }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var languagesChart = new Chart(document.getElementById('languages-chart'), {
+            type: 'bar',
+            data: languagesData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Specializations chart
+        var specializationsData = {
+            labels: [{% for specialization in specializations %}"{{ specialization.bg_id__specialization__specialization }}",{% endfor %}],
+            datasets: [{
+                label: 'Count',
+                data: [{% for specialization in specializations %}{{ specialization.count }},{% endfor %}],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var specializationsChart = new Chart(document.getElementById('specializations-chart'), {
+            type: 'bar',
+            data: specializationsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+</div>
+{% else %}
+<div class="h3">No available data for selected barangay. </div>
+{% endif %}
+{% endblock %}

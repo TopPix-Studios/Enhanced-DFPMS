@@ -1,0 +1,521 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block title %}DFPS Profiling: Edit Profile {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "cropping.css" %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<style>
+    .sign-up-row-2-2-3 {
+        gap: 1rem;
+
+    }
+    .sign-up-row-2-2-3 > :nth-child(1) {
+        margin-bottom: 1rem;
+        width: 100% !important;
+        max-width: 32vw
+
+
+    }
+    .sign-up-row-2-2-3 > :nth-child(2) {
+        width: 100% !important;
+        margin-bottom: 1rem;
+        max-width: 500px
+    }
+    .sign-up-row-2-2-3 > :nth-child(3) {
+        width: 100% !important;
+    }
+    .sign-up-row-2-2-3 > :nth-child(4) {
+        width: 100% !important;
+        max-width: 500px
+    }
+</style>
+
+<link rel="stylesheet" href="{% static "profile_page.css" %}">
+{% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>Profile update failed. Please correct the errors below:</strong>
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ field }}{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<div class="edit-prof-container">
+    <div class="tabs-column">
+        <div class="tab-item active" id="profile" onclick="openTab(event, 'personal-info')">
+            <i class="fas fa-user"></i> 
+            <span class="tab-title">
+                Personal Info
+                <span class="tab-description">Manage your personal details</span>
+            </span>
+           
+        </div>
+        <div class="tab-item" onclick="openTab(event, 'address')">
+            <i class="fas fa-map-marker-alt"></i> 
+            <span class="tab-title">
+                Address
+                <span class="tab-description">Update your address information</span>
+            </span>
+        </div>
+        <div class="tab-item" onclick="openTab(event, 'additional-info')">
+            
+            <i class="fas fa-info-circle"></i>
+            <span class="tab-title">
+                Additional Info
+                <span class="tab-description">Add extra details about yourself</span>
+            </span>
+            
+        </div>
+        <div class="tab-item" onclick="openTab(event, 'profile-picture')">
+           
+            <i class="fas fa-camera"></i> 
+           
+            <span class="tab-title">
+                Profile Picture
+                <span class="tab-description">Change your profile photo</span>
+
+            </span>
+        </div>
+        <div class="tab-item" onclick="openTab(event, 'background')">
+           
+            <i class="fas fa-image"></i> 
+   
+            <span class="tab-title">
+                Background
+                <span class="tab-description">Edit your background information</span>
+            </span>
+        </div>
+    </div>
+    
+    
+    <div class="tab-content-column">
+        <!-- Personal Info Tab -->
+        <form method="post" name="edit_profile" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div id="personal-info" class="tab-content active">
+            <div class="tab-form">
+                <h2>Personal Info</h2>
+                <small>Update your basic personal details.</small>
+                
+                    <div class="signup-input-field">
+                        <label id="formlabel">Full Name</label>
+                        <div class="sign-up-row-2">
+                            {{ form.first_name }}
+                            {{ form.last_name }}
+                            {{ form.middle_name }}
+                            {{ form.suffix }}
+                        </div>
+                        <br>
+                        <button class="btn-submit" name="edit_profile" type="submit">Save</button>
+                    </div>
+                    
+              
+            </div>
+        </div>
+
+        <!-- Address Tab -->
+        <div id="address" class="tab-content">
+            <div class="tab-form" id="address">
+                <h2>Address</h2>
+                <small>Update your Address details.</small>
+                    {% csrf_token %}
+                    <div class="signup-input-field">
+                        <label id="formlabel">Full Address</label>
+                        <div class="sign-up-row-2-2">
+                            {{ form.region.label_tag }}
+                            {{ form.province.label_tag }}
+                            {{ form.region }}
+                            {{ form.province }}
+                            {{ form.city.label_tag }}
+                            {{ form.barangay.label_tag }}
+                            {{ form.city }}
+                            {{ form.barangay }}
+                        </div>
+                        <div class="sign-up-row-2-2-1">
+                            {{ form.house_no }}
+                            {{ form.street }}
+                            {{ form.zip }}
+                        </div>
+                        <br>
+                        <button class="btn-submit" name="edit_profile" type="submit">Save</button>
+                    </div>
+                
+            </div>
+        </div>
+
+        <!-- Additional Info Tab -->
+        <div id="additional-info" class="tab-content">
+            <div class="tab-form" id="addinfo">
+                    <h2>Additional Info</h2>
+                    <small>Manage your birthday details, contact number, gender, quote, and pronouns.</small>
+
+                    {% csrf_token %}
+                    <div class="signup-input-field">
+                        <label id="formlabel">Additional Information</label>
+                        <div class="sign-up-row-2-2-3">
+                            {{ form.date_of_birth }}
+                            {{ form.contact_no }}
+                            {{ form.gender }}
+                            {{ form.pronoun }}
+                        </div>
+                        <label id="formlabel" for="qoute">Quote</label><br>
+                        {{ form.qoute }}
+                        <br>
+
+                        <button class="btn-submit" name="edit_profile" type="submit">Save</button>
+                    </div>
+                    
+            </div>
+        </div>
+
+        <!-- Profile Picture Tab -->
+        <div id="profile-picture" class="tab-content">
+            <div class="tab-form">
+                <h2>Profile Picture</h2>
+                <small>Update your profile picture.</small>
+                <div class="signup-input-field">
+                    <div class="image-container">
+                        <div id="image-wrapper" class="image-wrapper">
+  
+                            <img id="mainPreview" src="{% if profile.picture %}{{ profile.picture.url }}{% else %}{% static 'img/placeholder.jpeg' %}{% endif %}" 
+                                alt="Profile Picture Preview" class="circular-image" onclick="openFilePicker()">
+                            <span id="pencilIcon" class="pencil-icon" onclick="openFilePicker()">
+                                <i class="fas fa-pencil-alt"></i>
+                            </span>
+                        </div>
+                        <input type="file" id="fileInput" style="display: none;" name="picture" onchange="handleFileSelect(event);" accept="image/*">
+                        <p class="image-helptext" style="width: 120px">Add Profile Picture</p>
+                    </div>
+               
+                    <br>
+        
+                    <button class="btn-submit" name="edit_profile" type="submit">Save</button>
+                </div>
+            </div>
+        </div>
+        
+      
+        
+        </form>
+        <!-- Background Tab -->
+        <div id="background" class="tab-content">
+            <div class="tab-form">
+                <h2>Edit Background</h2>
+                <small>Edit your affiliation and specialization.</small>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="bg-form-container">
+                        {% for field in bgform %}
+                        <div class="form-group">
+                            <div class="field-container">
+                                <label style="color:#005A82" for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong></label>
+                                {{ field }}
+                            </div>
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger">
+                                    {{ field.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                      
+                        <br>
+                        <button class="btn-submit" type="submit" name="edit_bg">Save</button>
+                        <p class="help-text" style="width: 500px !important">
+                            <small>
+                                Can't find your Affiliation or Specialization? 
+                                <a href="{% url 'help' %}" class="help-link">Send us a ticket</a>.
+                            </small>
+                        </p>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+      <!-- Cropping Modal -->
+      <div id="croppingModal" class="crop-modal" style="display: none;">
+        <div class="crop-modal-content">
+            <div class="crop-modal-header">
+                <h2>Edit your image</h2>
+                <span class="cropclose" onclick="closeCroppingModal()">&times;</span>
+            </div>
+            <div class="crop-modal-body">
+                <div class="image-crop-section">
+                    <img id="imageToCrop" src="" alt="Image for cropping">
+                </div>
+                <div class="preview-section">
+                    <h4>Preview in different sizes:</h4>
+                    <div class="preview-container">
+                        <div>
+                            <p>120x120</p>
+                            <img id="preview-120" class="circular-image-preview" style="width:120px; height:120px;" src="" alt="120x120 preview">
+                        </div>
+                        <div>
+                            <p>80x80</p>
+                            <img id="preview-80" class="circular-image-preview" style="width:80px; height:80px;" src="" alt="80x80 preview">
+                        </div>
+                        <div>
+                            <p>50x50</p>
+                            <img id="preview-50" class="circular-image-preview" style="width:50px; height:50px;" src="" alt="50x50 preview">
+                        </div>
+                    </div>
+                    <p class="notice">Please use a real picture of yourself. Avoid using animated or generated images.</p>
+                </div>
+            </div>
+            <div class="modal-button-container">
+                <button onclick="closeCroppingModal()" class="crop-btn">Cancel</button>
+                <button onclick="cropImage()" class="crop-btn">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Open file picker when clicking the image or pencil icon
+    function openFilePicker() {
+        document.getElementById('fileInput').click();
+    }
+
+    // Handle file selection and preview
+    function handleFileSelect(event) {
+        const fileInput = event.target;
+
+        if (fileInput.files.length > 0) {
+            const selectedFile = fileInput.files[0];
+
+            // Preview the image and open the cropping modal
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const modal = document.getElementById('croppingModal');
+                const imageToCrop = document.getElementById('imageToCrop');
+                imageToCrop.src = e.target.result;
+                modal.style.display = 'flex'; // Show the modal
+                initializeCropper(); // Initialize the cropping tool
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    }
+
+    // Initialize CropperJS with a circular cropping area and dynamic preview updates
+    let cropper;
+    function initializeCropper() {
+        const imageToCrop = document.getElementById('imageToCrop');
+
+        if (cropper) {
+            cropper.destroy(); // Destroy the old cropper if it exists
+        }
+
+        cropper = new Cropper(imageToCrop, {
+            aspectRatio: 1, // Maintain 1:1 aspect ratio for a square crop
+            viewMode: 1,
+            autoCropArea: 1,
+            scalable: true,
+            cropBoxResizable: true,
+            dragMode: 'move',
+            background: false,
+            crop(event) {
+                // Dynamically update previews whenever the crop area is changed
+                const croppedCanvas = cropper.getCroppedCanvas({
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high'
+                });
+
+                const croppedDataUrl = croppedCanvas.toDataURL();
+
+                // Update previews in different sizes dynamically
+                updatePreview(croppedDataUrl, 'preview-120', 120);
+                updatePreview(croppedDataUrl, 'preview-80', 80);
+                updatePreview(croppedDataUrl, 'preview-50', 50);
+            }
+        });
+    }
+
+    // Crop the image and update the preview in different sizes after confirming crop
+    function cropImage() {
+        const croppedCanvas = cropper.getCroppedCanvas({
+            width: 200,
+            height: 200,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        });
+    
+        // Convert canvas to Blob
+        croppedCanvas.toBlob((blob) => {
+            // Create a File object from Blob
+            const file = new File([blob], "cropped-image.png", { type: "image/png" });
+    
+            // Create a new DataTransfer object to update file input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            document.getElementById('fileInput').files = dataTransfer.files;
+    
+            // Update previews
+            const croppedDataUrl = URL.createObjectURL(file);
+            updatePreview(croppedDataUrl, 'preview-120', 120);
+            updatePreview(croppedDataUrl, 'preview-80', 80);
+            updatePreview(croppedDataUrl, 'preview-50', 50);
+    
+            // Update the main profile preview
+            document.getElementById('mainPreview').src = croppedDataUrl;
+    
+            // Hide the cropping modal
+            document.getElementById('croppingModal').style.display = 'none';
+        }, "image/png");
+    }
+    
+    // Function to update preview images in different sizes
+    function updatePreview(dataUrl, elementId, size) {
+        const previewCanvas = document.createElement('canvas');
+        previewCanvas.width = size;
+        previewCanvas.height = size;
+        const ctx = previewCanvas.getContext('2d');
+
+        const img = new Image();
+        img.onload = function () {
+            ctx.drawImage(img, 0, 0, size, size);
+            document.getElementById(elementId).src = previewCanvas.toDataURL();
+        };
+        img.src = dataUrl;
+    }
+
+    // Close the modal
+    document.querySelector('.cropclose').addEventListener('click', function() {
+        document.getElementById('croppingModal').style.display = 'none';
+    });
+
+    function closeCroppingModal() {
+        document.getElementById('croppingModal').style.display = 'none';
+    }
+    
+
+</script>
+<script>
+    function openTab(event, tabId) {
+        // Ensure the tabId exists before attempting to manipulate the class
+        const targetTab = document.getElementById(tabId);
+        if (!targetTab) {
+            console.error(`Tab with ID ${tabId} not found.`);
+            return;
+        }
+    
+        // Hide all tab contents
+        var tabContents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < tabContents.length; i++) {
+            tabContents[i].classList.remove("active");
+        }
+    
+        // Remove active class from all tab items
+        var tabItems = document.getElementsByClassName("tab-item");
+        for (var i = 0; i < tabItems.length; i++) {
+            tabItems[i].classList.remove("active");
+        }
+    
+        // Show the current tab and add active class to the item
+        targetTab.classList.add("active");
+        event.currentTarget.closest('.tab-item').classList.add("active");
+    }
+    
+
+    // Automatically select the first tab on page load
+    window.onload = function() {
+        document.getElementById("profile").click();
+    };
+</script>
+
+
+<script>
+    function load_provinces(region_id) {
+        // Make an AJAX request to fetch provinces for the selected region
+        $.ajax({
+            url: '/get_provinces/',
+            data: {'region_id': region_id},
+            dataType: 'json',
+            success: function(data) {
+                var provinceSelect = $('#id_province');
+                provinceSelect.empty();
+                provinceSelect.append('<option value="" disabled selected>Select Province</option>');
+                $.each(data.provinces, function(province_id, province) {
+                    provinceSelect.append('<option value="' + province.province_id + '">' + province.province + '</option>');
+                });
+                $('#id_city').empty();
+                $('#id_barangay').empty();
+            },
+            error: function() {
+                console.error('Failed to fetch provinces.');
+            }
+        });
+    }
+
+    function load_cities(province_id) {
+        $.ajax({
+            url: '/get_cities/',
+            data: {'province_id': province_id},
+            dataType: 'json',
+            success: function(data) {
+                var citySelect = $('#id_city');
+                citySelect.empty();
+                citySelect.append('<option value="" disabled selected>Select City</option>');
+                $.each(data.cities, function(city_id, city) {
+                    citySelect.append('<option value="' + city.city_id + '">' + city.city + '</option>');
+                });
+                $('#id_barangay').empty();
+            },
+            error: function() {
+                console.error('Failed to fetch cities.');
+            }
+        });
+    }
+
+    function load_barangays(city_id) {
+        $.ajax({
+            url: '/get_barangays/',
+            data: {'city_id': city_id},
+            dataType: 'json',
+            success: function(data) {
+                var barangaySelect = $('#id_barangay');
+                barangaySelect.empty();
+                barangaySelect.append('<option value="" disabled selected>Select Barangay</option>');
+                $.each(data.barangays, function(barangay_id, barangay) {
+                    barangaySelect.append('<option value="' + barangay.barangay_id + '">' + barangay.barangay + '</option>');
+                });
+            },
+            error: function() {
+                console.error('Failed to fetch barangays.');
+            }
+        });
+    }
+    
+    function dragOverHandler(event) {
+        event.preventDefault();
+        document.getElementById('dropArea').style.width = 'fit-content';
+    }
+
+    function dropHandler(event) {
+        event.preventDefault();
+        document.getElementById('dropArea').style.width = 'fit-content';
+
+        var files = event.dataTransfer.files;
+        handleFiles(files);
+
+        if (files.length > 0) {
+            const selectedFileNameElement = document.getElementById('selectedFileName');
+            const droppedFileName = files[0].name;
+            selectedFileNameElement.textContent = `Selected File: ${droppedFileName}`;
+        }
+    }
+
+    
+</script>
+{% endblock %}

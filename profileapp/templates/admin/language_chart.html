@@ -1,0 +1,232 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="{% static 'js/generatePDF.js' %}"></script>
+
+<div class="content">
+    <h1>Language Chart <i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h1>
+
+    <!-- FILTER FORM -->
+    <form method="get" class="filter-form">
+        
+        <!-- LOCATION FILTERS -->
+        <h5 class="text-bold">Location Filters:</h5>
+        <div class="form-container row g-3">
+            <div class="form-group col-md-3">
+                <label for="region" class="form-label">Region:</label>
+                <select id="region" name="region" class="form-control form-control-sm">
+                    <option value="">All Regions</option>
+                    {% for region in regions %}
+                        <option value="{{ region.region }}" {% if request.GET.region == region.region %}selected{% endif %}>{{ region.region }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="province" class="form-label">Province:</label>
+                <select id="province" name="province" class="form-control form-control-sm">
+                    <option value="">All Provinces</option>
+                    {% for province in provinces %}
+                        <option value="{{ province.province }}" {% if request.GET.province == province.province %}selected{% endif %}>{{ province.province }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="city" class="form-label">City:</label>
+                <select id="city" name="city" class="form-control form-control-sm">
+                    <option value="">All Cities</option>
+                    {% for city in cities %}
+                        <option value="{{ city.city }}" {% if request.GET.city == city.city %}selected{% endif %}>{{ city.city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="barangay" class="form-label">Barangay:</label>
+                <select id="barangay" name="barangay" class="form-control form-control-sm">
+                    <option value="">All Barangays</option>
+                    {% for barangay in barangays %}
+                        <option value="{{ barangay.barangay }}" {% if request.GET.barangay == barangay.barangay %}selected{% endif %}>{{ barangay.barangay }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- LANGUAGE FILTER -->
+        <h5 class="text-bold">Language Filter:</h5>
+        <div class="form-group">
+            <label for="language" class="form-label">Language:</label>
+            <select id="language" name="language" class="form-control form-control-sm">
+                <option value="">All Languages</option>
+                {% for lang in all_languages %}
+                    <option value="{{ lang.language }}" {% if request.GET.language == lang.language %}selected{% endif %}>{{ lang.language }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <hr>
+
+        <!-- SEARCH BUTTON -->
+        <div class="form-group d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <!-- CHARTS -->
+    <div class="chart-container">
+        <h5 class="text-bold">Language Distribution</h5>
+        <canvas id="languageChart" width="960" height="540"></canvas>
+
+        <h5 class="text-bold mt-4">Proficiency Level Distribution</h5>
+        <canvas id="proficiencyChart" width="960" height="540"></canvas>
+    </div>
+
+    <hr>
+    <hr>
+    <div class="container analysis-section">
+        <h2 class="text-bold">Analysis of Barangay Distribution Chart</h2>
+        <p>This section provides insights into the trends and patterns observed in the Barangay Distribution Chart.</p>
+        <ul>
+          {% for insight in insights %}
+            <li>{{ insight | safe }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+<hr>    
+    <!-- EXPORT BUTTONS -->
+    <div class="form-group d-flex justify-content-end align-items-center gap-2">
+        
+        <!-- Export to PDF -->
+        <button type="button" id="exportBtn" class="btn btn-secondary w-50 mx-2" style="height: 50px;">Export to PDF</button>
+
+        <!-- Export to Excel -->
+        <button type="button" class="btn btn-primary w-50 mx-2" style="height: 50px;" onclick="exportLanguageChartToExcel()">Export to Excel</button>
+
+    </div>
+</div>
+<script>
+    const genderBreakdown = {{ gender_breakdown|safe }};
+    const barangayBreakdown = {{ barangay_breakdown|safe }};
+    const ageBreakdown = {{ age_breakdown|safe }};
+
+    const breakdowns = {
+        gender: genderBreakdown,
+        barangay: barangayBreakdown,
+        age: ageBreakdown
+    };
+
+</script>
+
+
+<script>
+    // Language Chart
+    const languages = {{ languages|safe }};
+    const counts = {{ counts|safe }};
+
+    const ctxLanguage = document.getElementById('languageChart').getContext('2d');
+    const languageChart = new Chart(ctxLanguage, {
+        type: 'bar',
+        data: {
+            labels: languages,
+            datasets: [{
+                label: '# of Users',
+                data: counts,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // Export to PDF Button
+    document.getElementById('exportBtn').addEventListener('click', () => {
+        // Sort data for top 10 chart generation
+        const sortedData = languages.map((language, index) => ({
+            language,
+            count: counts[index],
+        })).sort((a, b) => b.count - a.count); // Sort by count descending
+
+        const top10Data = sortedData.slice(0, 10); // Get top 10 data
+        const top10Languages = top10Data.map(item => item.language);
+        const top10Counts = top10Data.map(item => item.count);
+
+        // Temporarily update the chart with top 10 data
+        const originalLabels = languageChart.data.labels;
+        const originalData = languageChart.data.datasets[0].data;
+
+        languageChart.data.labels = top10Languages;
+        languageChart.data.datasets[0].data = top10Counts;
+        languageChart.update();
+
+        // Add 2-second delay before capturing the chart and restoring original data
+        setTimeout(() => {
+            // Capture the chart image with top 10 data
+            const chartImageData = document.getElementById('languageChart').toDataURL('image/png');
+
+            // Restore the original chart data
+            languageChart.data.labels = originalLabels;
+            languageChart.data.datasets[0].data = originalData;
+            languageChart.update();
+
+            // Use original data for the table
+            const tableHeaders = ['Language', '# of Users'];
+            const tableData = languages.map((language, index) => [language, counts[index]]);
+
+            // Generate the PDF
+            generatePDF({
+                title: 'Language Distribution Report',
+                chartImageData: chartImageData,
+                filters: `Region: {{ request.GET.region|default:'ALL' }} | Language: {{ request.GET.language|default:'ALL' }}`,
+                tableHeaders: tableHeaders,
+                tableData: tableData,
+                fileName: 'language_distribution_summary.pdf',
+                breakdowns: breakdowns // ✅ pass breakdowns
+            });
+
+        }, 2000); // 2-second delay
+    });
+
+    // Proficiency Chart
+    const proficiencyLabels = {{ proficiency_labels|safe }};
+    const proficiencyCounts = {{ proficiency_counts|safe }};
+
+    const ctxProficiency = document.getElementById('proficiencyChart').getContext('2d');
+    const proficiencyChart = new Chart(ctxProficiency, {
+        type: 'bar',
+        data: {
+            labels: proficiencyLabels,
+            datasets: [{
+                label: 'Proficiency Level Distribution',
+                data: proficiencyCounts,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    function exportLanguageChartToExcel() {
+        window.location.href = "/admin/export-language-chart-excel/";
+    }
+    
+</script>
+
+
+{% endblock %}

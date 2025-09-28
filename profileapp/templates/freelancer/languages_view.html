@@ -1,0 +1,258 @@
+{% extends "home.html" %}
+{% load static %}
+{% block title %}DFPS Profiling: Languages {% endblock title %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'profile_page.css' %}">
+<link rel="stylesheet" href="{% static 'language-view.css' %}">
+<link rel="stylesheet" href="{% static "select2.css" %}">
+<style>
+    .button-container {
+        display:none;
+    }
+    .select2-container--default .select2-selection--multiple {
+        width: 38vw !important;
+        height: auto;
+        margin-bottom: 0;
+    }
+</style>
+<div class="languages-page">
+    <div class="header-container">
+        <button class="back-button" onclick="window.history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        {% comment %} <button type="button" class="btn-add" onclick="languageShowModal()">
+            &#43;
+        </button> {% endcomment %}
+        <h1 style="margin-right: auto;">Languages</h1>
+        
+        <div class="language-card-btn-add">
+            <button type="button" class="btn-add" onclick="languageShowModal()">
+                &#43;
+            </button>
+        </div>
+        
+    </div>
+    <hr class="freelancer">
+  
+    <div class="language-grid">
+        {% if languages %}
+        {% for language in languages %}
+        <div class="language-card" style="justify-content: unset">
+            <div class="language-header">
+                <i class="language-icon fas fa-language"></i>
+                <div style="display: flex; flex-direction: column; margin-right: auto; justify-content: baseline;">
+                    <span style="font-weight: bold; border-bottom: 1px solid #ccc; font-size: 18px">{{ language.language }}</span>
+                    <span class="lang-prof">
+                        <span class="first-word">{{ language.get_proficiency_level_display.split|first }}</span> 
+                        <span>{{ language.get_proficiency_description }}</span>
+                    </span>
+                </div>
+
+                <div class="button-container">
+                    <form method="get" action="{% url 'update_language_view' language.id %}" style="margin-left: auto;">
+                        <button type="submit" title="Update" class="update-button">
+                            &#9998; <!-- Edit icon -->
+                        </button>
+                    </form>
+                    <form method="post" class="language-remove-form" onsubmit="return confirmRemoveLanguage(event, '{{ language.language_id }}')" style="margin-left: 10px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="remove_language" value="{{ language.language_id }}">
+                        <button type="submit" title="Remove" class="remove-button">&#10006;</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div style="text-align: center; justify-self: center;">
+            <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+            <p>No skills found. Please add a language to get started! 
+                <a href="#" onclick="languageShowModal()" style="text-decoration: underline; color: var(--border-color)">Add here</a>
+            </p>
+        </div>
+        
+        {% endif %}
+    </div>
+    
+    
+    <div id="addLanguageModal" class="language-modal" style="width: 40vw;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Language</h3>
+            </div>
+           
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" id="addLanguageForm">
+                    {% csrf_token %}
+                    <label for="languageSelect">Languages:</label>
+                    {{ language_form.language }}
+                    <p class="help-text" >
+                        <small>
+                            Can't find your language? 
+                            <a href="{% url 'help' %}" class="help-link">Send us a ticket</a>.
+                        </small>
+                    </p>                  
+                    <div class="language-buttons-container" style="display: flex; justify-content: space-between; gap: 10px; margin-top: 1rem; width: 100%;">
+                        <button type="button" class="btn-cancel" onclick="languageCloseModal()">Cancel</button>
+                        <button type="submit" class="btn-submit" name="language_submit">Submit</button>
+                    </div>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function confirmRemoveLanguage(event, languageId) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Please note: this action cannot be undone.!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<b>Yes</b>',
+            cancelButtonText: 'No',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true // Ensures Yes is on the right
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); // Submit the form if confirmed
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: 'Select options',
+            width: 'resolve'
+        });
+    
+        // Fetch tags, languages, and skills from the server
+        $.ajax({
+            url: '/get_languages_and_skills/',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Populate tags
+                data.tags.forEach(function(tag) {
+                    var newOption = new Option(tag.name, tag.name, false, false);
+                    $('#tagSelect').append(newOption).trigger('change');
+                });
+    
+                // Populate languages
+                data.languages.forEach(function(language) {
+                    var newOption = new Option(language.language, language.language_id, false, false);
+                    $('#id_language').append(newOption).trigger('change');
+                });
+    
+                // Populate skills
+                data.skills.forEach(function(skill) {
+                  
+                    var newOption = new Option(skill.skill, skill.skill_id, false, false);
+                    $('#id_skills').append(newOption).trigger('change');
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching languages and skills:', error);
+            }
+        });
+    
+        // Filter skills based on selected tags
+        $('#tagSelect').on('change', function() {
+            var selectedTags = $(this).val();
+    
+            // Store currently selected skills
+            var selectedSkills = $('#id_skills').val();
+    
+            $.ajax({
+                url: '/filter_skills_by_tags/',
+                type: 'GET',
+                data: {
+                    tags: selectedTags
+                },
+                traditional: true, // Ensures proper serialization of array parameters
+                dataType: 'json',
+                success: function(data) {
+                    var selectedSkills = $('#id_skills').val();
+                    var selectedSkillsText = [];
+    
+                    $('#id_skills option:selected').each(function() {
+                        selectedSkillsText.push($(this).text());
+                    });
+    
+                    $('#id_skills').empty(); // Clear existing options
+    
+                    data.skills.forEach(function(skill) {
+                        var newOption = new Option(skill.skill, skill.skill_id, false, false);
+                        $('#id_skills').append(newOption).trigger('change');
+                    });
+    
+                    // Reapply the selected options
+                    $('#id_skills option').each(function() {
+                        if (selectedSkillsText.includes($(this).text())) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+    
+                    $('#id_skills').trigger('change'); // Trigger change to update select2 display
+                },
+                error: function(error) {
+                    console.error('Error filtering skills by tags:', error);
+                }
+            });
+        });
+    });
+    
+</script>
+
+<script>
+    function formatOptionWithTooltip(option) {
+        if (!option.id) {
+            return option.text;
+        }
+        const selectElement = $(option.element).closest('select');
+        const attribute = `data-toggle-skills-${option.id}`;
+
+        
+        const description = selectElement.attr(attribute);
+
+        const $option = $('<span></span>');
+        $option.text(option.text);
+        tippy($option.get(0), {
+            content: description,
+        });
+    
+        return $option;
+    }
+
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            templateResult: formatOptionWithTooltip,
+            templateSelection: formatOptionWithTooltip
+        });
+    });
+</script>
+
+<script>
+    function languageShowModal() {
+        var modal = document.querySelector(".language-modal");
+        modal.style.display = "block";
+    }
+
+    function languageCloseModal() {
+        var modal = document.querySelector(".language-modal");
+        modal.style.display = "none";
+    }
+</script>
+
+{% endblock %}

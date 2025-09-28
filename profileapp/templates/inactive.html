@@ -1,0 +1,142 @@
+{% extends "home.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'settings.css' %}">
+<div class="settings-account">
+    <body>
+        <div class="account-details">
+            <h2 class="user-signup">Account Settings</h2>
+            <div class="detail-row">
+                <span class="detail-label">Username:</span>
+                <span class="detail-value">{{ user.username }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ user.email }}</span>
+            </div>
+            <div class="detail-row password-container">
+                <span class="detail-label">Password:</span>
+                <span id="password-dots" class="password-dots"></span>
+                <button id="openChangePasswordModalBtn" class="button-signup">Change Password</button>
+            </div>
+            <div class="detail-row deactivate-container">
+                <button id="openDeactivateModalBtn" class="button-signup">Deactivate Account</button>
+            </div>
+        </div>
+    </div>
+    <div class="change-password">
+        <!-- Button to open the modal -->
+    </div>
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1 class="user-signup">Change Password</h1>
+            <form id="changePasswordForm" method="post" class="user-signup">
+                {% csrf_token %}
+                <div class="sign-up-col-1">
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="input-container">
+                                {{ field.label_tag }}
+                                {{ field }}
+                            </div>
+                            {% if field.errors %}
+                                <div class="errors">
+                                    {% for error in field.errors %}
+                                        <p class="help-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="sign-up-buttons">
+                    <button class="button-signup" type="button" id="cancelChangePassword">Cancel</button>
+                    <button class="button-signup" type="submit" name="change_password">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Deactivate Modal -->
+    <div id="deactivateModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1 class="user-signup">Deactivate Account</h1>
+            <form id="deactivateForm" method="post" class="user-signup">
+                {% csrf_token %}
+                <p>Are you sure you want to deactivate your account?</p>
+                <div class="sign-up-buttons">
+                    <button class="button-signup" type="button" id="cancelDeactivate">Cancel</button>
+                    <button class="button-signup" type="submit" name="deactivate_account">Deactivate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </body>
+</div>
+
+<script> 
+    document.addEventListener("DOMContentLoaded", function() {
+        var passwordDots = document.getElementById("password-dots");
+        var passwordValue = "*********"; // Set your password here
+    
+        for (var i = 0; i < passwordValue.length; i++) {
+            var dot = document.createElement("span");
+            dot.className = "password-dot";
+            passwordDots.appendChild(dot);
+        }
+    });
+    
+    // Get the modals
+    var changePasswordModal = document.getElementById("changePasswordModal");
+    var deactivateModal = document.getElementById("deactivateModal");
+
+    // Get the buttons that open the modals
+    var changePasswordBtn = document.getElementById("openChangePasswordModalBtn");
+    var deactivateBtn = document.getElementById("openDeactivateModalBtn");
+
+    // Get the buttons that close the modals
+    var cancelChangePasswordBtn = document.getElementById("cancelChangePassword");
+    var cancelDeactivateBtn = document.getElementById("cancelDeactivate");
+
+    // When the user clicks the button, open the corresponding modal
+    changePasswordBtn.onclick = function() {
+        changePasswordModal.style.display = "block";
+    }
+    deactivateBtn.onclick = function() {
+        deactivateModal.style.display = "block";
+    }
+
+    // When the user clicks on the "Cancel" button, close the corresponding modal
+    cancelChangePasswordBtn.onclick = function() {
+        changePasswordModal.style.display = "none";
+    }
+    cancelDeactivateBtn.onclick = function() {
+        deactivateModal.style.display = "none";
+    }
+
+    // Get the <span> elements that close the modals
+    var changePasswordCloseSpan = document.getElementsByClassName("close")[0];
+    var deactivateCloseSpan = document.getElementsByClassName("close")[1];
+
+    // When the user clicks on <span> (x), close the corresponding modal
+    changePasswordCloseSpan.onclick = function() {
+        changePasswordModal.style.display = "none";
+    }
+    deactivateCloseSpan.onclick = function() {
+        deactivateModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == changePasswordModal) {
+            changePasswordModal.style.display = "none";
+        }
+        if (event.target == deactivateModal) {
+            deactivateModal.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock content %}

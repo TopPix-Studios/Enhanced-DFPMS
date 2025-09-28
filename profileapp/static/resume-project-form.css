@@ -1,0 +1,57 @@
+.file-preview canvas {
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #ddd;
+}
+
+.file-preview {
+    display: none;
+    flex-direction: row; /* Changed to display elements side by side */
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 100%;
+    height: auto;
+}
+
+.file-preview img, .file-preview canvas {
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 20px; /* Add some spacing between the image and text */
+}
+
+.file-info {
+    font-size: 12px;
+    margin-top: 10px;
+    max-width: 100%; /* Ensure it doesn't overflow the container */
+    white-space: nowrap; /* Prevent the text from wrapping */
+    overflow: hidden; /* Hide anything that overflows */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+}
+
+
+
+
+
+.drop-text {
+    margin-top: 10px;
+}
+
+.drop-area img, .drop-area canvas {
+    max-width: 80px;
+    max-height: 80px;
+    margin: 0 auto;
+}
+
+.file-info {
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.drag-over {
+    background-color: #f0f0f0;
+}
+
+.drop-area .material-symbols-outlined {
+    font-size: 48px;
+}

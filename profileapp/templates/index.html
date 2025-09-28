@@ -1,0 +1,122 @@
+{% load static %}
+{% comment %} {% load pwa %}
+
+{% progressive_web_app_meta %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFPS: Digital Freelancer Profiling System - Landing Page</title>
+    {% include 'links/links.html' %}
+    <style>
+        /* Loading screen styles */
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loading-gif {
+            width: 100px;
+            height: 100px;
+        }
+        .progress-bar {
+            width: 80%;
+            background-color: #DCF0FA;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .progress {
+            height: 10px;
+            background-color: #005A82;
+            width: 0;
+            border-radius: 5px;
+        }
+        .quote {
+            margin-top: 20px;
+            font-size: 16px;
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+    <!-- manifest -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    <!-- theme -->
+    <meta name="theme-color" content="#1E3A8A">
+
+    <!-- icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'icons/icon-192x192.png' %}">
+
+    <!-- service worker -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.error("Service Worker error:", err));
+    }
+    </script>
+
+</head>
+<nav>
+    {% include 'header.html' %}
+</nav>
+<body>
+    <div id="loading-screen">
+        <img src="{% static 'img/Iphone-spinner-2.gif' %}" alt="Loading" class="loading-gif">
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <div class="quote" id="quote"></div>
+    </div>
+    <main>  
+        {% block content %}
+        {% include 'guest-content.html'%}
+        {% endblock content %}
+    </main>
+    <script>
+        // Quotes array
+        const quotes = [
+            "The journey of a thousand miles begins with one step.",
+            "Life is what happens when you're busy making other plans.",
+            "Get busy living or get busy dying.",
+            "You only live once, but if you do it right, once is enough.",
+            "Many of life's failures are people who did not realize how close they were to success when they gave up."
+        ];
+
+        // Select a random quote
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quote').textContent = randomQuote;
+
+        // Simulate loading progress over 3 seconds
+        let progress = 0;
+        const progressBar = document.querySelector('.progress');
+        const duration = 1500; // Total duration in milliseconds
+        const intervalTime = 30; // Interval time in milliseconds
+        const totalIntervals = duration / intervalTime; // Total number of intervals
+        const progressIncrement = 100 / totalIntervals; // Increment per interval
+
+        const interval = setInterval(() => {
+            progress += progressIncrement;
+            progressBar.style.width = progress + '%';
+            if (progress >= 100) {
+                clearInterval(interval);
+                document.getElementById('loading-screen').style.display = 'none';
+            }
+        }, intervalTime);
+
+        // Ensure the loading screen hides after 3 seconds
+        setTimeout(() => {
+            clearInterval(interval);
+            document.getElementById('loading-screen').style.display = 'none';
+        }, duration);
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,146 @@
+.profile-page{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    padding: 30px;
+}
+
+.profile-container{
+    background-color: #DCF0FA;
+    height: 353px;
+    width: 1000px;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.image-container{
+    align-items: start;
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr;
+}
+
+.image-container a{
+    padding: 8px;
+    border: none;
+    border-radius: 20px;
+    background-color: #50B8E7;
+    color: white;
+    font-family: Inter;
+    font-weight: bold;
+    float: right;
+    width: 96px;
+    justify-self: end;
+}
+
+
+.image-container img{
+    border-radius: 13px;
+    float: right;
+    width: 108px;
+    height: 108px;
+}
+
+.name-container{
+    display: flex;
+    flex-direction: column;  
+    text-align: left; 
+}
+.name-container h1{
+    margin: 0;
+    color: #005A82;
+    font-size: 30px;
+}
+
+.name-container p{
+    color: #50B8E7;
+    font-size: 20px;
+}
+
+p.user-url{
+    color: #50B8E7 !important;
+    font-size: 20px;
+}
+
+
+#user-qoute p{
+    color: #005A82;
+    font-size: 20px;
+}
+
+.contacts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.contact {
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    align-items: center;
+}
+.contact p{
+    color: #50B8E7 !important;
+}
+
+.contact i{
+    color: #005A82;
+}
+
+.verifications{
+    background-color: #DCF0FA;
+    height: 353px;
+    width: 310px;
+    padding: 20px;
+    border-radius: 20px;
+}
+.verifications h1{
+    text-align: center;
+    color: #005A82;
+}
+
+.ver-item{
+    color: #005A82;
+    margin: 5px;
+    font-size: 20px;
+}
+hr {
+    border: none; /* Remove the default border */
+    height: 1px; /* Set the height of the hr */
+    background-color: #005A82; /* Set the background color of the hr */
+    width: 300px;
+}
+
+.bio-container{
+    background-color: #DCF0FA;
+    height: 290px;
+    width: 650px;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.bio-container p{
+    word-wrap: break-word;
+}
+
+.bio-container h1{
+    color: #005A82;
+}
+
+.bio-header{
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bio-header a{
+    padding: 8px;
+    border: none;
+    border-radius: 20px;
+    background-color: #50B8E7;
+    color: white;
+    font-family: Inter;
+    font-weight: bold;
+}
+

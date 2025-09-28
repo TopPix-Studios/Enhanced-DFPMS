@@ -1,0 +1,43 @@
+{% load static %}
+
+<!-- footer.html -->
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <div class="logo-wrapper">
+                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="Logo 1" class="footer-logo-img">
+                <img src="{% static 'img/bp-logo.png' %}" alt="Logo 2" class="footer-logo-img">
+            </div>
+            <p>DFPS Copyright © 2024 All rights reserved</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-links">
+            <div class="link-section">
+                <h4>Projects</h4>
+                <ul>
+                    <li><a href="{% url "announcement" %}">Announcement</a></li>
+                    <li><a href="{% url "event" %}">Events</a></li>
+                </ul>
+            </div>
+            <div class="link-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="{% url "about_us_logined" %}">About</a></li>
+                    <li><a href="{% url "privacy_policy_logined" %}">Privacy</a></li>
+                    <li><a href="{% url "help" %}">Help</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Link to CSS -->
+<link rel="stylesheet" href="{% static 'footer.css' %}">

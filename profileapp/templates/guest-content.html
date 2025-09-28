@@ -1,0 +1,39 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'guest-content.css' %}">
+    <div class="g-content">
+        <div class="dots-design">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="152" height="542" viewBox="0 0 152 542" fill="none">
+                <path d="M-235.804 2.23714C-386.5 13.6999 -458.535 201.777 -475.716 294.383C-479.671 310.507 -483.542 354.966 -467.392 403.812C-447.205 464.869 -324.091 421.058 -271.674 436.394C-219.257 451.731 -168.316 502.888 -89.0866 533.829C-9.85725 564.77 46.3888 497.898 41.7325 420.116C37.0762 342.334 180.622 373.844 146.132 207.593C111.641 41.3419 -47.4354 -12.0913 -235.804 2.23714Z" fill="url(#pattern0)"/>
+                <defs>
+                  <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="0.0220204" height="0.0253594">
+                    <use xlink:href="#image0_1_1192" transform="scale(0.000550509 0.000633984)"/>
+                  </pattern>
+                  <image id="image0_1_1192" width="40" height="40" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAXZJREFUWEftldFtwkAMhv1fxDsjwAQtWyChO8EE0AloJyhswAaFCYDLS7YgG8AIeY1AuDoUUKhKlcTVqaouT5Hi//z7i88GlZ7hcNg+n89TZp4A6BSfUgBpnufzJEkO5Xgf77gmGY1G49PptADQfpA4Y+Z5HMcLH8auOS4GjTFTIqqUOIqiyXq9XvkyiX6/32m1WrsfyH31kimlupvNJvNhElrrJYBxzWRza+2spqZROIwxOyJ6rqNm5kMcx906mqaxziA3EVtrbxesib6q5u8b1FrvSzOvamGptbZXNVgS5wi6Zn+vcwiA5Xa7famjaRqLYnvsiejRgL47m5mz4/HY87VVLo2utXar7aNKlcz85nOb3G7iYDB4jaLI/epvSTpyROTMLasU8lsxd6Oi2CozAE/X2ehmHoCVUmrha3uUi/MyyyQ0g0EJPacNBANBKQGpPvRgICglINWHHgwEpQSk+tCDgaCUgFQfejAQlBKQ6kMP/nuCn7YlcClgZCksAAAAAElFTkSuQmCC"/>
+                </defs>
+            </svg>
+        </div>
+        <div class="content">
+            <div class="tagline">
+                <h1>EMPOWERING <span id="special-h1">FREELANCERS</span></h1>
+                <h2>In General Santos City and Beyond</h2>
+                <p>
+                    Discover a collaborative platform that showcases the talent, skills, and success stories of freelancers across the city—connecting opportunities, building networks, and driving digital growth.
+                </p>
+            </div>
+            
+            <div class="lp-btn-container">
+                <a href="{% url 'create_account'  %}" class="register-btn">Register Now</a>
+                <div class="learn-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="25" viewBox="0 0 26 25" fill="none">
+                        <path d="M1.80017 12.2C1.80017 6.01441 6.81458 1 13.0002 1C19.1858 1 24.2002 6.01441 24.2002 12.2C24.2002 18.3856 19.1858 23.4 13.0002 23.4C6.81458 23.4 1.80017 18.3856 1.80017 12.2Z" stroke="#051650" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M11.4002 15.4V9L17.0002 12.2L11.4002 15.4Z" stroke="#051650" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                    <a href="{% url "about_us" %}">Learn More</a>
+                </div>
+            </div>
+          
+        </div>
+        <div class="image-showcase">
+        </div>  
+    </div>

@@ -1,0 +1,454 @@
+{% extends 'admin/index.html' %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+{% endblock %}
+
+{% block content %}
+    {% include "admin/index_dashboard.html" %}
+    <hr>
+    {% include "admin/dashboard_event_breakdown.html" %}
+    {% include "admin/charts_view.html" %}
+    <hr>
+    <div class="container-fluid mt-3">
+        <h1 class="text-center mb-4">Map View</h1>
+        <hr>
+        <div id="map" style="width: 100%; height: 400px; margin-top: 20px;"></div>
+        <label>
+            <input type="checkbox" id="toggle-boundary" checked> Show Boundary
+        </label>
+    </div>
+    {% if request.user.is_staff %}
+    <div class="container-fluid justify-content-start">
+        <h1 class="text-center mb-4">Support Tickets</h1>
+        <hr>
+        <style>
+            #status-filter {
+                background-color: #f8f9fa; /* Light background */
+                border-radius: 5px; /* Rounded corners */
+                border: 1px solid #ced4da; /* Light border */
+                padding: 10px; /* Extra padding */
+                font-size: 1rem; /* Font size */
+                transition: all 0.3s ease; /* Smooth transition for hover effect */
+            }
+            
+            #status-filter:hover {
+                background-color: #e9ecef; /* Slightly darker background on hover */
+                border-color: #adb5bd; /* Darker border on hover */
+            }
+            
+        </style>
+        <!-- Filter by ticket status -->
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="status-filter" class="form-label">Filter by Status</label>
+                <select id="status-filter" class="form-select form-select-lg">
+                    <option value="">All Statuses</option>
+                    <option value="open">Open</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Latest tickets will be shown here -->
+        <div id="latest-tickets">
+            <p>Loading tickets...</p>
+        </div>
+
+        <!-- Pagination controls -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center" id="pagination">
+                <!-- Pagination buttons will be dynamically added here -->
+            </ul>
+        </nav>
+    </div>
+    {% else %}
+    <div class="container">
+        <h2>Access Denied</h2>
+        <p>You do not have permission to view the latest tickets.</p>
+    </div>
+    {% endif %}
+
+    <script>
+        $(document).ready(function() {
+            const ticketsPerPage = 5;
+            let currentPage = 1;
+        
+            // Function to fetch tickets with their latest message
+            function fetchLatestTickets(page = 1, status = '') {
+                $.ajax({
+                    url: `{% url 'latest_tickets_with_message' %}?page=${page}&status=${status}`,  // URL with pagination and filter
+                    method: 'GET',
+                    success: function(response) {
+                        $('#latest-tickets').empty();  // Clear existing tickets
+        
+                        if (response.data.length > 0) {
+                            response.data.forEach(function(ticket) {
+                                // Add status badge based on ticket status
+                                let statusBadge = '';
+                                if (ticket.status === 'open') {
+                                    statusBadge = '<span class="badge bg-success">Open</span>';
+                                } else if (ticket.status === 'in_progress') {
+                                    statusBadge = '<span class="badge bg-warning">In Progress</span>';
+                                } else if (ticket.status === 'closed') {
+                                    statusBadge = '<span class="badge bg-danger">Closed</span>';
+                                }
+        
+                                // Append ticket with status badge
+                                $('#latest-tickets').append(`
+                                  <div class="ticket card mb-3 shadow-sm">
+                                    <div class="card-body pb-0">
+                                        <h5 class="card-title">Ticket #${ticket.ticket_id} - ${ticket.subject} ${statusBadge}</h5>
+                                       
+                                    </div>
+                                    <div class="card-body pt-1">
+                                     <p><strong>Latest Message:</strong> ${ticket.latest_message || 'No messages yet'}</p>
+                                        <p><small>From: ${ticket.latest_sender || 'N/A'} on ${ticket.latest_message_time || ''}</small></p>
+                                        <a href="/admin/support/message/conversation/${ticket.ticket_id}/" class="btn btn-primary">View</a>
+                                    </div>
+                                </div>
+
+                                `);
+                            });
+        
+                            // Update pagination
+                            updatePagination(response.total_pages, response.current_page);
+                        } else {
+                            $('#latest-tickets').append('<p>No tickets found.</p>');
+                        }
+                    },
+                    error: function() {
+                        $('#latest-tickets').html('<p>Error fetching tickets.</p>');
+                    }
+                });
+            }
+        
+            // Function to update pagination buttons
+            function updatePagination(totalPages, currentPage) {
+                $('#pagination').empty();
+        
+                // Previous button
+                if (currentPage > 1) {
+                    $('#pagination').append(`
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous" data-page="${currentPage - 1}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    `);
+                } else {
+                    $('#pagination').append(`
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    `);
+                }
+        
+                // Page number buttons
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === currentPage) {
+                        $('#pagination').append(`<li class="page-item active"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`);
+                    } else {
+                        $('#pagination').append(`<li class="page-item"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`);
+                    }
+                }
+        
+                // Next button
+                if (currentPage < totalPages) {
+                    $('#pagination').append(`
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next" data-page="${currentPage + 1}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    `);
+                } else {
+                    $('#pagination').append(`
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    `);
+                }
+        
+                // Add click event listeners for pagination buttons
+                $('#pagination a.page-link').click(function(e) {
+                    e.preventDefault();
+                    const page = $(this).data('page');
+                    const status = $('#status-filter').val();
+                    fetchLatestTickets(page, status);
+                });
+            }
+        
+            // Fetch tickets on page load
+            fetchLatestTickets(currentPage);
+        
+            // Update ticket list when filter changes
+            $('#status-filter').change(function() {
+                const status = $(this).val();
+                fetchLatestTickets(1, status);  // Fetch tickets for page 1 with the selected status
+            });
+        
+            // Optionally, refresh every 30 seconds
+            setInterval(function() {
+                const status = $('#status-filter').val();
+                fetchLatestTickets(currentPage, status);
+            }, 30000);  // Refresh every 30 seconds
+        });
+        
+    </script>
+
+
+    <style>
+        .custom-popup-class {
+            width: 70%; /* Set the width to whatever value you need */
+        }
+    </style>
+    
+  
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var map = L.map('map').setView([6.1164, 125.1716], 14); // Latitude and Longitude of General Santos City
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var geojsonLayer;
+            var heatmapLayer;
+
+            function fetchFreelancerCounts(callback) {
+                $.ajax({
+                    url: '{% url "get_freelancer_count_per_barangay" %}',
+                    method: 'GET',
+                    success: function(data) {
+                        callback(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching freelancer counts:', error);
+                    }
+                });
+            }
+
+            function fetchDominantDetails(callback) {
+                $.ajax({
+                    url: '{% url "get_dominant_details_per_barangay" %}',
+                    method: 'GET',
+                    success: function(data) {
+                        callback(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching dominant details:', error);
+                    }
+                });
+            }
+
+            function getPolygonCenter(latlngs) {
+                var latSum = 0;
+                var lngSum = 0;
+                latlngs.forEach(function(latlng) {
+                    latSum += latlng[0];
+                    lngSum += latlng[1];
+                });
+                return [latSum / latlngs.length, lngSum / latlngs.length];
+            }
+
+            function addGeoJSON(freelancerCounts, dominantDetails) {
+                fetch("{% static 'js/gensan.json' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                        geojsonLayer = L.geoJSON(data, {
+                            style: function (feature) {
+                                return {
+                                    color: '#3388ff',
+                                    weight: 1,
+                                    fillOpacity: 0
+                                };
+                            },
+                            onEachFeature: function (feature, layer) {
+                                var barangayName = feature.properties.adm4_en;
+                                var freelancerCount = freelancerCounts[barangayName] || 0;
+                                var details = dominantDetails[barangayName] || {};
+
+                                layer.on({
+                                    mouseover: function (e) {
+                                        var layer = e.target;
+
+                                        layer.setStyle({
+                                            weight: 3,
+                                            color: '#005A82',
+                                            dashArray: '',
+                                            fillOpacity: 0.1
+                                        });
+
+                                        // Calculate center of the polygon
+                                        var latLngs = feature.geometry.coordinates[0].map(function(coord) {
+                                            return [coord[1], coord[0]];
+                                        });
+                                        var centerLatLng = getPolygonCenter(latLngs);
+                                        var heatData = [[centerLatLng[0], centerLatLng[1], freelancerCount]];
+                                        
+                                        heatmapLayer = L.heatLayer(heatData, {
+                                            radius: 25,
+                                            blur: 15,
+                                            maxZoom: 17,
+                                        }).addTo(map);
+
+                                        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                                            layer.bringToFront();
+                                        }
+
+                                        // Show popup with freelancer count and dominant details
+                                        var popupContent = `
+                                            <strong>Barangay name: </strong>${barangayName}<br>
+                                            <strong>Number of Freelancers:</strong> ${freelancerCount}<br>
+                                            <strong>Dominant Skill:</strong> ${details.dominant_skill || 'N/A'}<br>
+                                            <strong>Dominant Language:</strong> ${details.dominant_language || 'N/A'}<br>
+                                            <strong>Dominant Specialization:</strong> ${details.dominant_specialization || 'N/A'}<br>
+                                            <a href="/barangay/${barangayName}/" target="_blank">View Breakdown</a>
+                                        `;
+                                        layer.bindPopup(popupContent).openPopup();
+                                    },
+                                    mouseout: function (e) {
+                                        geojsonLayer.resetStyle(e.target);
+                                        if (heatmapLayer) {
+                                            map.removeLayer(heatmapLayer);
+                                        }
+                                    },
+                                    click: function (e) {
+                                        map.fitBounds(e.target.getBounds());
+                                        
+                                        var popupContent = `
+                                        <div class="container" style="text-align: left;">
+
+                                            <div class="text-center mb-3"><i class="fas fa-users"></i><strong> Number of Freelancer: </strong>${freelancerCount}</div>
+                                            <div class="row">         
+                                                <div class="col-md-4">
+                                                    <div class="card" style="height: 15rem">
+                                                        <div class="card-header">
+                                                            <div class="card-title"><i class="fas fa-tasks"></i><strong> Dominant Skill</strong> </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <h5 style="font-weight: bold">${details.dominant_skill || 'N/A'}</h5>
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item">
+                                                                    <i class="fas fa-list"></i>
+                                                                    <strong> Top Skills:</strong>
+                                                                    <div>
+                                                                    ${details.top_skills.length > 0 ? details.top_skills.map(skill => `<span class="badge border border-secondary text-secondary bg-white" style="border-radius: 0.5rem;">${skill.skill} (${skill.count})</span>`).join(' ') : 'N/A'}
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    
+                                                <div class="col-md-4">
+                                                    <div class="card" style="height: 15rem">
+                                                        <div class="card-header">
+                                                            <div class="card-title"><i class="fas fa-language"></i><strong> Dominant Language:</strong> </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <h5 style="font-weight: bold">${details.dominant_language || 'N/A'}</h5>
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item">
+                                                                    <i class="fas fa-list"></i>
+                                                                    <strong> Top Languages:</strong>
+                                                                    <div>
+                                                                    ${details.top_languages.length > 0 ? details.top_languages.map(language => `<span class="badge border border-secondary text-secondary bg-white" style="border-radius: 0.5rem;">${language.language} (${language.count})</span>`).join(' ') : 'N/A'}
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    
+                                                <div class="col-md-4">
+                                                    <div class="card" style="height: 15rem">
+                                                        <div class="card-header">
+                                                            <div class="card-title"><i class="fas fa-briefcase"></i><strong> Dominant Specialization:</strong> </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <h5 style="font-weight: bold">${details.dominant_specialization || 'N/A'}</h5>
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item">
+                                                                    <i class="fas fa-list"></i>
+                                                                    <strong> Top Specializations:</strong>
+                                                                    <div> 
+                                                                     ${details.top_specializations.length > 0 ? details.top_specializations.map(specialization => `<span class="badge border border-secondary text-secondary bg-white" style="border-radius: 0.5rem;">${specialization.specialization} (${specialization.count})</span>`).join(' ') : 'N/A'}
+                                                                    </div>
+                                                                   
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <blockquote>
+                                                    <p><strong>Did you know?</strong> ${details.fun_fact || 'Fun fact lorem ipsum'}</p>
+                                                </blockquote>
+                                                <a class="btn btn-primary" style="width: fit-content;  float: right" href="/barangay/${barangayName}/" target="_blank">View Breakdown</a>
+                                            </div>
+                                        </div>
+                                    `;
+                                    
+                                    
+                                        Swal.fire({
+                                            title: `${barangayName}`,
+                                            html: popupContent,
+                                            icon: 'none',
+                                            showCloseButton: true,
+                                            focusConfirm: false,
+                                            confirmButtonText: 'Close',
+                                            customClass: {
+                                                popup: 'custom-popup-class',
+                                            },
+                                        });
+                                    }
+                                });
+                            }
+                        }).addTo(map);
+                    })
+                    .catch(error => console.error('Error loading GeoJSON data:', error));
+            }
+
+
+            fetchFreelancerCounts(function(freelancerCounts) {
+                fetchDominantDetails(function(dominantDetails) {
+                    addGeoJSON(freelancerCounts, dominantDetails);
+                });
+            });
+
+            document.getElementById('toggle-boundary').addEventListener('change', function(e) {
+                if (e.target.checked) {
+                    if (!geojsonLayer) {
+                        fetchFreelancerCounts(function(freelancerCounts) {
+                            fetchDominantDetails(function(dominantDetails) {
+                                addGeoJSON(freelancerCounts, dominantDetails);
+                            });
+                        });
+                    } else {
+                        geojsonLayer.addTo(map);
+                    }
+                } else if (geojsonLayer) {
+                    map.removeLayer(geojsonLayer);
+                }
+            });
+        });
+    </script>
+{% endblock %}

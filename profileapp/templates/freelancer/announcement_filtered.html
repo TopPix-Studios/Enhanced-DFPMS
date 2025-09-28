@@ -1,0 +1,26 @@
+{% extends "freelancer/announcement.html" %}
+{% block title %}DFPS Profiling: Announcements {% endblock title %}
+
+{% block announcement %}
+
+<div class="filtered-announcements">
+    <h2 id='ann-page'>Filtered Announcements: {{ selected_tag.name }}</h2>
+    <hr>
+    {% if filtered_announcements %}
+        {% for announcement in filtered_announcements %}
+        <div class="announcement-container">
+            <div class="ann-con-header">
+                <h3><a href="{% url 'announcement_detail' account_id=profile.account_id.account_id announcement_id=announcement.id %}">{{ announcement.title }}</a></h3>
+                <p>{{ announcement.created_at }}</p>
+            </div>
+            <p class="ann-location"><i class="fas fa-map-marker-alt"></i> {{ announcement.address }}</p>
+            <p>{{ announcement.author.username }}</p>
+            <p>{{ announcement.content }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p>No announcements found for this tag.</p>
+    {% endif %}
+</div>
+
+{% endblock announcement %}

@@ -1,0 +1,268 @@
+{% extends 'home.html' %}
+
+{% load static %}
+{% block title %}DFPS Profiling: Notifications {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'notification.css' %}">
+
+<div class="container mt-4">
+    <div class="notification-header">
+        <h2>Notifications</h2>
+        <button id="mark-all-read" class="button-signup">Mark All as Read</button>
+    </div>
+    
+
+    <hr class="freelancer">
+
+    <!-- Tag Filter Box -->
+    <div class="tag-box mb-4">
+        <button class="tag-button" data-filter="all">All</button>
+        <button class="tag-button" data-filter="announcement">Announcement</button>
+        <button class="tag-button" data-filter="event">Event</button>
+        <button class="tag-button" data-filter="support_ticket">Support Ticket</button>
+        <button class="tag-button" data-filter="cancelled_event" id="cancelled-event-button">Cancelled Event</button>
+        <button class="tag-button" data-filter="moved_event" id="moved-event-button">Moved Event</button>
+    </div>
+
+   
+    <div class="notification-grid">
+        <!-- Unread Notifications Section -->
+        <div class="section-unread">
+            <h3 class="mb-3">Unread</h3>
+            <hr class="freelancer">
+            {% if notifications_unread %}
+                <div class="tabcontent-page">
+                    {% for notification in notifications_unread %}
+                        <div class="notification-card card p-3 unread-notification" 
+                             data-id="{{ notification.id }}"
+                             data-type="{% if notification.notification_type == 'event' and notification.event.is_cancelled %}cancelled_event
+                                        {% elif notification.notification_type == 'event' and notification.event.is_moved %}moved_event
+                                        {% else %}{{ notification.notification_type }}{% endif %}">
+                            <div class="notification-tag-container">
+                                <span class="notification-tag">
+                                    {% if notification.notification_type == 'event' and notification.event.is_cancelled %}
+                                        Cancelled Event
+                                    {% elif notification.notification_type == 'event' and notification.event.is_moved %}
+                                        Moved Event
+                                    {% elif notification.notification_type == 'support_ticket' %}
+                                        Support Ticket
+                                    {% else %}
+                                        {{ notification.notification_type|capfirst }}
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <a href="{% url 'mark_notification_as_read' notification_id=notification.id %}" class="text-decoration-none text-dark">
+                                {% if notification.notification_type == 'announcement' %}
+                                    <strong>{{ notification.announcement.title }}</strong>
+                                {% elif notification.notification_type == 'event' %}
+                                    <strong>{{ notification.event.title }}</strong>
+                                {% elif notification.notification_type == 'support_ticket' %}
+                                    <strong>{{ notification.support_ticket.subject }}</strong>
+                                {% endif %}
+                                <br>
+                                <small class="text-muted">{{ notification.created_at|date:"Y-m-d H:i" }} ({{ notification.created_at|timesince }} ago)</small>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if notifications_unread|length > 10 %}
+                    <div class="text-center mt-3">
+                        <button id="show-more-unread" class="btn btn-link">Show More</button>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="text-muted text-center">No unread notifications.</p>
+            {% endif %}
+        </div>
+
+        <!-- Read Notifications Section -->
+        <div class="section-read">
+            <h3 class="mb-3">Read</h3>
+            <hr class="freelancer">
+            {% if notifications_read %}
+                <div class="tabcontent-page">
+                    {% for notification in notifications_read %}
+                        <div class="notification-card card p-3 read-notification" 
+                             data-id="{{ notification.id }}"
+                             data-type="{% if notification.notification_type == 'event' and notification.event.is_cancelled %}cancelled_event
+                                        {% elif notification.notification_type == 'event' and notification.event.is_moved %}moved_event
+                                        {% else %}{{ notification.notification_type }}{% endif %}">
+                            <div class="notification-tag-container">
+                                <span class="notification-tag">
+                                    {% if notification.notification_type == 'event' and notification.event.is_cancelled %}
+                                        Cancelled Event
+                                    {% elif notification.notification_type == 'event' and notification.event.is_moved %}
+                                        Moved Event
+                                    {% elif notification.notification_type == 'support_ticket' %}
+                                        Support Ticket
+                                    {% else %}
+                                        {{ notification.notification_type|capfirst }}
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <a href="{% if notification.notification_type == 'event' %}{% url 'event_detail_view' event_id=notification.event.id %}
+                                        {% elif notification.notification_type == 'support_ticket'  %}{% url 'view_ticket' ticket_id=notification.support_ticket.id %}
+                                        {% elif notification.notification_type == 'announcement'  %}{% url 'announcement_detail' announcement_id=notification.announcement.id %}
+                                        {% else %}#{% endif %}" class="text-decoration-none text-dark">
+                                {% if notification.notification_type == 'announcement' %}
+                                    <strong>{{ notification.announcement.title }}</strong>
+                                {% elif notification.notification_type == 'event' %}
+                                    <strong>{{ notification.event.title }}</strong>
+                                {% elif notification.notification_type == 'support_ticket' %}
+                                    <strong>{{ notification.support_ticket.subject }}</strong>
+                                {% endif %}
+                                <br>
+                                <small class="text-muted">{{ notification.created_at|date:"Y-m-d H:i" }} ({{ notification.created_at|timesince }} ago)</small>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if notifications_read|length > 10 %}
+                    <div class="text-center mt-3">
+                        <button id="show-more-read" class="button-signup">Show More</button>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="text-muted text-center">No read notifications.</p>
+            {% endif %}
+        </div>
+    </div>
+  
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tagButtons = document.querySelectorAll('.tag-button');
+        const unreadNotifications = document.querySelectorAll('.unread-notification');
+        const readNotifications = document.querySelectorAll('.read-notification');
+        const markAllReadButton = document.getElementById('mark-all-read');
+        const showMoreUnreadButton = document.getElementById('show-more-unread');
+        const showMoreReadButton = document.getElementById('show-more-read');
+
+        // Initialize Show More
+        const limit = 10;
+        unreadNotifications.forEach((card, index) => {
+            if (index >= limit) card.style.display = 'none';
+        });
+        readNotifications.forEach((card, index) => {
+            if (index >= limit) card.style.display = 'none';
+        });
+
+        if (showMoreUnreadButton) {
+            showMoreUnreadButton.addEventListener('click', () => {
+                unreadNotifications.forEach(card => card.style.display = 'block');
+                showMoreUnreadButton.style.display = 'none';
+            });
+        }
+
+        if (showMoreReadButton) {
+            showMoreReadButton.addEventListener('click', () => {
+                readNotifications.forEach(card => card.style.display = 'block');
+                showMoreReadButton.style.display = 'none';
+            });
+        }
+        function checkEmptySections() {
+            const unreadSection = document.querySelector('.section-unread .tabcontent-page');
+            const readSection = document.querySelector('.section-read .tabcontent-page');
+        
+            const visibleUnread = unreadSection ? [...unreadSection.children].filter(el => el.style.display !== 'none') : [];
+            const visibleRead = readSection ? [...readSection.children].filter(el => el.style.display !== 'none') : [];
+        
+            // Remove previous messages if any
+            let existingUnreadMessage = document.querySelector('.section-unread .empty-msg');
+            if (existingUnreadMessage) existingUnreadMessage.remove();
+        
+            let existingReadMessage = document.querySelector('.section-read .empty-msg');
+            if (existingReadMessage) existingReadMessage.remove();
+        
+            if (visibleUnread.length === 0 && unreadSection) {
+                const msg = document.createElement('p');
+                msg.className = 'text-muted text-center empty-msg';
+                msg.textContent = 'No unread notifications.';
+                unreadSection.parentElement.appendChild(msg);
+            }
+        
+            if (visibleRead.length === 0 && readSection) {
+                const msg = document.createElement('p');
+                msg.className = 'text-muted text-center empty-msg';
+                msg.textContent = 'No read notifications.';
+                readSection.parentElement.appendChild(msg);
+            }
+        }
+        
+
+        // Mark All as Read
+        markAllReadButton.addEventListener('click', function () {
+            const notificationIds = Array.from(unreadNotifications).map(card => card.dataset.id);
+
+            if (notificationIds.length === 0) {
+                Swal.fire('No Unread Notifications', 'There are no unread notifications to mark as read.', 'info');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will mark all notifications as read.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<b>Yes</b>',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#007bff',
+                cancelButtonColor: '#6c757d',
+                reverseButtons: true // Ensures Yes is on the right
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('{% url "mark_all_notifications_as_read" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        body: JSON.stringify({ notification_ids: notificationIds })
+                    }).then(response => {
+                        if (response.ok) {
+                            Swal.fire('Marked All as Read', 'All notifications have been marked as read.', 'success')
+                                .then(() => location.reload());
+                        } else {
+                            Swal.fire('Error', 'An error occurred while marking notifications as read.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Tag filtering
+        tagButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const filter = button.getAttribute('data-filter');
+                tagButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+        
+                const allNotifications = [...unreadNotifications, ...readNotifications];
+                allNotifications.forEach(card => {
+                    const type = card.dataset.type.trim();
+        
+                    const isEvent = ['event', 'moved_event', 'cancelled_event'].includes(type);
+        
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else if (filter === 'event') {
+                        card.style.display = isEvent ? 'block' : 'none';
+                    } else {
+                        card.style.display = (type === filter) ? 'block' : 'none';
+                    }
+                });
+        
+                // ✅ Check and update empty state
+                checkEmptySections();
+            });
+        });
+        
+    });
+</script>
+
+{% endblock %}

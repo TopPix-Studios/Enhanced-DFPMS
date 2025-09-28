@@ -1,0 +1,255 @@
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+}
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Garet';
+}
+
+.sidebar {
+    width: 20vw;
+    height: auto;
+    /* background-color: var(--background-color); */
+    color: var(--primary-color);
+    transition: width 0.3s;
+    box-shadow: 5px 0 15px -5px rgba(0, 0, 0, 0.35), 0 -5px 15px -5px rgba(0, 0, 0, 0.35);
+}
+
+.sidebar.collapsed {
+    width: 80px;
+    padding: 10px;
+    text-align: center;
+}
+
+.sidebar.collapsed .sidebar-header .text-lines{
+    display: none;  
+}
+
+.sidebar.collapsed .sidebar-header img{
+    width: 70px; /* Adjust the width of the image as needed */
+    height: 70px; /* Adjust the height of the image as needed */
+    border-radius: 50%; /* Optional: Use border-radius for a circular image */
+    
+}
+
+.sidebar.collapsed .sidebar-header{
+    padding: 0;
+}
+.sidebar-header {
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.sidebar-menu {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    padding: 10px 15px;
+}
+
+.sidebar-menu li a {
+    color: var(--accent-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    
+}
+
+
+
+.sidebar-menu li a i {
+    margin-right: 1rem;
+    font-size: 30px;
+    align-self: center;
+    width: 2rem;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect */
+.sidebar-menu li a:hover {
+    background-color: var(--primary-color); /* Change background color on hover */
+    color: white; /* Change text color on hover */
+    border-radius: 8px; /* Add slight rounding for the background */
+    text-decoration: none; /* Ensure no underline */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow on hover */
+    padding: 1rem;
+    text-align: center;
+}
+
+
+/* Hover effect */
+.sidebar.collapsed .sidebar-menu li a:hover {
+    background-color: var(--primary-color); /* Change background color on hover */
+    color: white; /* Change text color on hover */
+    border-radius: 8px; /* Add slight rounding for the background */
+    text-decoration: none; /* Ensure no underline */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow on hover */
+    text-align: center;
+    padding: 8px 1rem;
+    width: fit-content;
+}
+
+.sidebar.collapsed .sidebar-menu li a i {
+    margin: 0;
+    width: fit-content;
+
+}
+.sidebar.collapsed .sidebar-menu li a .menu-text {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-menu li{
+    margin: 0;
+}
+
+.sidebar-toggle {
+    width: 50px;
+    padding: 10px;
+    background-color: var(--background-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sidebar-toggle:hover {
+    background-color: var(--border-color)
+    ;
+}
+
+.hidden-footer {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--background-color);
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+.hidden-footer .sidebar-toggle {
+    display: inline-block;
+    width: auto;
+    padding: 10px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-header img {
+    width: 50px; /* Adjust the width of the image as needed */
+    height: 50px; /* Adjust the height of the image as needed */
+    border-radius: 50%; /* Optional: Use border-radius for a circular image */
+    margin-right: 10px; /* Optional: Add some spacing between the image and text */
+}
+
+.sidebar-header img,
+.profile-initials {
+    margin-right: 10px; /* Optional: Add some spacing between the image and text */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    background-color: #ccc; /* You can customize the background color */
+    color: var(--primary-color); /* You can customize the text color */
+}
+
+.profile-initials {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.text-lines {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-lines .line1 {
+    font-weight: bold; /* Optional: Make the first line bold */
+    font-size: 16px;
+    text-align: left;
+}
+
+.text-lines .line2 {
+    font-size: clamp(12px, 3vw, 12px); /* Responsive font size */
+    text-align: left;
+    white-space: nowrap;       /* Prevent text from wrapping to a new line */
+    overflow: hidden;          /* Hide the overflowing text */
+    text-overflow: ellipsis;  
+    width: 10vw; /* Display ellipsis (...) when text overflows */
+}
+
+
+.sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 10px; /* Add padding to the footer */
+}
+
+.footer-buttons {
+    margin-bottom: 10px; /* Add space between buttons */
+}
+
+
+.sidebar.collapsed .footer-buttons li a .menu-text {
+    display: none;
+}
+
+
+.sidebar-footer li a{
+    color: var(--primary-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+
+.sidebar-footer li{
+    
+    padding: 10px 15px;
+}
+
+.sidebar-footer li a i{
+    margin-right: 10px;
+    font-size: 30px;
+    
+}
+
+
+
+.sidebar-footer {    
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar.collapsed .sidebar-footer li{
+    margin: 0;
+    margin-left: 10px;
+    text-align: center;
+}
+

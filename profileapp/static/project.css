@@ -1,0 +1,423 @@
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+}
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+    --button-bg-color: #0a2472; /* Added for buttons */
+    --button-hover-bg-color: #1a43bf; /* Hover color for buttons */
+    --button-danger-bg-color: #0a2472; /* Background color for delete button */
+    --button-danger-hover-bg-color: #1a43bf; /* Hover color for delete button */
+    --modal-bg-color: rgba(0, 0, 0, 0.5); /* Background color for modal */
+    --modal-content-bg-color: #fefefe; /* Background color for modal content */
+}
+
+.project-page {
+    padding: 1rem;
+}
+
+body {
+    font-family: 'Garet', sans-serif; /* Use the custom font throughout the body */
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+/* Container for the entire project list */
+.project-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px; /* Increased width */
+    width: 100vw;
+    padding: 0.5rem;
+    margin: 0 auto;
+    background-color: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--text-color);
+}
+
+.project-details {
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+    background-color: var(--background-color);
+    border-bottom: #00072d 2px solid;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 85vw;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for the effects */
+
+}
+
+.project-details:hover {
+    transform: translateY(-5px); /* Slightly lift the card */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+
+    .button-container {
+        display: flex;
+    }
+}
+.project-image {
+    margin-right: 20px; /* Add some spacing between the image and text */
+}
+
+.project-image img {
+    width: 100px; /* Fixed width for the image */
+    height: auto;
+    border-radius: 5px; /* Rounded corners for the image */
+}
+
+.details-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.project-info {
+    flex: 1; /* Allow the info section to take up available space */
+    text-align: left;
+}
+
+.project-info h3 {
+    color: var(--primary-color);
+    border-bottom: 1px solid #ccc;
+    width: fit-content;
+}
+
+.project-info p {
+    margin: 0;
+    color: var(--secondary-color);
+}
+
+.button-container {
+    display: none;
+    gap: 10px;
+    align-items: center;
+    position: absolute;
+    right: 20px;
+    top: 40px;
+}
+
+.button-container:hover {
+    display: flex;
+}
+
+.update-button,
+.delete-button,
+.download-button{
+    background-color: #ebecff !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif; /* Use the custom font for buttons */
+    font-size: 16px; /* Adjust font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem !important; /* Circular button */
+    width: 40px !important; /* Fixed size for buttons */
+    height: 40px !important;
+    margin: 0 !important;
+    transition: all 0.3s, ease-in-out;
+
+}
+
+
+.update-button:hover,
+.delete-button:hover,
+.download-button:hover {
+    background-color: var(--secondary-color)  !important;
+    color:#ebecff !important;
+}
+.project-info p {
+    margin: 0;
+    color: var(--secondary-color);
+    display: -webkit-box;        /* Use a flexbox model for Webkit */
+    -webkit-box-orient: vertical; /* Vertical orientation */
+    -webkit-line-clamp: 3;       /* Number of lines to clamp */
+    overflow: hidden;            /* Hide overflow content */
+    text-overflow: ellipsis;     /* Add ellipsis (...) to indicate overflow */
+  }
+  
+
+.delete-button {
+    background-color: var(--button-danger-bg-color);
+}
+
+.update-button:hover {
+    background-color: var(--button-hover-bg-color);
+}
+
+.delete-button:hover {
+    background-color: var(--button-danger-hover-bg-color);
+}
+
+.close-button {
+    color: var(--text-color);
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #ff0000; /* Change to red on hover */
+    text-decoration: none;
+    transform: scale(1.2); /* Slightly increase size on hover */
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-bg-color);
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out; /* Smooth transition for fade-in/fade-out */
+    opacity: 0;
+}
+
+.modal-content {
+    background-color: var(--modal-content-bg-color);
+    margin: auto;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    font-family: 'Garet', sans-serif; /* Use the custom font for modal content */
+    color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-content.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+}
+
+.modal-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 0.5rem;
+}
+
+.modal-form-group label {
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.modal-form-group input,
+.modal-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: 'Garet', sans-serif;
+    font-size: 1rem;
+    color: var(--primary-color);
+    background-color: #f9f9f9;
+}
+
+.modal-form-group textarea {
+    resize: vertical; /* Allows vertical resizing only */
+}
+
+.modal-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.modal-update-button {
+    background-color: var(--button-bg-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 1rem;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 20px;
+    right: 50px;
+}
+
+
+.modal-update-button:disabled {
+    background-color: #cccccc; /* Disabled color */
+    cursor: not-allowed;
+}
+
+.modal-update-button:hover {
+    background-color: var(--button-hover-bg-color);
+    transform: scale(1.05);
+}
+
+.modal-close-button {
+    color: var(--primary-color);
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.modal-close-button:hover,
+.modal-close-button:focus {
+    color: #ff0000; /* Change to red on hover */
+    text-decoration: none;
+    transform: scale(1.2); /* Slightly increase size on hover */
+}
+
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between the back button and heading */
+}
+
+/* Back Button Styles */
+.back-button {
+    background-color: var(--secondary-color);
+    color: #ebecff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+.details-container-btn-add {
+    width: 95%; /* Increased width for project details */
+    height: 90px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #bbb;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    position: relative;
+
+}
+
+
+.details-container-btn-add button{
+    width: 90px;
+    height: 90px;
+    background-color: unset !important;
+    font-size: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+
+.back-link {
+    padding: 0.5rem;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 50%;
+    float: left;
+    width: fit-content;
+    margin-bottom: 0.5rem;
+}
+
+.back-link:hover {
+    background-color: #0083b337;
+}
+.header-container {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+    gap: 10px; /* Add space between the back button and the heading */
+}
+
+@media (max-width: 575.98px) {
+
+    #addProjectForm .formfields{
+        flex-direction: column  ;
+        width: 100%;
+    }
+
+    #updateProjectForm .formfields {
+        flex-direction: column  ;
+        width: 100%;
+    }
+
+    #addProjectForm {
+        flex-direction: column;
+    }
+
+    #updateProjectForm {
+        flex-direction: column;
+    }
+
+    #addProjectForm textarea, #addProjectForm input {
+        width: 60vw;
+    }
+    #updateProjectForm textarea, #updateProjectForm input {
+        width: 60vw;
+    }
+
+
+    .drop-area-container {
+        width: 100% !important;
+    }
+}

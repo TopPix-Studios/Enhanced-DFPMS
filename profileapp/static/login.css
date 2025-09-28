@@ -1,0 +1,217 @@
+
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+}
+
+
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+}
+
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Autofill styles */
+input:-webkit-autofill {
+    background-color: white !important;
+    -webkit-text-fill-color: var(--primary-color) !important;
+    box-shadow: 0 0 0px 1000px white inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    border: 2px solid var(--secondary-color);
+}
+
+/* Autofill hover state */
+input:-webkit-autofill:hover {
+    background-color: var(--hover-background-color) !important;
+    border: 2px solid var(--secondary-color) !important;
+}
+
+/* Autofill focus (selected) state */
+input:-webkit-autofill:focus {
+    background-color: var(--focus-background-color) !important;
+
+    border: 2px solid var(--secondary-color) !important;
+}
+  
+.login-container{
+    background-color: var(--background-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: 8px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    width: 537px;
+    height: 557px;
+    flex-shrink: 0;
+    position: absolute;
+}
+
+.login-container h2{
+    color: var(--secondary-color);
+    font-family: 'Garet';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+.login-divider{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-divider hr{
+    display: block;
+    width: 206px;
+    height: 2px;
+    flex-shrink: 0;
+    background-color: var(--secondary-color);
+}
+
+hr.vert-hr{
+    width: 2px;
+    height: 100%;
+    display: inline-block;
+    background-color: var(--secondary-color);
+    border: none;
+    margin: 10px;
+}
+
+.login-divider h3{
+    color: var(--secondary-color);
+    font-family: 'Garet';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+/* Third Party Logins*/
+.third-party-login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:20px;
+}
+
+
+.third-party-login-container{
+    width: 401px;
+    height: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid var(--secondary-color);
+    background: rgba(217, 217, 217, 0.00);
+    align-items: center;
+    margin-bottom: 2px;
+    flex-direction:row ;
+    text-align: center;
+}
+  
+.third-party-login-container a{
+    color: var(--secondary-color);
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+
+.third-party-login-container img{
+    margin-bottom: -2px;
+}
+
+.login-container input{
+    color: var(--primary-color) !important;
+    font-family: 'Garet';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 467px;
+    height: 48px;
+    flex-shrink: 0;
+    background-color: var(--background-color)  !important;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    border: 1px solid var(--secondary-color);
+    border-radius: 8px;
+}
+
+.form-group input.focus-border:focus {
+    border-color: #00bfff;  /* Set your desired focus border color */
+    outline: none;  /* Remove the default outline */
+    box-shadow: 0 0 5px #00bfff;  /* Optional: Add a box shadow for emphasis */
+}
+
+
+#loginForm{
+    display: grid;
+    place-items: center;
+    gap: 20px;
+}
+
+#login-button{
+    width: 200px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: none;
+    background: var(--secondary-color);
+    color: var(--Color, #FFF);
+    font-family: 'Garet';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+
+#login-button:hover{
+    background-color: var(--accent-color);
+}
+
+
+.signin a{
+    color: #0078AE;
+    font-family: 'Garet';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    margin: 0;
+
+}
+
+.signin p{
+    color: var(--50b8e7, #000);
+    font-family: 'Garet';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    margin: 0;
+}
+
+.signin{
+    margin-top: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 3px;
+    justify-content: center;
+}

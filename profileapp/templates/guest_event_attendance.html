@@ -1,0 +1,252 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'event.css' %}">
+<link rel="stylesheet" href="{% static 'announcement.css' %}">
+<link rel="stylesheet" href="{% static 'home.css' %}">
+<link rel="stylesheet" href="{% static "guest_event.css" %}">
+
+<style>
+    
+</style>
+
+<div class="center">
+    <div class="announcement-detail-page">
+        <div class="ann-content-image">
+            {% if event.image %}            
+                <img src="{{ event.image.url }}" alt="{{ event.title }}">
+            {% else %}
+                <img src="{% static 'img/event.png' %}" alt="{{ event.title }}">
+            {% endif %}
+            <div class="ann-image-text">
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.created_at }}</p>
+            </div>
+        </div>
+    
+        <div class="announcement-content">
+            <div class="announcement-detail-box">
+                <a href="{% url 'index' %}" class="back-link" style="width: fit-content; margin-bottom: 8px">   
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </a>
+                <p class="ann-location"><i class="fas fa-map-marker-alt"></i> {{ event.location }}</p>
+                <p>{{ event.created_at }}</p>
+                <p><strong>Organizer:</strong>{{ event.organizer.username }}</p>
+                <div class="tags-container">
+                    <div class="tag-p">
+                        <p>Tags:</p>
+                    </div>
+                    {% for tag in event.tags.all %}
+                        <a href="#" class="tag-box">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+                <br>   
+                {% if event.is_cancelled %}
+
+                <div class="attendance-container">
+                        <h3>Event Status</h3>
+                        <p>This event has been cancelled.</p>
+                        <p><strong>Remarks:</strong> {{ event.remarks}}</p>
+                        
+                   
+                </div>
+                {% endif %}
+
+            </div>
+            <div class="content-box" style="height: auto;">
+                <h1>{{ event.title }}</h1>
+                <p>{{ event.description }}</p>
+            </div>
+            {% comment %} {% if event.is_cancelled == False %}
+            <div class="form-container-guest">
+                <form id="guest-form" method="post" action="{% url 'guest_event' event.id %}">
+                    
+                    <h1>Register Attendance as a Guest</h1>
+                    <br>
+                    {% csrf_token %}
+                    <div class="guest-form-content">
+                        <div class="g-form-content-col-1">
+                            <div class="form-group">
+                                <label for="id_name">Full Name:</label>
+                                <input type="text" id="id_name" name="name" class="styled-input" placeholder="Enter your name" required>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="id_affiliation">Affiliation:</label>
+                                <input type="text" id="id_affiliation" name="affiliation" class="styled-input" placeholder="Enter your affiliation">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_contact">Contact:</label>
+                                <input type="text" id="id_contact" name="contact" class="styled-input" placeholder="Enter your contact number">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_email">Email:</label>
+                                <input type="email" id="id_email" name="email" class="styled-input" placeholder="Enter your email address">
+                            </div>
+                            
+                        </div>
+                        
+                        <hr class="vert-hr" style="align-self: center; justify-self: center;"> 
+    
+                        <div class="g-form-content-col-2">
+                            <div class="age-gender-col">
+                                <div class="form-group">
+                                    <label for="id_age_range">Age:</label>
+                                    <div>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="age_range_a" name="age_range" value="A" required> 20 below
+                                        </label>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="age_range_b" name="age_range" value="B" required> 20-29
+                                        </label>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="age_range_c" name="age_range" value="C" required> 30-39
+                                        </label>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="age_range_d" name="age_range" value="D" required> 40-49
+                                        </label>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="age_range_e" name="age_range" value="E" required> 50+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+    
+                                
+                                    <label for="id_gender">Gender:</label>
+                                    <div>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="gender_m" name="gender" value="M" required> Male
+                                        </label>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="gender_f" name="gender" value="F" required> Female
+                                        </label>
+                                        <label class="styled-radio">
+                                            <input type="radio" id="gender_o" name="gender" value="O" required> Other
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2-gform">
+                                <div class="form-group">
+                                    <label for="id_pwd"> 
+                                        <input type="checkbox" id="id_pwd" name="pwd">
+                                        Are you a PWD beneficiary?
+                                    </label>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_four_ps">
+                                        <input type="checkbox" id="id_four_ps" name="four_ps"
+                                        >Are you a 4Ps beneficiary?
+                                    </label>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    
+                        <div class="g-form-content-col-3">
+                            
+                        </div>
+                        
+                        
+                        
+                    </div>
+                    <br>
+                    <div class="sbt-btn-container">
+                        <button type="submit" class="styled-button" onclick="confirmSubmission(event)">Register</button>
+                    </div>
+                    
+                </form>
+            </div>
+            {% endif %} {% endcomment %}
+        </div>
+        <br>
+
+    
+       
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function showTermsAndConditions() {
+    Swal.fire({
+        title: '<strong>Privacy Policy</strong>',
+        html: `<p>Your Privacy Policy goes here. Make sure to detail everything the user should know before confirming their attendance.</p>`,
+        icon: 'info',
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: '<b>Yes</b>',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#007bff',
+        cancelButtonColor: '#6c757d',
+        reverseButtons: false // Ensures Yes is on the right
+    });
+}
+
+function confirmSubmission(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('id_name').value;
+    const ageRange = document.querySelector('input[name="age_range"]:checked');
+    const gender = document.querySelector('input[name="gender"]:checked');
+
+    if (!name || !ageRange || !gender) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Information',
+            text: 'Please fill out all required fields before submitting.',
+            confirmButtonColor: '#007bff',
+
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Confirm Attendance',
+        html:
+            '<form id="confirm-attendance-form">' +
+            '<label for="terms"><input type="checkbox" id="terms" name="terms" required> I agree to the <a href="#" class="highlight-link" onclick="showTermsAndConditions(); return false;">Privacy Policy</a>.</label>' +
+            '</form>',
+        showCancelButton: true,
+        reverseButtons: true,// Ensures Yes is on the right
+        confirmButtonColor: '#007bff',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Confirm',
+        preConfirm: () => {
+            if (!document.getElementById('terms').checked) {
+                Swal.showValidationMessage('You must agree to the Privacy Policy');
+                return false;
+            }
+            document.getElementById('guest-form').submit();
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    Swal.fire({
+        title: 'Would you like to log in or continue as a guest?',
+        icon: 'question',
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Log In',
+        denyButtonText: 'Continue as Guest',
+        confirmButtonColor: '#007bff', // Blue for Log In
+        denyButtonColor: '#6c757d', // Gray for Continue as Guest
+        reverseButtons: true // Swaps the positions: Log In will now be on the right
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'user_login' %}";
+        } else if (result.isDenied) {
+            document.getElementById("guest-form").style.display = "block";
+        }
+    });
+});
+
+</script>
+{% endblock content %}

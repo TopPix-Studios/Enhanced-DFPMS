@@ -1,0 +1,42 @@
+{
+    "name": "DFPS - Digital Freelancer Profiling System",
+    "short_name": "DFPS",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1E3A8A",
+    "icons": [
+      {
+        "src": "/static/icons/icon-192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/static/icons/icon-144x144.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      },
+      {
+        "src": "/static/icons/icon-512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "screenshots": [
+    {
+        "src": "/static/img/screenshot-home.png",
+        "sizes": "1280x720",
+        "type": "image/png",
+        "form_factor": "wide"
+    },
+    {
+        "src": "/static/img/screenshot-profile.png",
+        "sizes": "720x1280",
+        "type": "image/png",
+        "form_factor": "narrow"
+    }
+    ]
+
+   
+  }
+  

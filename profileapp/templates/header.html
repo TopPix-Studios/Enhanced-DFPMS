@@ -1,0 +1,74 @@
+<!-- header.html -->  
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'header.css' %}">
+{% include 'links/links.html' %}
+
+<div class="header">
+    {% if messages %}
+        <script>
+            $(document).ready(function() {
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: '{{ message }}'
+                        });
+                    {% elif message.tags == 'success' %}
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: '{{ message }}'
+                        });
+                    {% elif message.tags == 'info' %}
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Info',
+                            text: '{{ message }}'
+                    });
+                    {% elif message.tags == 'warning' %}
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Warning',
+                            text: '{{ message }}'
+                        });
+                    {% endif %}
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
+    <div class="menu-icon">
+        <a href="{% url 'index' %}">
+            <img src="{% static "img/DarkBlue/dark blue.png" %}" style="width: 75px; height: 75px" alt="brand-logo">
+        </a>
+    </div>
+    <a href="{% url 'index' %}">
+        <img src="{% static "img/DarkBlue/dark blue text.png" %}"  class="header-logo" style="margin-left: -5px; width: 175px; height: auto" alt="header">
+    </a>
+    
+    <div class="links"> 
+        <ul>
+            <a href="{% url "about_us" %}">
+                <li>About us</li>
+            </a>
+
+            <a href="{% url "privacy_policy" %}">
+                <li>Privacy Policy</li>
+            </a>
+            {% comment %} <a href="{% url 'guest_announcement' %}">
+                <li>Announcement</li>
+            </a> {% endcomment %}
+            <a href="{% url 'guest_event_all' %}">
+                <li>Events</li>
+            </a>       
+        </ul>
+    </div>
+    <div class="searchbar"></div>
+    <div class="header-buttons">
+        <a href="{% url "user_login" %}" class="login-button">Log in</a>
+        <a href="{% url 'create_account' %}">
+            <button class="sign-up-button" type="button">Sign Up</button>
+        </a>
+    </div>
+</div>

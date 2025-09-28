@@ -1,0 +1,110 @@
+{% extends "freelancer/event_announcement.html" %}
+{% load static %}
+
+{% block title %}DFPS Profiling: Events {% endblock title %}
+
+{% block page_content %}
+<link rel="stylesheet" href="{% static 'event.css' %}">
+
+{% block event %}
+<div class="event-page">
+    <div class="event-block-view">
+        <h1 id='event-page'>Events</h1>
+        <p id='event-page1'>{{ current_date }}</p>
+        
+        <!-- FOR YOU Events -->
+        <h2 class="event-section-title" style="margin-bottom: 1rem">Events for You</h2>
+        {% if page_obj_foryou %}
+            {% for event in page_obj_foryou %}
+                {% include 'freelancer/partials/event_card.html' with event=event %}
+            {% endfor %}
+            {% include 'freelancer/partials/event_pagination.html' with page_obj=page_obj_foryou page_name='page_foryou' %}
+        {% else %}
+            {% include 'freelancer/partials/event_empty.html' with message='No recommended events based on your skills.' %}
+        {% endif %}
+        <hr class="freelancer" style="width: 95%; margin: 1rem auto;">
+        <!-- CURRENT Events -->
+        <h2 class="event-section-title" style="margin-bottom: 1rem">Today's Events</h2>
+        {% if page_obj_current %}
+            {% for event in page_obj_current %}
+                {% include 'freelancer/partials/event_card.html' with event=event %}
+            {% endfor %}
+            {% include 'freelancer/partials/event_pagination.html' with page_obj=page_obj_current page_name='page_current' %}
+        {% else %}
+            {% include 'freelancer/partials/event_empty.html' with message='No events today.' %}
+        {% endif %}
+        <hr class="freelancer" style="width: 95%; margin: 1rem auto;">
+
+        <!-- PAST Events -->
+        <h2 class="event-section-title" style="margin-bottom: 1rem">All Events</h2>
+        {% if page_obj_past %}
+            {% for event in page_obj_past %}
+                {% include 'freelancer/partials/event_card.html' with event=event %}
+            {% endfor %}
+            {% include 'freelancer/partials/event_pagination.html' with page_obj=page_obj_past page_name='page_past' %}
+        {% else %}
+            {% include 'freelancer/partials/event_empty.html' with message='No past events found.' %}
+        {% endif %}
+    </div>
+
+    <!-- FILTERS SIDEBAR -->
+    <div class="filters">
+        <form method="GET" action="{% url 'event' %}">
+            <div>
+                <h2>Search</h2>
+                <input type="text" id="search" name="search" value="{{ request.GET.search }}" placeholder="Search Events...">
+            </div>
+
+            <h2>Filter by Date</h2>
+            <div>
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}" class="date-input styled-input">
+            </div>
+            <div>
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}" class="date-input styled-input">
+            </div>
+
+            <h2>Sort by</h2>
+            <div class="radio-container">
+                <label>
+                    <input type="radio" name="sort" value="latest" {% if sort == 'latest' %}checked{% endif %}>
+                    Latest
+                </label>
+                <label>
+                    <input type="radio" name="sort" value="oldest" {% if sort == 'oldest' %}checked{% endif %}>
+                    Oldest
+                </label>
+            </div>
+
+            <h2>Filter by Status</h2>
+            <div class="radio-container">
+                <label>
+                    <input type="radio" name="filter_choice" value="all" {% if filter_choice == 'all' %}checked{% endif %}>
+                    All
+                </label>
+                <label>
+                    <input type="radio" name="filter_choice" value="active" {% if filter_choice == 'active' %}checked{% endif %}>
+                    Active
+                </label>
+                <label>
+                    <input type="radio" name="filter_choice" value="cancelled" {% if filter_choice == 'cancelled' %}checked{% endif %}>
+                    Cancelled
+                </label>
+                <label>
+                    <input type="radio" name="filter_choice" value="moved" {% if filter_choice == 'moved' %}checked{% endif %}>
+                    Moved
+                </label>
+            </div>
+            
+
+            <div class="filter-button-container">
+                <button type="submit">Search</button>
+                <br>
+                <button type="button" onclick="window.location.href='{% url 'event'  %}'" class="styled-button">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock event %}
+{% endblock page_content %}

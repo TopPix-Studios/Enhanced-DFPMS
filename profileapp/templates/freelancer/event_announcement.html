@@ -1,0 +1,50 @@
+{% extends "home.html" %}
+{% block title %}DFPS Profiling: Announcement and Events {% endblock title %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <style>
+       
+    </style>
+</head>
+<!--  Tabs Navbar -->
+  
+<div class="container mt-4 " style="width: 100%; height: auto">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" >
+            <a class="nav-link {% if active_tab == 1 %}active{% endif %}" href="{% url 'announcement'  %}"><i class="fas fa-bullhorn"></i><span class="nav-text">Announcements</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if active_tab == 2 %}active{% endif %}" href="{% url 'event' %}"><i class="fas fa-calendar"></i><span class="nav-text">Events</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if active_tab == 3 %}active{% endif %}" href="{% url 'event_attended_view' %}"><i class="fas fa-clock"></i><span class="nav-text">Events Attended</span></a>
+        </li>
+    </ul>
+    {% block page_content %}
+    {% endblock page_content %}
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-pane');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const target = this.getAttribute('data-tab');
+
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.id === target ? content.classList.add('active') : content.classList.remove('active');
+                });
+            });
+        });
+    });
+</script>
+
+{% endblock content %}

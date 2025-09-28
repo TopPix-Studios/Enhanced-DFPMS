@@ -1,0 +1,112 @@
+{% extends "freelancer/event_announcement.html" %}
+{% load static %}
+
+{% block title %}DFPS Profiling: Announcements{% endblock title %}
+
+{% block page_content %}
+<link rel="stylesheet" href="{% static 'announcement.css' %}">
+<div class="ann-page">
+    <div class="announcement-block-view">
+        <h1 id="ann-page">Announcements</h1>
+        <p>{{ current_date }}</p>
+
+        {% block announcement %}
+        <!-- Recommended Announcements (For You) -->
+        {% if announcements_foryou %}
+            <h2 class="event-section-title">Announcements For You</h2>
+            {% for announcement in announcements_foryou %}
+            <a href="{% url 'announcement_detail' announcement_id=announcement.id %}">
+                <div class="announcement-container">
+                    <div class="ann-content-image">
+                        <img src="{{ announcement.image.url|default:'static/img/event.png' }}" alt="{{ announcement.title }}">
+                        <div class="ann-image-text-all">
+                            <h2>{{ announcement.title }}</h2>
+                            <p>{{ announcement.created_at }}</p>
+                        </div>
+                    </div>
+                    <p class="ann-location"><i class="fas fa-map-marker-alt"></i> {{ announcement.address }}</p>
+                    <p><strong>Author:</strong> {{ announcement.author.username }}</p>
+                    <p>{{ announcement.content }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        {% endif %}
+
+        <!-- All Other Announcements (Filtered or Full List) -->
+        {% if page_obj %}
+            {% for announcement in page_obj %}
+            <a href="{% url 'announcement_detail' announcement_id=announcement.id %}">
+                <div class="announcement-container">
+                    <div class="ann-content-image">
+                        <img src="{{ announcement.image.url|default:'static/img/event.png' }}" alt="{{ announcement.title }}">
+                        <div class="ann-image-text-all">
+                            <h2>{{ announcement.title }}</h2>
+                            <p>{{ announcement.created_at }}</p>
+                        </div>
+                    </div>
+                    <p class="ann-location"><i class="fas fa-map-marker-alt"></i> {{ announcement.address }}</p>
+                    <p><strong>Author:</strong> {{ announcement.author.username }}</p>
+                    <p>{{ announcement.content }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+            <div class="event-db-card-none">
+                <div class="event-db-card-body">
+                    <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No announcements" style="width: 150px;">
+                    <p class="event-card-missing-text">No announcements found.</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&{{ request.GET.urlencode }}" class="pagination-link">&laquo; First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" class="pagination-link">Previous</a>
+                {% endif %}
+                <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" class="pagination-link">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode }}" class="pagination-link">Last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endblock announcement %}
+    </div>
+
+    <!-- Sidebar Filters -->
+    <div class="announcement-filter">
+        <h2>Filters</h2>
+        <form method="GET" action=".">
+            <!-- Search -->
+            <div class="search-bar-filter">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search announcements...">
+            </div>
+
+            <!-- Date Range -->
+            <h2>Filter by Date</h2>
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" value="{{ start_date }}" class="date-input styled-input">
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" value="{{ end_date }}" class="date-input styled-input">
+
+            <!-- Sort -->
+            <h2>Sort by</h2>
+            <div class="radio-container">
+                <label><input type="radio" name="sort" value="relevant" {% if sort == 'relevant' %}checked{% endif %}> Relevance</label>
+                <label><input type="radio" name="sort" value="latest" {% if sort == 'latest' %}checked{% endif %}> Latest</label>
+                <label><input type="radio" name="sort" value="oldest" {% if sort == 'oldest' %}checked{% endif %}> Oldest</label>
+            </div>
+
+            <!-- Submit -->
+            <div class="filter-button-container">
+                <button type="submit" class="styled-button">Apply</button>
+                <br>
+                <button type="button" onclick="window.location.href='{% url 'announcement' %}'" class="styled-button">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock page_content %}

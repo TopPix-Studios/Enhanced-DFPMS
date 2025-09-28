@@ -1,0 +1,136 @@
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+}
+
+/* Container for the tabs */
+.ticket-tabs {
+    display: flex;
+    flex-direction: row;
+    width: 100%; /* Take full width of the container */
+    margin-bottom: 1rem;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Individual tab links */
+.ticket-tab-link {
+    flex: 1; /* Distribute each tab evenly */
+    text-align: center; /* Center align text */
+    background-color: #e0e0e0;
+    color: #000;
+    padding: 10px 0; /* Add padding to the top and bottom */
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Active tab link */
+.ticket-tab-link.active {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+/* Hover effect for inactive tabs */
+.ticket-tab-link:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Tab content section */
+.ticket-tab-content {
+    display: none;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Make the active tab content visible */
+.ticket-tab-content.active {
+    display: block;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+    .ticket-tabs {
+        flex-direction: column;
+    }
+
+    .ticket-tab-link {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .ticket-container h1, .ticket-page-container h1{
+        font-size: 24px;
+    }
+
+    .input-container form {
+        width: 80vw !important;
+        justify-content: center;
+    }
+    
+    .ticket-card {
+        width: 64vw;
+    }
+
+    .ticket-card-header h3 {
+        font-size: 16px;
+    }
+
+    .ticket-card-header p {
+        font-size: 12px;
+    }
+
+    .btn-submit{
+        font-size: 12px;
+    }
+
+    .tab-content-ticket {
+        width: 60vw;
+    }
+}
+
+
+/* Styles for the ticket cards */
+.ticket-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+    gap: 1.5rem;
+}
+
+.ticket-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    transition: box-shadow 0.3s ease;
+}
+
+.ticket-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ticket-card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.ticket-date {
+    font-size: 0.875rem;
+    color: #888;
+}
+
+.ticket-card-footer {
+    margin-top: 1rem;
+}

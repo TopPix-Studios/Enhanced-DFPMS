@@ -1,0 +1,201 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'graphs.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/date-fns"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="{% static 'js/generatePDF.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="mb-0">Freelancers' Profile Charts</h3>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light p-2">
+            <a class="navbar-brand" href="{% url 'profile_charts' %}">Charts</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'gender_chart' %}">Gender Chart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'region_chart' %}">Region Chart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'province_chart' %}">Province Chart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'city_chart' %}">City Chart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'barangay_chart' %}">Barangay Chart</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    
+   
+    {% block chart_content %}
+    
+    <div class="chart-container">
+       <hr>
+      <form id="filtersForm" method="GET" class="filter-form">
+        <h5 class="text-bold">Date Filter:</h5>
+        <div class="form-container">
+          <div class="form-group">
+              <label for="startDate">Start Date:</label>
+              <input type="date" id="startDate" name="start_date" class="form-control" value="{{ request.GET.start_date }}">
+          </div>
+          <div class="form-group">
+              <label for="endDate">End Date:</label>
+              <input type="date" id="endDate" name="end_date" class="form-control" value="{{ request.GET.end_date }}">  
+          </div>
+        </div>
+        <hr>
+        <div class="form-group full-width d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+      
+      <h3 class="text-bold">User Join Date Chart <i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h3>
+      <canvas id="userJoinDateChart"></canvas>
+      <hr>
+      <div class="analysis-section">
+        <h2 class="text-bold">Analysis of User Join Date Chart</h2>
+        <p>This section provides insights into the trends and patterns observed in the User Join Date Chart.</p>
+        <ul>
+            {% for insight in insights %}
+                <li>{{ insight|safe }}</li>
+            {% endfor %}
+        </ul>
+      </div>
+
+     
+    <div class="form-group d-flex flex-row justify-content-end align-items-center gap-2 w-100">
+    
+        <!-- Export to PDF -->
+        <form id="exportForm" method="POST" action="{% url 'export_profile_chart_to_pdf' %}" class="m-0 p-0 w-50 mx-2">
+            {% csrf_token %}
+            <input type="hidden" id="chartImage" name="chartImage">
+            <button type="button" id="exportButton" class="btn btn-secondary w-100" style="height: 50px;">Export to PDF</button>
+        </form>
+    
+        <!-- Export to Excel -->
+        <button type="button" class="btn btn-primary w-50 mx-2" style="height: 50px;" onclick="exportProfileChartToExcel()">Export to Excel</button>
+    
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
+
+
+    <script>
+        function exportProfileChartToExcel() {
+            const params = new URLSearchParams(new FormData(document.getElementById('exportForm')));
+            window.location.href = `/export-profile-chart-excel/?${params.toString()}`;
+        }
+        
+        tippy('#chartInfoIcon', {
+            content: 'This chart shows the number of users joining over time. Use the date filters above to adjust the time range.',
+            placement: 'top',
+        });
+    
+        var joinDates = {{ join_dates|safe }};
+        var userCounts = {{ user_counts|safe }};
+    
+        function createChart(ctx, labels, data, label) {
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,  // array of ISO date strings or timestamps
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                                tooltipFormat: 'MMM dd, yyyy'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Join Date'
+                            },
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 10,
+                                callback: function(value) {
+                                    return luxon.DateTime.fromMillis(value).toFormat('MMM dd');
+                                }
+                            }
+                        },
+                        
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Users'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+    
+        var ctx = document.getElementById('userJoinDateChart').getContext('2d');
+        var userJoinDateChart = createChart(ctx, joinDates, userCounts, 'Number of Users');
+    
+        // Export to PDF Button
+        document.getElementById('exportButton').addEventListener('click', function() {
+            const chartImageData = userJoinDateChart.toBase64Image();
+    
+            const startDate = "{{ request.GET.start_date|default:'ALL' }}";
+            const endDate = "{{ request.GET.end_date|default:'ALL' }}";
+            const filters = `Start Date: ${startDate} | End Date: ${endDate}`;
+    
+            const tableHeaders = ['Date', 'Number of Users'];
+            const tableData = joinDates.map(function(date, index) {
+                return [date, userCounts[index]];
+            });
+    
+            generatePDF({
+                title: 'User Join Date Distribution Report',
+                chartImageData: chartImageData,
+                filters: filters,
+                tableHeaders: tableHeaders,
+                tableData: tableData,
+                fileName: 'user_join_date_distribution_summary.pdf',
+          
+            });
+        });
+    </script>
+    
+    {% endblock chart_content %}
+  </div>
+
+{% endblock %}

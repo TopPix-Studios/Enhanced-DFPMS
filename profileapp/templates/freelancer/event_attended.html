@@ -1,0 +1,103 @@
+{% extends "freelancer/event_announcement.html" %}
+{% load static %}
+{% block title %}DFPS Profiling: Attended Events {% endblock title %}
+
+{% block page_content %}
+<link rel="stylesheet" href="{% static 'event.css' %}">
+<div class="attended-events-container">
+    <h2>Events You Have Attended</h2>
+    <br>
+    {% if page_obj.object_list %}
+        <div class="card-container">
+            {% for group in page_obj.object_list %}
+                {% with event=group.events.0 %}
+                <div class="card">
+                    <div class="card-header" style="position: relative;">
+                        <div class="event-image-container {% if event.is_cancelled %}image-cancelled{% endif %}">
+                            <div class="event-image">
+                                <img src="{{ event.image.url|default:'static/img/event.png' }}" alt="{{ event.title }}">
+                            </div>
+                            <div class="ann-image-text-all" style="left: 51% !important">
+                                <div class="header-align" style="display:flex; gap: 1rem;">
+                                    <h2>{{ event.title }}</h2>
+                                    {% if event.is_cancelled %}<span class="tag-box cancelled-tag">Cancelled</span>{% endif %}
+                                    {% if event.is_moved %}<span class="tag-box moved-tag">Moved</span>{% endif %}
+                                </div>
+                                <p>{{ event.start_datetime }} to {{ event.end_datetime }}</p>
+                            </div>
+                        </div>
+                        <div class="date-box">
+                            <p class="date-day-name">{{ event.start_datetime|date:'D' }}</p>
+                            <p class="date-day">{{ event.start_datetime|date:'d' }}</p>
+                            <p class="date-month-year">{{ event.start_datetime|date:'M Y' }}</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ event.title }}</h3>
+                        <p><strong>Location:</strong> {{ event.location }}</p>
+                        <p><strong>Start Date:</strong> {{ event.start_datetime }}</p>
+                        <p><strong>End Date:</strong> {{ event.end_datetime }}</p>
+                        <a href="{% url 'event_detail_view' group.event_id %}" class="btn-submit"><i class="fas fa-calendar"></i> Read More</a>
+    
+                        {% if group.events|length > 1 %}
+                            <a href="javascript:void(0);" class="btn-explode" onclick="toggleCluster('{{ group.event_id }}')">
+                                +{{ group.events|length|add:"-1" }} more dates
+                            </a>
+                        {% endif %}
+    
+                        <div id="cluster-{{ group.event_id }}" class="event-cluster" style="display: none;">
+                            {% for cluster_event in group.events|slice:"1:" %}
+                                {% for attendance in cluster_event.user_attendances %}
+                                    <div class="card mini-card">
+                                        <p><strong>Date:</strong> {{ attendance.date|date:"D, M d, Y" }}</p>
+                                        <p><strong>Age Range:</strong> {{ attendance.get_age_range_display }}</p>
+                                        <p><strong>Gender:</strong> {{ attendance.get_gender_display }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+            {% endfor %}
+        </div>
+    
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <div class="event-db-card-none">
+            <div class="event-db-card-body">
+                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                <p class="event-card-missing-text">No events attended found.</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script type="text/javascript">
+    function toggleCluster(eventId) {
+        var cluster = document.getElementById('cluster-' + eventId);
+        if (cluster.style.display === "none") {
+            cluster.style.display = "flex";
+        } else {
+            cluster.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock page_content %}

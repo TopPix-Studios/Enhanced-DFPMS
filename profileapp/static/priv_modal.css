@@ -1,0 +1,298 @@
+.priv-content {
+    max-width: 1000px;
+    margin: 0 auto; /* Centers the content */
+    padding: 20px; /* Adds margin to the sides */
+}
+
+.tab-content button {
+    padding: 0.5rem !important;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+hr.settings {
+    height: 2px;
+    color: #ccc;
+    width: 100%;
+    border-top: 2px solid;
+    margin: 4px;
+}
+
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.tab-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Stack tabs vertically */
+    margin-right: 20px;
+}
+
+.tab-item {
+    padding: 10px;
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+    border-radius: 5px;
+    padding-right: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+
+.tab-item i {
+    margin-right: 1rem;
+    font-size: 1.2rem; /* Adjust size as needed */
+
+}
+
+
+.tab-description {
+    display: block;
+    font-size: 0.85rem;
+    color: #333;
+}
+
+.tab-description.active{
+    display: block;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.tab-title {
+    display: flex;
+    flex-direction: column;
+}
+.tab-item.active {
+    padding: 10px;
+    background-color: #1544d02f;
+    color: var(--secondary-color);
+    cursor: pointer;
+    border-radius: 0px 32px 32px 0px;
+    padding-right: 3rem;
+    display: flex;
+    align-items: center;
+
+}
+
+.tab-description {
+    display: block;
+    font-size: 0.85rem; /* Smaller font for description */
+    color: #555; /* Lighter color for description */
+    font-weight: normal;
+}
+
+.tab-item.active .tab-description {
+    color: #777; /* Change description color for the active tab */
+}
+
+
+.tab-content-container {
+    margin-top: 20px;
+    /* Adjust content alignment based on screen size */
+}
+
+.tab-content {
+    display: none;
+}
+
+h2 {
+    margin: 0
+}
+
+p.description {
+    font-size: 0.95em;
+    color: #555;
+    margin-top: 0;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+
+.tab-content.active {
+    display: block;
+    width: 60vw;
+    height: fit-content;
+    background-color: white;
+}
+
+.tab-content.active .section{
+    overflow-y: scroll;
+    height: 400px;
+}
+
+.tab-content.active h3{
+   margin-top: 0;
+}
+/* Responsive styling for smaller screens */
+@media (min-width: 768px) {
+    .tab-container {
+        flex-direction: row; /* Display tabs and content side-by-side */
+    }
+
+    .tab-content-container {
+        margin-left: 20px;
+        width: 100%; /* Ensure content fills the available space */
+    }
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 1% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 100vw;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    position: relative;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tagline {
+    width: 100%; /* Ensures the div takes full width */
+    font-size: 1.5em; /* Font size */
+    line-height: 1.6; /* Line height for readability */
+    text-align: left; /* Center-align the text */
+}
+
+h2 {
+    font-weight: bold !important;
+}
+
+/* Style for the confirm button */
+.confirm-btn-container {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.confirm-btn {
+    background-color: var(--secondary-color);
+    color: #ebecff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif; /* Use the custom font for buttons */
+    font-size: 16px; /* Adjust font size */
+    gap: 8px; /* Space between icon and text */
+    border-radius: 5px;
+}
+
+.confirm-btn:hover {
+    background-color: var(--border-color);
+}
+
+
+.active p {
+    width: 100%;
+}
+
+
+@media (max-width: 575px) {
+    .tab-container {
+        flex-direction: column; /* Stack tabs and content vertically */
+        overflow-y: scroll;
+    }
+
+    .modal-content {
+        height: fit-content;
+        overflow-y: scroll;
+    }
+
+    .tab-list {
+        margin-right: 0; /* Remove right margin for small screens */
+        flex-direction: row;
+        overflow-x: auto;
+        width: auto;
+    }
+
+    .tab-item {
+        padding: 15px; /* Increase padding for touch targets */
+        font-size: 1em; /* Adjust font size for readability */
+        overflow: hidden; /* Hide overflowing text */
+        white-space: nowrap; /* Prevent text from wrapping to the next line */
+        text-overflow: ellipsis; /* Show ellipsis for overflowing text */
+        max-width: 100%; /* Ensure it doesn't exceed the container */
+    }
+    
+
+    .tab-description {
+        font-size: 0.9rem; /* Slightly larger description font */
+    }
+
+    .tab-content.active {
+        width: 100%; /* Ensure content takes full width */
+        height: auto; /* Adjust height to fit content */
+        overflow-y: scroll;
+        overflow: unset !important; /* Hide overflowing text */
+        white-space: unset !important; /* Prevent text from wrapping to the next line */
+        text-overflow: unset !important; /* Show ellipsis for overflowing text */
+
+    }
+
+    .tab-content.active .section {
+        height: auto; /* Allow section to grow with content */
+        overflow-y: scroll;
+
+    }
+
+    .confirm-btn {
+        width: 100%; /* Make confirm button full-width */
+        font-size: 18px; /* Larger font size for better touch targets */
+    }
+
+    .modal-content {
+        width: 90%; /* Ensure modal is more responsive */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Increase size for better visibility */
+    }
+
+    p.description {
+        font-size: 1em; /* Larger font for descriptions */
+    }
+
+    .tab-content.active {
+        display: block; /* Show the active content */
+        width: 100%; /* Full width for active content */
+        height: fit-content; /* Adjust height based on content */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+    
+    /* Optional: Set a fixed height for the tab content area to control overflow */
+    .tab-content.active .section {
+        max-height: 400px; /* Set a maximum height */
+        overflow-y: auto; /* Enable scrolling within the section */
+    }
+}

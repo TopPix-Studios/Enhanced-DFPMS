@@ -1,0 +1,84 @@
+{% extends "home.html" %}
+
+{% block content %}
+<style>
+    .experience-form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Align items to the left */
+        padding: 20px; /* Add some padding around the form */
+        padding-top: 0;
+    }
+
+    .add-exp-page {
+        padding: 1rem;
+    }
+
+    form {
+        width: 50vw;
+        padding: 1rem;
+    }
+
+    form input, form select {
+        width: 95%;
+        height: auto;
+        flex-shrink: 0;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+        color: var(--accent-color);
+        font-family: 'Garet', sans-serif;
+        font-size: 16px !important;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        border-radius: 8px;
+        border: 1px solid var(--secondary-color);
+        background-color: var(--background-color);
+    }
+
+    .back-button {
+        background-color: var(--secondary-color);
+        color: #ebecff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-family: 'Garet', sans-serif;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 5px;
+    }
+    
+    
+    .back-button:hover {
+        background-color: var(--background-color);
+        color: var(--secondary-color);
+        border: 1px solid var(--secondary-color);
+    }
+</style>
+<div class="add-exp-page">
+    <div class="header-container">
+        <a href="{% url 'profile_page' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <h3>Add New Experience</h3>
+    </div>
+    <hr class="freelancer">
+
+    <div class="experience-form-container">
+        <form method="post" enctype="multipart/form-data" id="addExperienceForm">
+            {% csrf_token %}
+            {{ past_experience_form.as_p }} <!-- Renders the form fields -->
+            <br>
+            <p class="help-text">
+                <small>
+                    Can't find the country of your previous clients? 
+                    <a href="{% url 'help' %}" class="help-link">Send us a ticket</a>.
+                </small>
+            </p>
+            <button type="submit" class="btn-submit" name='past_exp_submit'>Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

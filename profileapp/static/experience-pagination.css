@@ -1,0 +1,33 @@
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-btn {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 50%;
+}
+
+.pagination-btn:hover {
+    background-color: #ddd;
+}
+
+.active-page {
+    background-color: var(--secondary-color);
+    color: white;
+    border: 1px solid var(--secondary-color);
+}

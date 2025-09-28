@@ -1,0 +1,75 @@
+<!-- components/finish_registration.html -->
+{% extends 'sign-up.html' %}
+{% block title %}Step 4: Finish Registration{% endblock title %}
+
+{% block content %}
+<h1 id="reg-title-page">Complete Your Registration</h1>
+
+<div id="step4" class="registration-step-4">
+    <p>Please review and confirm that you accept the Privacy Policy to proceed with completing your registration.</p>
+
+    <!-- Privacy Policy checkbox to trigger the modal -->
+    <!-- Privacy Policy checkbox to trigger the modal -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="privacy_policy_checkbox" required>
+            <label class="form-check-label" for="privacy_policy_checkbox" id="privacy_label">
+                I have read and agree to the Privacy Policy
+            </label>
+        </div>
+        <br>
+        <button type="submit" class="sign-up-button" disabled id="finish-btn">Submit</button>
+    </form> 
+
+</div>
+
+<!-- Modal -->
+<div id="custom-modal" class="modal" style="height: 100vh; overflow: hidden; display: none;">
+    <div class="modal-content" style="position: relative; padding: 20px;">
+        <span class="close" style="position: absolute; top: 10px; right: 20px; cursor: pointer;">&times;</span>
+        <div id="terms-content">
+            {% include 'components/privacy_policy_modal.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const privacyPolicyCheckbox = document.getElementById('privacy_policy_checkbox');
+        const privacyLabel = document.getElementById('privacy_label');
+        const finishButton = document.getElementById('finish-btn');
+        const modal = document.getElementById('custom-modal');
+        const closeButton = document.querySelector('.close');
+
+        let hasAgreed = false;
+
+        privacyPolicyCheckbox.addEventListener('change', function () {
+            if (privacyPolicyCheckbox.checked && !hasAgreed) {
+                modal.style.display = "block";
+                privacyPolicyCheckbox.checked = false; // show modal before confirming
+            }
+        });
+
+        const confirmAgreement = () => {
+            modal.style.display = "none";
+            privacyPolicyCheckbox.checked = true;
+            privacyPolicyCheckbox.disabled = true;
+            privacyLabel.textContent = "I have read and agreed to the Privacy Policy";
+            finishButton.disabled = false;
+            hasAgreed = true;
+        };
+
+        closeButton.onclick = confirmAgreement;
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                confirmAgreement();
+            }
+        };
+    });
+</script>
+
+{% endblock %}

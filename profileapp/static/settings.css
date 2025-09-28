@@ -1,0 +1,321 @@
+
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+  }
+  
+  
+  :root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+}
+
+  
+
+/* Modal */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px; /* Set max width */
+    border-radius: 5px;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Style for form inputs and buttons */
+.input-container {
+    margin-bottom: 10px;
+}
+
+
+
+
+
+
+.errors {
+    color: red;
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+}
+
+.password-container h4 {
+    margin-right: 10px; /* Adjust as needed */
+}
+
+#openChangePasswordModalBtn{
+    align-self: flex-end;
+}
+
+.account-details {
+    border: none;
+    border-radius: 18.7px;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    padding: 20px;
+    width: 450px;
+    
+}
+
+.account-details h2{
+    margin-bottom: 15px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 3.5rem;
+    border-bottom: 2px solid #ccc;
+    padding: 1rem;
+}
+
+
+.detail-row:hover {
+  background-color: #eee;
+}
+
+
+
+.detail-label {
+    font-weight: bold;
+    margin-right: 10px;
+    width: 150px; /* Adjust as needed */
+}
+
+.detail-value {
+    flex-grow: 1;
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+}
+
+.password-container h4 {
+    margin-right: 10px;
+}
+
+.password-dots {
+    display: flex;
+}
+
+.password-dot {
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
+    margin-right: 5px; /* Adjust as needed */
+}
+
+
+
+
+
+
+.additional-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.additional-links .button-signup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    padding: 0.5rem;
+}
+
+.tab-content button {
+    padding: 0.5rem !important;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+hr.settings {
+    height: 2px;
+    color: #ccc;
+    width: 100%;
+    border-top: 2px solid;
+    margin: 4px;
+}
+
+.tab-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Stack tabs vertically */
+    margin-right: 20px;
+}
+
+.tab-item {
+    padding: 10px;
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+    border-radius: 5px;
+    padding-right: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+
+.tab-item i {
+    margin-right: 1rem;
+    font-size: 1.2rem; /* Adjust size as needed */
+
+}
+
+
+.tab-description {
+    display: block;
+    font-size: 0.85rem;
+    color: #333;
+}
+
+.tab-description.active{
+    display: block;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.tab-title {
+    display: flex;
+    flex-direction: column;
+}
+.tab-item.active {
+    padding: 10px;
+    background-color: #1544d02f;
+    color: var(--secondary-color);
+    cursor: pointer;
+    border-radius: 0px 32px 32px 0px;
+    padding-right: 3rem;
+    display: flex;
+    align-items: center;
+
+}
+
+.tab-description {
+    display: block;
+    font-size: 0.85rem; /* Smaller font for description */
+    color: #555; /* Lighter color for description */
+    font-weight: normal;
+}
+
+.tab-item.active .tab-description {
+    color: #777; /* Change description color for the active tab */
+}
+
+
+.tab-content-container {
+    margin-top: 20px;
+    /* Adjust content alignment based on screen size */
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    width: 50vw;
+    height: fit-content;
+    background-color: white;
+}
+
+/* Responsive styling for smaller screens */
+@media (min-width: 768px) {
+    .tab-container {
+        flex-direction: row; /* Display tabs and content side-by-side */
+    }
+
+    .tab-content-container {
+        margin-left: 20px;
+        width: 100%; /* Ensure content fills the available space */
+    }
+}
+
+
+@media (max-width: 768px) {
+    .event-tabs {
+        flex-direction: row;
+        margin: 0 auto;
+        width: 100vw;
+    }
+
+    .event-tab-link {
+        width: 80%;
+        text-align: center;
+        margin-bottom: 10px;
+
+    }
+
+    .tab-list {
+        flex-direction: row;
+    }
+
+    .tab-item span {
+        display: none;
+    }
+
+    .tab-item.active {
+        padding-right: 4rem;
+    }
+
+    .tab-item {
+        padding-right: 2rem;
+    }
+
+    .detail-row {
+        gap: 1rem;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    
+}

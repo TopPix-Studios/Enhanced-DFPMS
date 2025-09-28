@@ -1,0 +1,297 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}DFPS Profiling: Settings {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'settings.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM6jOk72ZPy7bmnx9Mtngp41j4SA7T59B/G90oA" crossorigin="anonymous">
+
+<div class="settings-account">
+    <div class="tab-container">
+        <ul class="tab-list">
+            <li class="tab-item active" data-tab="account-settings">
+                <i class="fas fa-user-circle"></i> <!-- Account Details Icon -->
+                <span class="tab-title">
+                    Account Details
+                    <span class="tab-description">View your account details</span>
+                </span>
+             
+            </li>
+            <li class="tab-item" data-tab="change-password">
+                <i class="fas fa-lock"></i> <!-- Change Password Icon -->
+                <span class="tab-title">
+                    Change Password
+                    <span class="tab-description">Update your password securely</span>
+                </span>
+              
+            </li>
+            <li class="tab-item" data-tab="account-deactivation">
+                <i class="fas fa-user-slash"></i> <!-- Account Deactivation Icon -->
+                <span class="tab-title">
+                    Account Deactivation
+                    <span class="tab-description">Deactivate your account</span>
+                </span>
+            
+            </li>
+            <li class="tab-item" data-tab="additional-links">
+                <i class="fas fa-link"></i> <!-- Additional Links Icon -->
+               
+                <span class="tab-title">
+                    Additional Links
+                    <span class="tab-description">View our privacy policy and about us.</span>
+
+                </span>
+            
+            </li>
+        </ul>
+        
+        
+
+        <div class="tab-content active" id="account-settings">
+            <h2 class="user-signup">Account Details</h2>
+            <small>The Account Details section allows you to view your personal information associated with your account.</small>  <br>
+
+            <br>
+            <div class="detail-row">
+                <span class="detail-label">Username</span>
+                <span class="detail-value">{{ user.username }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email</span>
+                <span class="detail-value">{{ user.email }}</span>
+            </div>
+          
+            <div class="detail-row password-container">
+                <span class="detail-label">Password</span>
+                <span id="password-dots" class="password-dots"></span>
+            </div> <br>
+            <br>
+           
+
+            <h2 class="user-signup">Account Status</h2>
+            <small>The Account Status section provides an overview of your account’s current state and important information regarding its activity</small> <br>
+            <br>
+            <div class="detail-row">
+                <span class="detail-label">Account Verified:</span>
+                <span class="detail-value">{{ user.is_verified|yesno:"Yes,No" }}</span>
+            </div>
+          
+
+            <div class="detail-row">
+                <span class="detail-label">Join Date:</span>
+                <span class="detail-value">{{ user.join_date|date:"F j, Y" }}</span>
+            </div>
+            
+
+            <div class="detail-row">
+                <span class="detail-label">Last Login Date:</span>
+                <span class="detail-value">
+                    {% if user.last_login_date %}
+                        {{ user.last_login_date|date:"F j, Y, g:i a" }}
+                    {% else %}
+                        Never logged in
+                    {% endif %}
+                </span>
+            </div>
+           
+        </div>
+        
+
+        <div class="tab-content" id="change-password">
+            <!-- Change Password Modal Content -->
+            <h2 class="user-signup">Change Password</h2>
+            <form id="changePasswordForm" method="post" class="user-signup">
+                {% csrf_token %}
+                <div class="sign-up-col-1">
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="input-container">
+                                {{ field.label_tag }}
+                                {{ field }}
+                            </div>
+                            {% if field.errors %}
+                                <div class="errors">
+                                    {% for error in field.errors %}
+                                        <p class="help-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="sign-up-buttons">
+                    <button class="button-signup" type="button" id="cancelChangePassword">Cancel</button>
+                    <button class="button-signup" type="submit" name="change_password">Change Password</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-content" id="account-deactivation">
+            <!-- Account Deactivation Content -->
+            <h2 class="user-signup">Account Deactivation</h2>
+            <div class="detail-row deactivate-container">
+                <span class="detail-value">Admin approval is needed for reactivation.</span>
+                <button id="openDeactivateModalBtn" class="button-signup" style="margin-left: 10px;">Deactivate</button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="additional-links">
+            <!-- Additional Links Content -->
+            <h2 class="user-signup">Additional Links</h2>
+            <div class="detail-row">
+                <a href="{% url 'about_us_logined' %}"><i class="fas fa-info-circle"></i> About Us</a>
+            </div>
+
+            <div class="detail-row">
+                <a href="{% url 'privacy_policy_logined' %}"> <i class="fas fa-user-shield"></i> Privacy Policy
+                </a>
+            </div>
+            <div class="detail-row">
+                <a href="{% url 'help' %}"> <i class="fas fa-info-circle"></i> Request Support Ticket
+                </a>
+            </div>
+         
+        </div>
+    </div>
+</div>
+
+<div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1 class="user-signup">Change Password</h1>
+        <form id="changePasswordForm" method="post" class="user-signup">
+            {% csrf_token %}
+            <div class="sign-up-col-1">
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="input-container">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                        {% if field.errors %}
+                            <div class="errors">
+                                {% for error in field.errors %}
+                                    <p class="help-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="sign-up-buttons">
+                <button class="button-signup" type="button" id="cancelChangePassword">Cancel</button>
+                <button class="button-signup" type="submit" name="change_password">Change Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Deactivate Modal -->
+<div id="deactivateModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1 class="user-signup" style="text-align:center">Deactivate Account</h1>
+        <form id="deactivateForm" method="post" class="user-signup">
+            {% csrf_token %}
+            <p style="text-align:center; font-size: 16px; margin-bottom: 0.5rem"> Are you sure you want to deactivate your account?</p>
+            <p style="text-align:center; font-size: 16px; margin-bottom: 0.5rem"> You will need to contact the admin for reactivation.</p>
+            <div class="sign-up-buttons">
+                <button class="button-signup" type="button" id="cancelDeactivate">Cancel</button>
+                <button class="button-signup" type="button" id="confirmDeactivate">Deactivate</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Tab Navigation Script
+        const tabs = document.querySelectorAll(".tab-item");
+        const contents = document.querySelectorAll(".tab-content");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function () {
+                tabs.forEach(item => item.classList.remove("active"));
+                tab.classList.add("active");
+
+                const target = tab.getAttribute("data-tab");
+                contents.forEach(content => {
+                    content.classList.remove("active");
+                    if (content.id === target) {
+                        content.classList.add("active");
+                    }
+                });
+            });
+        });
+
+        var passwordDots = document.getElementById("password-dots");
+        var passwordValue = "*********"; // Set your password here
+    
+        for (var i = 0; i < passwordValue.length; i++) {
+            var dot = document.createElement("span");
+            dot.className = "password-dot";
+            passwordDots.appendChild(dot);
+        }
+
+        // Modal Script
+        const changePasswordModal = document.getElementById("changePasswordModal");
+        const deactivateModal = document.getElementById("deactivateModal");
+
+        const changePasswordBtn = document.getElementById("openChangePasswordModalBtn");
+        const deactivateBtn = document.getElementById("openDeactivateModalBtn");
+
+        const cancelChangePasswordBtn = document.getElementById("cancelChangePassword");
+        const cancelDeactivateBtn = document.getElementById("cancelDeactivate");
+
+        const changePasswordCloseSpan = document.getElementsByClassName("close")[0];
+        const deactivateCloseSpan = document.getElementsByClassName("close")[1];
+
+      
+        deactivateBtn.onclick = function () {
+            deactivateModal.style.display = "block";
+        };
+
+        cancelChangePasswordBtn.onclick = function () {
+            changePasswordModal.style.display = "none";
+        };
+        cancelDeactivateBtn.onclick = function () {
+            deactivateModal.style.display = "none";
+        };
+
+        changePasswordCloseSpan.onclick = function () {
+            changePasswordModal.style.display = "none";
+        };
+        deactivateCloseSpan.onclick = function () {
+            deactivateModal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+            if (event.target == changePasswordModal) {
+                changePasswordModal.style.display = "none";
+            }
+            if (event.target == deactivateModal) {
+                deactivateModal.style.display = "none";
+            }
+        };
+
+        // SweetAlert confirmation for deactivation
+        document.getElementById('confirmDeactivate').onclick = function () {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will need to contact the admin for reactivation.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<b>Yes</b>',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#007bff',
+                cancelButtonColor: '#6c757d',
+                reverseButtons: true // Ensures Yes is on the right
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deactivateForm').submit();
+                }
+            })
+        };
+    });
+</script>
+
+{% endblock content %}

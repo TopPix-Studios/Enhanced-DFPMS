@@ -1,0 +1,267 @@
+.event-container {
+    flex-direction: column;
+    border: none;
+    border-radius: 14.1px;
+    width: 690px;
+    height: 165px;
+    background-color: #DCF0FA;
+    padding: 15px;
+    overflow-wrap: break-word;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    margin-left: 1rem;
+}
+
+.event-con-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.event-container p {
+    margin-bottom: 8px;
+}
+
+.event-location {
+    font-weight: bold;
+}
+
+.event-page{
+    padding: 20px;
+    width: 80vw;
+    height: 90vh;
+    overflow-y: scroll;
+}
+
+h1#event-page, p#event-page, h2#event-page, .event-title h2{
+    color: #005A82;
+    margin: 0;
+    text-align: left;
+}
+
+p#event-page1{
+    margin-bottom: 1rem;
+
+}
+
+p#event-page{
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+
+}
+
+
+.event-page hr{
+
+    border: none;
+    border-top: 2px solid #005A82;
+    margin: 20px 0; /* Add some space above and below the line */
+    width: 60%; /* Set the width to 100% */
+    text-align: center ;
+    display: flex;
+    margin-left: 1rem;
+}
+
+
+
+
+.event-title{
+    display: flex;
+    text-align: left;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination .step-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pagination .pagination-link, .pagination .current {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #007bff;
+    background: #fff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination .pagination-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .current {
+    background-color: #87BFD9;
+    color: #005A82;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+
+/* event.css */
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.tag-p {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.tag-box {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 0.875em;
+}
+
+
+.event-page {
+    display: grid;
+    grid-template-columns: 1fr 20vw; /* Main content takes remaining space, filter takes 20vw */
+    gap: 20px;
+}
+
+
+.event-block-view {
+    grid-column: 1 / 2; /* This spans the first column */
+}
+
+/* Add any other necessary styles for event-container, tags, etc. */
+
+.tag-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 5px;
+    margin-bottom: 1rem;
+}
+
+.tag-card {
+    background: #87BFD9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 5px;
+    text-align: center;
+    font-size: 0.85em;
+}
+
+.tag-link {
+    text-decoration: none;
+    color: #005A82;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.tag-link:hover {
+    color: #0056b3;
+}
+
+/* Add this CSS to your stylesheet */
+.date-input {
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.styled-input {
+    background-color: #f9f9f9;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.styled-input:focus {
+    background-color: #fff;
+    border-color: #007bff;
+    outline: none;
+}
+
+.styled-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.styled-button:hover {
+    background-color: #0056b3;
+}
+
+.filters {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters form {
+    display: flex;
+    flex-direction: column;
+}
+
+.filters form div {
+    margin-bottom: 10px;
+}
+
+.filters form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filters form input,
+.filters form select {
+    width: 13.5rem;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+}
+
+.filters form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #87BFD9;
+    font-weight: bold;
+    color: #005A82;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.filters form button:hover {
+    background: #005A82;
+    color: #fff;
+}
+
+
+
+.filters h2 {
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,256 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static "ticket.css" %}">
+<style>
+    .ticket-page-container {
+        padding: 2rem;
+        max-width: 95vw;
+    }
+    
+    .ticket-form-container {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+    
+    .ticket-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .ticket-input {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    
+    .ticket-list-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .ticket-card {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        transition: box-shadow 0.3s ease;
+    }
+    
+    .ticket-card:hover {
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .ticket-card-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #333;
+    }
+    
+    .ticket-date {
+        font-size: 0.875rem;
+        color: #888;
+    }
+    
+    .ticket-card-footer {
+        margin-top: 1rem;
+    }
+    
+    .back-button {
+        background-color: var(--secondary-color);
+        color: #ebecff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-family: 'Garet', sans-serif;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 5px;
+    }
+    
+    
+    .back-button:hover {
+        background-color: var(--background-color);
+        color: var(--secondary-color);
+        border: 1px solid var(--secondary-color);
+    }
+    
+
+    
+    
+</style>
+<div class="ticket-page-container">
+    <div class="header-container">
+        <button class="back-button" onclick="window.history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h1>Create a New Support Ticket</h1>
+    </div>
+    <hr class="freelancer">
+
+    <!-- Ticket Creation Form -->
+    <form method="post" class="ticket-form">
+        {% csrf_token %}
+        <label for="subject">Ticket Subject:</label>
+        <select name="subject" id="subject" class="ticket-input" required onchange="toggleOtherInput(this)">
+            <option value="" disabled selected>Select a subject</option>
+            <option value="Profile Update">Profile Update</option>
+            <option value="Profile Detail Addition">Profile Detail Addition</option>
+            <option value="Experience Update">Experience Update</option>
+            <option value="Password Reset">Password Reset</option>
+            <option value="Account Deletion">Account Deletion</option>
+            <option value="Data Export Request">Data Export Request</option>
+            <option value="Two-Factor Authentication Issue">Two-Factor Authentication Issue</option>
+            <option value="Main Skill/Specialization Suggestion">Main Skill/Specialization Suggestion</option>
+            <option value="Sub Skill New Suggestion">Sub Skill New Suggestion</option>
+            <option value="Language New Suggestion">Language New Suggestion</option>
+            <option value="Bug Report">Bug Report</option>
+            <option value="Feature Request">Feature Request</option>
+            <option value="Other">Other</option>
+        </select>
+        <input
+            type="text"
+            name="other_subject"
+            id="other-subject"
+            placeholder="Specify your subject"
+            class="ticket-input"
+            style="display: none;"
+        >
+        <button type="submit" class="btn-submit" style="width: fit-content; margin-left: auto;">Create Ticket</button>
+    </form>
+    
+    <script>
+        function toggleOtherInput(selectElement) {
+            const otherInput = document.getElementById("other-subject");
+            if (selectElement.value === "Other") {
+                otherInput.style.display = "block";
+                otherInput.setAttribute("required", "required");
+            } else {
+                otherInput.style.display = "none";
+                otherInput.removeAttribute("required");
+            }
+        }
+    </script>
+    
+
+    <!-- List of Existing Tickets -->
+    <h2>Your Tickets</h2>
+    <div class="ticket-tabs">
+        <button class="ticket-tab-link active" onclick="openTab(event, 'Open')">Open</button>
+        <button class="ticket-tab-link" onclick="openTab(event, 'InProgress')">In Progress</button>
+        <button class="ticket-tab-link" onclick="openTab(event, 'Closed')">Closed</button>
+    </div>
+
+    <!-- Tab content for Open tickets -->
+    <div id="Open" class="ticket-tab-content active" style="display:flex">
+        <div class="ticket-list-container">
+            {% for ticket in open_tickets %}
+            <div class="ticket-card">
+                <div class="ticket-card-header">
+                    <h3>{{ ticket.subject }}</h3>
+                    <p class="ticket-date" style="width: auto">{{ ticket.created_at|date:"F d, Y H:i" }}</p>
+                    <p style="width: auto">Status: <strong>{{ ticket.get_status_display }}</strong></p>
+                </div>
+                <div class="ticket-card-footer">
+                    <a href="{% url 'view_ticket' ticket.id %}" class="btn-submit">View Conversation</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="tab-content-ticket" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
+                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                <p style="width: auto">No Open tickets found.</p>
+
+            </div>
+            
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Tab content for In Progress tickets -->
+    <div id="InProgress" class="ticket-tab-content">
+        <div class="ticket-list-container">
+            {% for ticket in in_progress_tickets %}
+            <div class="ticket-card">
+                <div class="ticket-card-header">
+                    <h3>{{ ticket.subject }}</h3>
+                    <p class="ticket-date" style="width: auto">{{ ticket.created_at|date:"F d, Y H:i" }}</p>
+                    <p style="width: auto">Status: <strong>{{ ticket.get_status_display }}</strong></p>
+                </div>
+                <div class="ticket-card-footer">
+                    <a href="{% url 'view_ticket' ticket.id %}" class="btn-submit">View Conversation</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="tab-content-ticket" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
+                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                <p style="width: auto">No In Progress Tickets found.</p>
+
+            </div>
+
+
+            
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Tab content for Closed tickets -->
+    <div id="Closed" class="ticket-tab-content">
+        <div class="ticket-list-container">
+            {% for ticket in closed_tickets %}
+            <div class="ticket-card">
+                <div class="ticket-card-header">
+                    <h3>{{ ticket.subject }}</h3>
+                    <p class="ticket-date" style="width: auto">{{ ticket.created_at|date:"F d, Y H:i" }}</p>
+                    <p style="width: auto">Status: <strong>{{ ticket.get_status_display }}</strong></p>
+                </div>
+                <div class="ticket-card-footer">
+                    <a href="{% url 'view_ticket' ticket.id %}" class="btn-submit">View Conversation</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="tab-content-ticket" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
+                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                <p style="width: auto">No Closed Ticket found.</p>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("ticket-tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            tabcontent[i].classList.remove('active');
+        }
+        tablinks = document.getElementsByClassName("ticket-tab-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // Auto-select the first tab on page load
+    window.onload = function() {
+        var firstTab = document.getElementsByClassName("ticket-tab-link")[0];
+        firstTab.click(); // Simulate a click event on the first tab
+    };
+</script>
+
+{% endblock %}

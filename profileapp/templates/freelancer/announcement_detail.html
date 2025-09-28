@@ -1,0 +1,150 @@
+{% extends "home.html" %}
+{% load static %}
+{% block title %}DFPS Profiling: {{ announcement.title }} {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'announcement.css' %}">
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<div class="announcement-detail-page">
+    
+    <a href="{% url 'announcement' %}" class="back-link" style="width: fit-content; margin-bottom: 8px">   
+        <i class="fas fa-arrow-left"></i>
+        Back
+    </a>
+    <div class="ann-content-image">
+        {% if announcement.image %}
+        <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}">
+        {% else %}
+        <img src="{% static 'img/event.png' %}" alt="{{ announcement.title }}">
+        {% endif %}
+        <div class="ann-image-text">
+            <h2>{{ announcement.title }}</h2>
+            <p>{{ announcement.created_at }}</p>
+        </div>
+    </div>
+    <div class="announcement-content">
+        <div class="announcement-detail-box">
+           
+            <p class="ann-location"><i class="fas fa-map-marker-alt"></i> {{ announcement.address }}</p>
+            <p>{{ announcement.created_at }}</p>
+            <p><strong>Author: </strong>{{ announcement.author.username }}</p>
+            <div class="tags-container">
+                <div class="tag-p">
+                    <p>Tags:</p>
+                </div>
+                {% for tag in announcement.tags.all %}
+                <a href="#" class="tag-box">{{ tag }}</a>
+                {% endfor %}
+            </div>
+
+            <div class="share-buttons">
+                <h3>Share Announcement</h3>
+                <div class="share-button-row">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank"
+                    class="share-button facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ announcement.title }}"
+                    target="_blank" class="share-button twitter">
+                    <img src="{% static 'svg/x.svg' %}" alt="X Icon" width="24" height="24">
+                </a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ announcement.title }}"
+                    target="_blank" class="share-button linkedin" style="margin-right: 0">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                </div>
+
+            </div>
+            <br>
+
+            <div id="map" style="width: 100%; height: 400px; margin-top: 20px;"></div>
+            <button id="directions-button" style="margin-top: 10px;">Get Directions in Google Maps</button>
+
+        </div>
+
+        <div class="content-box">
+            <h1>{{ announcement.title }}</h1>
+            <br>
+            <p>{{ announcement.content }}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Coordinates for General Santos City as fallback
+    const defaultLocation = [6.1164, 125.1716];
+
+    // Coordinates for the announcement location
+    const announcementLocation = [{{ announcement.latitude|default:"6.1164" }}, {{ announcement.longitude|default:"125.1716" }}];
+
+    // Initialize the map centered on the announcement location
+    const map = L.map('map').setView(announcementLocation, 13);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Add a marker for the announcement location
+    const announcementMarker = L.marker(announcementLocation).addTo(map)
+        .bindPopup("{{ announcement.title }}")
+        .openPopup();
+
+    // Function to handle Google Maps redirection
+    function redirectToGoogleMaps(userLat, userLng) {
+        const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${announcementLocation[0]},${announcementLocation[1]}&travelmode=driving`;
+        window.open(directionsUrl, '_blank');
+    }
+
+    // Try to get the user's location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // User's location
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                // Add a marker for the user's location
+                L.marker([userLat, userLng]).addTo(map)
+                    .bindPopup("Your Location")
+                    .openPopup();
+
+                // Adjust the map to fit both locations
+                map.fitBounds([[userLat, userLng], announcementLocation], { padding: [50, 50] });
+
+                // Set up the button click event for Google Maps redirection
+                const directionsButton = document.getElementById('directions-button');
+                directionsButton.addEventListener('click', () => {
+                    redirectToGoogleMaps(userLat, userLng);
+                });
+            },
+            (error) => {
+                // If location access is denied, use General Santos City
+                console.warn(`ERROR(${error.code}): ${error.message}`);
+                map.setView(defaultLocation, 13);
+
+                // Fallback to default directions from General Santos City
+                const directionsButton = document.getElementById('directions-button');
+                directionsButton.addEventListener('click', () => {
+                    redirectToGoogleMaps(defaultLocation[0], defaultLocation[1]);
+                });
+            }
+        );
+    } else {
+        // Browser doesn't support Geolocation
+        console.warn("Geolocation is not supported by this browser.");
+        map.setView(defaultLocation, 13);
+
+        // Fallback to default directions from General Santos City
+        const directionsButton = document.getElementById('directions-button');
+        directionsButton.addEventListener('click', () => {
+            redirectToGoogleMaps(defaultLocation[0], defaultLocation[1]);
+        });
+    }
+</script>
+
+{% endblock content %}

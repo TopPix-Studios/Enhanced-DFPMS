@@ -1,0 +1,247 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="stylesheet" href="{% static 'graphs.css' %}">
+<script src="{% static 'js/generatePDF.js' %}"></script>
+
+<div class="content">
+    <h1>Specialization Chart<i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h1>
+    
+    <form method="get" class="filter-form">
+        <h5 class="text-bold">Location Filters:</h5>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="region">Region:</label>
+                <select id="region" name="region" class="form-control">
+                    <option value="">All Regions</option>
+                    {% for region in regions %}
+                        <option value="{{ region.region_id }}">{{ region.region }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="province">Province:</label>
+                <select id="province" name="province" class="form-control">
+                    <option value="">All Provinces</option>
+                    {% for province in provinces %}
+                        <option value="{{ province.province_id }}" data-region="{{ province.region_id }}">{{ province.province }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select id="city" name="city" class="form-control">
+                    <option value="">All Cities</option>
+                    {% for city in cities %}
+                        <option value="{{ city.city_id }}" data-province="{{ city.province_id }}">{{ city.city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="barangay">Barangay:</label>
+                <select id="barangay" name="barangay" class="form-control">
+                    <option value="">All Barangays</option>
+                    {% for barangay in barangays %}
+                        <option value="{{ barangay.barangay_id }}" data-city="{{ barangay.city_id }}">{{ barangay.barangay }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <hr>
+        <h5 class="text-bold">Specialization Filter:</h5>
+        <div class="form-group">
+            <label for="specialization">Specialization:</label>
+            <select id="specialization" name="specialization" class="form-control">
+                <option value="">All Specializations</option>
+                {% for specialization in all_specializations %}
+                    <option value="{{ specialization }}">{{ specialization }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <hr>
+        <div class="form-group full-width d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+    
+    <canvas id="specializationChart" width="960" height="540"></canvas>
+    <hr>
+     
+    <div class="analysis-section">
+        <h2 class="text-bold">Analysis of Specialization Distribution Chart</h2>
+        <p>This section provides insights into the trends and patterns observed in the Specialization Distribution Chart.</p>
+        <ul>
+            {% for insight in insights %}
+                <li>{{ insight|safe }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="form-group d-flex flex-row justify-content-end align-items-stretch gap-2 w-100">
+    
+        <button type="button" class="btn btn-secondary w-25 h-100 p-2" id="exportButton" onclick="exportToPDF()">Export to PDF</button>
+    
+        <form id="exportForm" class="mx-2 p-0 w-25">
+            <button type="button" class="btn btn-primary w-100 h-100" onclick="exportSpecializationsToExcel()">Export to Excel</button>
+        </form>
+    
+    </div>
+    
+    
+    
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script>
+    const genderBreakdown = {{ gender_breakdown|safe }};
+    const barangayBreakdown = {{ barangay_breakdown|safe }};
+    const ageBreakdown = {{ age_breakdown|safe }};
+
+    const breakdowns = {
+        gender: genderBreakdown,
+        barangay: barangayBreakdown,
+        age: ageBreakdown
+    };
+</script>
+
+<script>
+    tippy('#chartInfoIcon', {
+        content: 'This chart shows the number of freelancers with specific specializations. Use the location filters above for specific locations and the specialization filter for specific specialization.',
+        placement: 'top',
+    });
+
+    // Specialization data for the chart
+    const specializations = {{ specializations|safe }};
+    const counts = {{ counts|safe }};
+
+    // Create the chart
+    const ctx = document.getElementById('specializationChart').getContext('2d');
+    const specializationChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: specializations,
+            datasets: [{
+                label: '# of Users',
+                data: counts,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true },
+            },
+        },
+    });
+
+    // Function to temporarily filter the chart to show top 10 specializations
+    function filterChartForTop10() {
+        const sortedData = specializations.map((specialization, index) => ({
+            specialization,
+            count: counts[index],
+        })).sort((a, b) => b.count - a.count);
+
+        const top10Specializations = sortedData.slice(0, 10).map(item => item.specialization);
+        const top10Counts = sortedData.slice(0, 10).map(item => item.count);
+
+        specializationChart.data.labels = top10Specializations;
+        specializationChart.data.datasets[0].data = top10Counts;
+        specializationChart.update();
+    }
+
+    // Function to restore the full chart after export
+    function restoreFullChart() {
+        specializationChart.data.labels = specializations;
+        specializationChart.data.datasets[0].data = counts;
+        specializationChart.update();
+    }
+    function exportSpecializationsToExcel() {
+        const formData = new FormData(document.getElementById('exportForm'));
+    
+        fetch('/export-specializations-excel/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'specialization_count.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    
+    // CSRF token helper (reuse this if already defined globally)
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    
+    // Function to export the chart and data to PDF using generatePDF.js
+    function exportToPDF() {
+        filterChartForTop10(); // Temporarily show only top 10 for the chart
+
+        setTimeout(() => {
+            const chartImageData = document.getElementById('specializationChart').toDataURL('image/png');
+            const region = "{{ request.GET.region|default:'ALL' }}";
+            const province = "{{ request.GET.province|default:'ALL' }}";
+            const city = "{{ request.GET.city|default:'ALL' }}";
+            const barangay = "{{ request.GET.barangay|default:'ALL' }}";
+            const specialization = "{{ request.GET.specialization|default:'ALL' }}";
+
+            const filters = `Region: ${region} | Province: ${province} | City: ${city} | Barangay: ${barangay} | Specialization: ${specialization}`;
+
+            const tableHeaders = ['Specialization', '# of Users'];
+            const tableData = specializations.map((specialization, index) => [specialization, counts[index]]);
+
+            // Generate PDF using reusable function
+            generatePDF({
+                title: 'Specialization Distribution Report',
+                chartImageData: chartImageData,
+                filters: filters,
+                tableHeaders: tableHeaders,
+                tableData: tableData,
+                fileName: 'specialization_distribution_report.pdf',
+                breakdowns: breakdowns
+            });
+
+            restoreFullChart(); // Restore the full chart data after export
+        }, 3000); // Delay of 3 seconds to allow the chart update
+    }
+
+    // Add event listener to the export button
+    document.getElementById('exportButton').addEventListener('click', exportToPDF);
+</script>
+
+
+
+
+
+
+
+{% endblock %}

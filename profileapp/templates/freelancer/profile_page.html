@@ -1,0 +1,1161 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %} DFPS Profiling: Profile Page {% endblock title %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'profile_page.css' %}">
+<link rel="stylesheet" href="{% static 'select2.css' %}">
+<link rel="stylesheet" href="{% static "resume-project-form.css" %}">
+<link rel="stylesheet" href="{% static "event-tab-prof.css" %}">
+
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .edit-button{
+        display: none;
+    }
+    
+    .remove-button{
+        display:block;
+    }
+
+    .delete-column{
+        display:none;
+    }
+
+    .delete-cell{
+        display:none
+
+    }
+    .resume-container .remove-button {
+        display: none;
+    }
+
+    .resume-container:hover {
+        .remove-button {
+            display: block;
+
+
+        }
+        
+    }
+
+    .select2-container--default .select2-selection--multiple {
+        width: 38vw !important;
+        height: auto;
+        margin-bottom: 0;
+    }
+
+</style>
+
+
+<body>
+   
+    <div class="profile-content">
+        <div class="profile-page">
+            <div class="profile-details-col">
+                <div class="profile-container">
+                    <div class="image-container" style="grid-template-columns: 120px 3fr 1fr;width: 100%;">
+                        {% if profile.picture %}
+                            <img src="{{ profile.picture.url }}" alt="Profile Image">
+                        {% else %}
+                            <div class="profile-initials-pfp">
+                                {{ profile.first_name|slice:":1" }}<p></p>{{ profile.last_name|slice:":1" }}
+                            </div>
+                        {% endif %}
+                        <div class="name-container">
+                            <div class="nc-first-row">
+                                <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+                                <p id="pronoun">{{profile.pronoun}}</p>
+                                <i class="fas fa-eye toggle-icon" id="toggle-icon" onclick="togglePrivacy('{{profile.account_id.email}}', '{{profile.contact_no}}', '{{profile.date_of_birth}}')"></i>
+
+                            </div>
+                           
+                            <p id="user-url" style="color: #555">@{{profile.account_id.username}}</p>
+                            <p id="user-qoute">{{profile.qoute}}</p>
+
+                          
+                        </div> 
+                
+                        <a href="{% url 'edit_profile' profile.account_id.account_id %}">
+                            <i class="fas fa-pencil"></i> Edit Profile
+                        </a>   
+                    </div>
+                    <br>
+                    <div class="contacts">
+                        <div class="contact">
+                            <i class="fas fa-home" 
+                            style="align-self: baseline;
+                                    padding-top: 3px;
+                                "></i> 
+                            <p>{{profile.region}}, {{profile.province}}, {{profile.city}}, {{profile.barangay}}, {{profile.street}}, {{profile.house_no}}, {{profile.zip}}</p>
+                        </div>
+                        <div class="contact" style="align-items: baseline;">
+                            <i class="fas fa-envelope"></i> 
+                            <p id="email" class="censored-text">●●●●●●●●</p>
+                        </div>
+                       
+                        
+                        <div class="contact">
+                            <i class="fas fa-calendar-plus"></i> 
+                            <p><strong>Join  Date: </strong> {{profile.account_id.join_date}}</p>
+                        </div>
+                        
+                        <div class="contact">
+                            <i class="fas fa-phone"></i> 
+                            <p id="phone" class="censored-text">●●●●●●●●</p>
+                        </div>
+                        <div class="contact">
+                            <i class="fas fa-user-graduate"></i> 
+                            <p><strong>Specialization: </strong>{{profile.bg_id.specialization}}</p>
+                        </div>
+                        <div class="contact">
+                            <i class="fas fa-birthday-cake"></i> 
+                            <p id="birthday" class="censored-text">●●●●●●●●</p>
+                        </div>
+
+                       
+                    
+                    </div>
+                </div>
+                
+                <!-- Add JavaScript to toggle visibility and icons -->
+                <script>
+                    function togglePrivacy(emailText, phoneText, birthdayText) {
+                        // Get elements by their IDs
+                        var emailElement = document.getElementById("email");
+                        var phoneElement = document.getElementById("phone");
+                        var birthdayElement = document.getElementById("birthday");
+                        var icon = document.getElementById("toggle-icon");
+                
+                        // Check if the elements are currently censored
+                        var isEmailCensored = emailElement.classList.contains("censored-text");
+                        var isPhoneCensored = phoneElement.classList.contains("censored-text");
+                        var isBirthdayCensored = birthdayElement.classList.contains("censored-text");
+                
+                        // If all are censored, show actual texts
+                        if (isEmailCensored && isPhoneCensored && isBirthdayCensored) {
+                            emailElement.textContent = emailText;
+                            phoneElement.textContent = phoneText;
+                            birthdayElement.textContent = birthdayText;
+                            emailElement.classList.remove("censored-text");
+                            phoneElement.classList.remove("censored-text");
+                            birthdayElement.classList.remove("censored-text");
+                            icon.classList.remove("fa-eye");
+                            icon.classList.add("fa-eye-slash");
+                        } else {
+                            // If any are visible, hide the texts (censor them)
+                            emailElement.textContent = "●●●●●●●●";
+                            phoneElement.textContent = "●●●●●●●●";
+                            birthdayElement.textContent = "●●●●●●●●";
+                            emailElement.classList.add("censored-text");
+                            phoneElement.classList.add("censored-text");
+                            birthdayElement.classList.add("censored-text");
+                            icon.classList.remove("fa-eye-slash");
+                            icon.classList.add("fa-eye");
+                        }
+                    }
+                </script>
+                
+                
+                <!-- Optional CSS for better styling -->
+                <style>
+                    .toggle-icon {
+                        cursor: pointer;
+                        margin-left: 10px;
+                        transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
+                    }
+                    
+                    /* Hover effect */
+                    .toggle-icon:hover {
+                        color: #666; /* Change color on hover */
+                        transform: scale(1.2); /* Scale the icon slightly */
+                    }
+                    .censored-text {
+                        color: grey;
+                        font-size: 14px;
+                    }
+
+                    
+                </style>
+                
+                
+                {% comment %} <div class="bio-container">
+                    <div class="bio-header">
+                        <h1> Bio </h1>
+                        <a href="#">
+                            <i class="fas fa-pencil"></i> Edit Bio
+                        </a>                
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, sapien quis placerat finibus, mi sapien luctus risus, vitae tincidunt purus lorem nec quam. Phasellus dapibus vestibulum felis, vitae pharetra orci luctus vel. Sed consectetur dui eu metus gravida, vitae volutpat lectus aliquet. In nec magna id neque faucibus tristique. Aliquam hendrerit ultricies mauris, non congue lectus finibus id. Vivamus suscipit, dui at molestie auctor, quam sapien porta magna, ut fringilla justo turpis in lorem. Donec ut sollicitudin arcu. Nulla facilisi.</p>
+                </div>
+                <div class="educ-container">
+    
+                </div> {% endcomment %}
+                
+            </div>
+            <div class="portfolio-block-view" id="resume">
+        
+                <div class="portfolio-header">
+                    <div class="empty-cell"></div>
+                    <h1>Resume</h1>
+                    {% if resume_count == 0 %}
+                    <button type="button" class="btn-add" onclick="resumeShowModal()">
+                        &#43;
+                    </button>
+                    {% endif %}
+                </div>
+    
+                <hr>
+                {% if resumes %}
+                <div class="resume-row"> <!-- Added missing closing tag -->
+                    {% for resume in resumes %}
+                    <div class="resume-container" style="grid-column-start: 2">
+                        <a href="{{ resume.resume_file.url }}" download>
+                            <img src="{% static 'img/files1.png' %}" alt="Placeholder Image">
+                        </a>
+                        <div class="proj-details-header" style="display:flex; flex-direction: row; gap: 10px;">
+                            <p class="ellipsis">{{ resume.resume_file }}</p>
+                            <form method="post" style="margin-left: 10px;">
+                                {% csrf_token %}
+                                <input type="hidden" name="remove_resume" value="{{ resume.id }}">
+                                <button type="submit" class="remove-button" title="Remove" onclick="confirmRemove(event)">&#10006;</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div> <!-- Added missing closing tag -->
+                {% else %}
+                <div style="text-align: center; justify-self: center;">
+                    <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                    <p>No Resume found. Please add a resume to get started! <a href="#" o onclick="resumeShowModal()"style="text-decoration: underline; color: var(--border-color)">Add here</a></p>
+                </div>
+                {% endif %}
+                <div id="addResumeModal" class="resume-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Add New Resume</h3>
+                          
+                        </div>
+    
+                        <div class="modal-body">
+                            <form method="post" enctype="multipart/form-data" id="addResumeForm">
+                                {% csrf_token %}
+                                <div class="drop-area-container">
+                                    <div id="resumeDropArea" class="drop-area">
+                                        <span class="material-symbols-outlined">cloud</span>
+                                        <div class="drop-text">Drag and drop your file here or click to upload</div>
+                                        <input type="file" name="resume_file" id="id_resume_file" class="file-input" accept=".pdf, .doc, .docx">
+                                        <div id="resumeDropLabel" class="drop-label" style="display: none"></div>
+                                    </div>
+                                    <div id="resumePreview" class="file-preview"></div>
+                                </div><br>
+                                <div class="resume-buttons-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; width: 100%;">
+                                    <button type="button" class="btn-cancel" onclick="resumeCloseModal()">Cancel</button>
+                                    <button type="submit" class="btn-submit" name="resume_submit">Submit</button>
+                                </div>
+                                
+                            </form>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    function setupDropArea(dropAreaId, dropLabelId, fileInputId, allowedTypes) {
+                                        const dropArea = document.getElementById(dropAreaId);
+                                        const dropLabel = document.getElementById(dropLabelId);
+                                        const fileInput = document.getElementById(fileInputId);
+                                        const dropText = dropArea.querySelector('.drop-text');
+                                        const dropIcon = dropArea.querySelector('.material-symbols-outlined');
+                                
+                                        dropArea.addEventListener('dragover', (event) => {
+                                            event.preventDefault();
+                                            dropArea.classList.add('drag-over');
+                                        });
+                                
+                                        dropArea.addEventListener('dragleave', () => {
+                                            dropArea.classList.remove('drag-over');
+                                        });
+                                
+                                        dropArea.addEventListener('drop', (event) => {
+                                            event.preventDefault();
+                                            dropArea.classList.remove('drag-over');
+                                            handleFileSelect(event.dataTransfer.files);
+                                        });
+                                
+                                        dropArea.addEventListener('click', () => {
+                                            fileInput.click();
+                                        });
+                                
+                                        fileInput.addEventListener('change', () => {
+                                            handleFileSelect(fileInput.files);
+                                        });
+                                
+                                        function handleFileSelect(files) {
+                                            if (files.length > 0) {
+                                                const file = files[0];
+                                                if (allowedTypes.includes(file.type)) {
+                                                    fileInput.files = files;
+                                                    dropLabel.innerText = `File: ${file.name}`;
+                                                    displayPreview(file);
+                                                } else {
+                                                    alert(`Please select a file of type: ${allowedTypes.join(', ')}`);
+                                                }
+                                            }
+                                        }
+                                
+                                        function displayPreview(file) {
+                                            // Hide the default text and icon
+                                            dropText.style.display = 'none';
+                                            dropIcon.style.display = 'none';
+                                
+                                            // Clear previous preview if any
+                                            // dropArea.innerHTML = '';
+                                
+                                            // Create new file preview elements
+                                            if (file.type.startsWith('image/')) {
+                                                const imgPreview = document.createElement('img');
+                                                imgPreview.src = URL.createObjectURL(file);
+                                                imgPreview.onload = () => URL.revokeObjectURL(imgPreview.src); // Clean up the object URL after loading
+                                                dropArea.appendChild(imgPreview);
+                                            } else if (file.type === 'application/pdf') {
+                                                // If the file is a PDF, render the first page using pdf.js
+                                                const pdfPreview = document.createElement('canvas');
+                                                dropArea.appendChild(pdfPreview);
+                                                renderPDFPreview(file, pdfPreview);
+                                            }
+                                
+                                            // File info (name only)
+                                            const fileInfo = document.createElement('div');
+                                            fileInfo.classList.add('file-info');
+                                            fileInfo.innerText = `File: ${file.name}`; // Only show file name
+                                            dropArea.appendChild(fileInfo);
+                                        }
+                                
+                                        // Function to render the first page of a PDF using pdf.js
+                                        function renderPDFPreview(file, canvas) {
+                                            const fileReader = new FileReader();
+                                            fileReader.onload = function() {
+                                                const typedarray = new Uint8Array(this.result);
+                                
+                                                pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
+                                                    pdf.getPage(1).then(function(page) {
+                                                        const scale = 1.5;
+                                                        const viewport = page.getViewport({ scale: scale });
+                                                        const context = canvas.getContext('2d');
+                                                        canvas.height = viewport.height;
+                                                        canvas.width = viewport.width;
+                                
+                                                        const renderContext = {
+                                                            canvasContext: context,
+                                                            viewport: viewport
+                                                        };
+                                                        page.render(renderContext);
+                                                    });
+                                                });
+                                            };
+                                            fileReader.readAsArrayBuffer(file);
+                                        }
+                                    }
+                                
+                                    setupDropArea('resumeDropArea', 'resumeDropLabel', 'id_resume_file', ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/png', 'image/jpeg']);
+                                });
+                                
+                                
+                                
+                                
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-page-2">
+            <div class="portfolio-col-1">
+                <div class="portfolio-block-view">
+                    <div class="portfolio-header">
+                        <div class="empty-cell"></div>
+                        <h1>Portfolio</h1>
+                        <button type="button" class="btn-add" onclick="window.location.href='{% url 'add_project' %}'">
+                            &#43;
+                        </button>
+                    </div>
+        
+                    <hr>
+                    <div class="project-row">
+                        {% if projects %}
+                        {% for project in projects %}
+                            {% if forloop.counter < 4 %}
+                                <div class="project-container">
+                                    <a href="{{ project.pdf_file.url }}" download>
+                                        <img src="{% static 'img/files1.png' %}" alt="Placeholder Image">
+                                    </a>
+                                    <div class="project-info">
+                                        <h3>{{ project.title }}</h3>
+                                        <p>{{ project.description }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div style="text-align: center; justify-self: center;">
+                            <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                            <p>No projects found. Please add a project to get started! <a href="{% url 'add_project' %}" style="text-decoration: underline; color: var(--border-color)">Add here</a></p>
+                        </div>
+                
+                    {% endif %}
+                    
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                // Initialize Tippy.js for all elements with the class 'project-title'
+                                tippy('.project-title', {
+                                    theme: 'custom',
+                                    placement: 'top',
+                                    animation: 'shift-away',
+                                    arrow: true,
+                                });
+                            });
+                        </script>
+        
+                    </div> <!-- Corrected closing tag -->
+                    <div class="project-footer">
+                        <a href="{% url "update_projects" %}" class="see-more-text">
+                            See More
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+          
+        
+                <div class="portfolio-block-view">
+        
+                    <div class="portfolio-header">
+                        <div class="empty-cell"></div>
+                        <h1 id="past_experiences" style="text-wrap: nowrap;">Work History</h1>
+                        <button type="button" class="btn-add" onclick="redirectToAddExperience()">
+                            &#43;
+                        </button>
+                        
+                        <script>
+                        function redirectToAddExperience() {
+                            window.location.href = "{% url 'add_experience' %}";
+                        }
+                        </script>
+                    </div>
+        
+                    <hr>
+                    <div class="past-exp-row">
+                        {% if past_experiences %}
+                            {% for experience in past_experiences|slice:":3" %}
+                                <div class="past-experience-card">
+                                    <div style="display: flex; flex-direction: column; margin-right: auto; justify-content: baseline;">
+                                        <div class="span-header" style="display: flex; flex-direction: column; justify-content: baseline;">
+                                            <span style="font-weight: bold; border-bottom: 1px solid #ccc; font-size: 18px">
+                                                {{ experience.client }}
+                                            </span> 
+                                            <span class="first-word" style="font-size: 12px; color: #333;">
+                                                {{ experience.year }}
+                                            </span>
+                                        </div><!-- Client Name -->
+                                        <span class="lang-prof">
+                                            <span>{{ experience.country }}</span> <!-- Country -->
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                        <div style="display: flex;text-align: center;align-items: center;justify-self: center;flex-direction: column;justify-content: center;margin: 0 auto;">
+                                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                                <p>No Work Experiences found. Please add a work experience to get started! 
+                                    <a href="#" onclick="redirectToAddExperience()" style="text-decoration: underline; color: var(--border-color)">
+                                        Add here
+                                    </a>
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    
+                    <div class="project-footer">
+                        <a href="{% url 'experiences_view' %}" class="see-more-text">
+                            See More
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+        
+                </div>
+                <div class="skills">
+                   
+                    <div class="portfolio-header">
+                        <div class="empty-cell"></div>
+                        <h1>Skills</h1>
+                        <button type="button" class="btn-add" onclick="skillShowModal()">
+                            &#43;
+                        </button>
+                    </div>
+                    <hr>
+                    <ul class="skill-list">
+                        {% if skills %}
+                            {% for skill in skills %}
+                                {% if forloop.counter <= 3 %}
+                                    <li class="skill-item">
+                                        <i class="skill-icon fas fa-code"></i> <!-- Replace with appropriate icon -->
+                                        <div class="skill-details">
+                                            <span>{{ skill.skill }}</span>
+                                            {% for tags in skill.tags.all %}
+                                            <div class="skill-status">{{ tags.name }}</div>
+                                            {% endfor %}
+                                        </div>
+                                       
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <div style="text-align: center; justify-self: center;">
+                                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No skills image" style="width: 150px;">
+                                <p>No skills added. Please add a skill to get started! 
+                                    <a href="#" onclick="skillShowModal()" style="text-decoration: underline; color: var(--border-color)">Add here</a>
+                                </p>
+                            </div>
+                        {% endif %}
+                    </ul>
+                
+                    <div class="project-footer">
+                        <a href="{% url 'skills_view' %}" class="see-more-text">
+                            See More Skills
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                    <div id="addSkillModal" class="skill-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Add New Skill</h3>
+                                
+                            </div>
+                           
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data" id="addSkillForm">
+                                    {% csrf_token %}
+                                    <label for="tagSelect">Main Skills:</label>
+                                    <select id="tagSelect" class="select2" multiple="multiple">
+                                        <option value="" disabled>Select tags</option>
+                                    </select>
+                                    <br> 
+                                    <label for="skillSelect">Sub Skills:</label>
+                                    {{ skills_form.skills }}
+                                    <p class="help-text">
+                                        <small>
+                                            Can't find your skill? 
+                                            <a href="{% url 'help' %}" class="help-link">Send us a ticket</a>.
+                                        </small>
+                                    </p>    
+                                    <div class="skill-buttons-container" style="display: flex; justify-content: space-between; gap: 10px; margin-top: 1rem; width: 100%;">
+                                        <button type="button" class="btn-cancel" onclick="skillCloseModal()">Cancel</button>
+                                        <button type="submit" class="btn-submit" name="skills_submit">Submit</button>
+                                    </div>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+
+                <div class="portfolio-block-view">
+                    <div class="portfolio-header">
+                        <div class="empty-cell"></div>
+                        <h1>Certificates</h1>
+                        <div class="certificate-details-button-add">
+                            <button type="button" class="btn-add" onclick="redirectToAddCertificate()">
+                                &#43;
+                            </button>
+                        </div>
+                        
+                        <script>
+                            function redirectToAddCertificate() {
+                                window.location.href = "{% url 'add_certificate' %}";
+                            }
+                        </script>
+                    </div>
+                
+                    <hr>
+                    <div class="project-row">
+                        {% if certificates %}
+                            {% for certificate in certificates|slice:":3" %}
+                                <div class="project-container">
+                                    <a href="{{ certificate.image_file.url }}" download>
+                                        <img src="{% static certificate.get_badge_image %}" 
+                                        style="width: 160px; height: 147px;" 
+                                        alt="{{ certificate.certificate_title }}">
+                                    </a>
+                                    <div class="project-info">
+                                        <div class="span-header" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+                                            <span style="font-weight: bold; border-bottom: 1px solid #ccc; font-size: 18px">{{ certificate.certificate_title }}</span> 
+                                        </div>
+                                        <span class="first-word" style="font-size: 12px; color: #333;">{{ certificate.date_issued }}</span>
+                                        <p class="project-description">{{ certificate.description }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div style="text-align: center; justify-self: center;">
+                                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                                <p>No Certificate found. Please add a Certificate to get started! 
+                                    <a href="#" onclick="redirectToAddCertificate()" style="text-decoration: underline; color: var(--border-color)">
+                                        Add here
+                                    </a>
+                                </p>
+                            </div>
+                        {% endif %}
+                    
+                    
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                // Initialize Tippy.js for all elements with the class 'project-title'
+                                tippy('.project-title', {
+                                    theme: 'custom',
+                                    placement: 'top',
+                                    animation: 'shift-away',
+                                    arrow: true,
+                                });
+                            });
+                        </script>
+                    </div>
+                    
+                    
+                    <div class="project-footer">
+                        <a href="{% url 'certificates_view' %}" class="see-more-text">
+                            See More
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                
+        
+                <div class="portfolio-block-view">
+                    <!-- Tabs Navigation -->
+                    <div class="event-tabs">
+                        <button class="event-tab-link active" onclick="openEventTab(event, 'EventAttended')">Attended</button>
+                        <button class="event-tab-link" onclick="openEventTab(event, 'EventPreviousProfile')">Previous</button>
+                    </div>
+                
+                    <hr>
+                
+                    <!-- Attended Events Tab -->
+                    <div id="EventAttended" class="event-tab-content" style="display:flex;">
+                        {% for event in attended_events %}
+                        <div class="event-db-card">
+                            <div class="event-db-card-header" style="position: relative;">
+                                {% if event.image %}
+                                <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                                {% else %}
+                                <img src="{% static 'img/event.png' %}" alt="{{ event.title }}">
+                                {% endif %}
+                                <div class="event-db-date-box">
+                                    <p class="event-db-date-day-name">{{ event.start_datetime|date:'D' }}</p>
+                                    <p class="event-db-date-day">{{ event.start_datetime|date:'d' }}</p>
+                                    <p class="event-db-date-month-year">{{ event.start_datetime|date:'M Y' }}</p>
+                                </div>
+                            </div>
+                            <div class="event-db-card-body">
+                                <h3>{{ event.title }}</h3>
+                                <p class="location-text"><strong>Location:</strong> {{ event.location }}</p>
+                                <a href="{% url 'event_detail_view' event.id %}" class="event-read-more">
+                                    <i class="fas fa-calendar"></i> Read More
+                                </a>
+                            </div>
+                            <br>
+                        </div>
+                        {% empty %}
+                        <div class="event-db-card-none" style="width: 100%">
+                            <div class="event-db-card-body">
+                                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                                <p>No attended events at the moment.</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                
+                    <!-- Previous Events Tab -->
+                    <div id="EventPreviousProfile" class="event-tab-content" style="display:none;">
+                        {% for event in previous_events %}
+                        <div class="event-db-card">
+                            <div class="event-db-card-header" style="position: relative;">
+                                {% if event.image %}
+                                <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                                {% else %}
+                                <img src="{% static 'img/event.png' %}" alt="{{ event.title }}">
+                                {% endif %}
+                                <div class="event-db-date-box">
+                                    <p class="event-db-date-day-name">{{ event.start_datetime|date:'D' }}</p>
+                                    <p class="event-db-date-day">{{ event.start_datetime|date:'d' }}</p>
+                                    <p class="event-db-date-month-year">{{ event.start_datetime|date:'M Y' }}</p>
+                                </div>
+                            </div>
+                            <div class="event-db-card-body">
+                                <h3>{{ event.title }}</h3>
+                                <p class="location-text"><strong>Location:</strong> {{ event.location }}</p>
+                                <a href="{% url 'event_detail_view' event.id %}" class="event-read-more">
+                                    <i class="fas fa-calendar"></i> Read More
+                                </a>
+                            </div>
+                            <br>
+                        </div>
+                        {% empty %}
+                        <div class="event-db-card-none" style="width: 100%">
+                            <div class="event-db-card-body">
+                                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                                <p>No previous events at the moment.</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                
+                    <script>
+                        function openEventTab(evt, tabName) {
+                            var i, eventTabContent, eventTabLinks;
+                
+                            // Hide all event tab contents
+                            eventTabContent = document.getElementsByClassName("event-tab-content");
+                            for (i = 0; i < eventTabContent.length; i++) {
+                                eventTabContent[i].style.display = "none";
+                            }
+                
+                            // Remove active class from all event tabs
+                            eventTabLinks = document.getElementsByClassName("event-tab-link");
+                            for (i = 0; i < eventTabLinks.length; i++) {
+                                eventTabLinks[i].className = eventTabLinks[i].className.replace(" active", "");
+                            }
+                
+                            // Show the current event tab content and mark the tab as active
+                            document.getElementById(tabName).style.display = "flex";
+                            evt.currentTarget.className += " active-profile";
+                        }
+                
+                        // Set the first event tab (Upcoming) as default
+                        document.getElementById("EventUpcoming").style.display = "flex";
+                    </script>
+                    <div class="project-footer">
+                        <a href="{% url 'event_attended_view' %}" class="see-more-text">
+                            See More
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                
+                
+
+                
+            </div>
+            <div class="portfolio-col-2">
+                <div class="languages">
+                    <div class="portfolio-header">
+                        <div class="empty-cell"></div>
+                        <h1>Language</h1>
+                        <button type="button" class="btn-add" onclick="languageShowModal()">
+                            &#43;
+                        </button>
+                    </div>
+                    <hr>
+                    {% if languages %}
+                    <ul>
+                        {% for language in languages %}
+                        <li class="skill-item">
+                            <i class="skill-icon fas fa-language"></i>
+                            <div class="skill-details">
+                                <span>{{ language.language }}</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="project-footer">
+                        <a href="{% url 'languages_view' %}" class="see-more-text">
+                            See More 
+                            <span class="arrow">→</span>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div style="text-align: center; justify-self: center;">
+                        <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                        <p>No languages found. Please add a language.<a href="#"  onclick="languageShowModal()" style="text-decoration: underline; color: var(--border-color)">Add here</a></p>
+                    </div>
+
+                    {% endif %}
+                    
+                    <div id="addLanguageModal" class="language-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Add New Language</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data" id="addLanguageForm">
+                                    {% csrf_token %}
+                                    <label for="languageSelect">Language:</label> <br>
+                                    {{ language_form.language }}
+                                    <p class="help-text" >
+                                        <small>
+                                            Can't find your language? 
+                                            <a href="{% url 'help' %}" class="help-link">Send us a ticket</a>.
+                                        </small>
+                                    </p>                                  
+                                    <div class="language-buttons-container" style="display: flex; justify-content: space-between; gap: 10px; margin-top: 1rem; width: 100%;">
+                                        <button type="button" class="btn-cancel" onclick="languageCloseModal()">Cancel</button>
+                                        <button type="submit" class="btn-submit" name="language_submit">Submit</button>
+                                    </div>
+                                  
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <br>
+                
+        
+            </div>
+            
+        
+        </div>
+        
+    </div>
+</body>
+
+
+
+<script>
+    // Function to show the modal
+    function certificateShowModal() {
+        var modal = document.querySelector(".certificate-modal");
+        modal.style.display = "block";
+        projectCloseModal();
+        resumeCloseModal();
+        skillCloseModal();
+        languageCloseModal();
+        pastExpCloseModal();
+    }
+
+    function certificateCloseModal() {
+        var modal = document.querySelector(".certificate-modal");
+        modal.style.display = "none";
+    }
+
+    // Get the button element
+    var btn = document.querySelector("#openCertificateModalBtn");
+
+    // Assign the certificateShowModal function to the button's click event
+    if (btn) {
+        btn.addEventListener("click", certificateShowModal);
+    }
+</script>
+
+<script>
+    // Function to show the modal
+    function pastExpShowModal() {
+        var modal = document.querySelector(".past-exp-modal");
+        modal.style.display = "block";
+        resumeCloseModal();
+        skillCloseModal();
+        languageCloseModal() ;
+        certificateCloseModal()
+        projectCloseModal();
+    }
+
+    function pastExpCloseModal() {
+        var modal = document.querySelector(".past-exp-modal");
+        modal.style.display = "none";
+    }
+    // Get the button element
+    var btn = document.querySelector("#openModalBtn");
+
+    // Assign the projectShowModal function to the button's click event
+    if (btn) {
+        btn.addEventListener("click", pastExpShowModal);
+    }
+</script>
+
+
+<script>
+    // Function to show the modal
+    function resumeShowModal() {
+        var modal = document.querySelector(".resume-modal");
+        modal.style.display = "block";
+        projectCloseModal();
+        certificateCloseModal()
+        skillCloseModal();
+        languageCloseModal();
+        pastExpCloseModal(); 
+    }
+
+    function resumeCloseModal() {
+        var modal = document.querySelector(".resume-modal");
+        modal.style.display = "none";
+    }
+    // Get the button element
+    var btn = document.querySelector("#openModalBtn");
+
+    // Assign the projectShowModal function to the button's click event
+    if (btn) {
+        btn.addEventListener("click", resumeShowModal);
+    }
+</script>
+
+
+<script>
+    // Function to show the modal
+    function skillShowModal() {
+        var modal = document.querySelector(".skill-modal");
+        modal.style.display = "block";
+        projectCloseModal()
+        resumeCloseModal()
+        certificateCloseModal()
+        languageCloseModal() 
+        pastExpCloseModal()
+    }
+
+    function skillCloseModal() {
+        var modal = document.querySelector(".skill-modal");
+        modal.style.display = "none";
+    }
+    // Get the button element
+    var btn = document.querySelector("#openModalBtn");
+
+    // Assign the projectShowModal function to the button's click event
+    if (btn) {
+        btn.addEventListener("click", skillShowModal);
+    }
+</script>
+
+
+
+<script>
+    // Function to show the modal
+    function languageShowModal() {
+        var modal = document.querySelector(".language-modal");
+        modal.style.display = "block";
+        projectCloseModal()
+        resumeCloseModal()
+        skillCloseModal()
+        certificateCloseModal()
+        pastExpCloseModal()
+    }
+
+    function languageCloseModal() {
+        var modal = document.querySelector(".language-modal");
+        modal.style.display = "none";
+    }
+    // Get the button element
+    var btn = document.querySelector("#openModalBtn");
+
+    // Assign the projectShowModal function to the button's click event
+    if (btn) {
+        btn.addEventListener("click", languageShowModal);
+    }
+</script>
+
+
+<!-- Select2 Initialization -->
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: 'Select options',
+            width: 'resolve'
+        });
+    
+        // Fetch tags, languages, and skills from the server
+        $.ajax({
+            url: '/get_languages_and_skills/',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Populate tags
+                data.tags.forEach(function(tag) {
+                    var newOption = new Option(tag.name, tag.name, false, false);
+                    $('#tagSelect').append(newOption).trigger('change');
+                });
+    
+                // Populate languages
+                data.languages.forEach(function(language) {
+                    var newOption = new Option(language.language, language.language_id, false, false);
+                    $('#id_language').append(newOption).trigger('change');
+                });
+    
+                // Populate skills
+                data.skills.forEach(function(skill) {
+                  
+                    var newOption = new Option(skill.skill, skill.skill_id, false, false);
+                    $('#id_skills').append(newOption).trigger('change');
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching languages and skills:', error);
+            }
+        });
+    
+        // Filter skills based on selected tags
+        $('#tagSelect').on('change', function() {
+            var selectedTags = $(this).val();
+    
+            // Store currently selected skills
+            var selectedSkills = $('#id_skills').val();
+    
+            $.ajax({
+                url: '/filter_skills_by_tags/',
+                type: 'GET',
+                data: {
+                    tags: selectedTags
+                },
+                traditional: true, // Ensures proper serialization of array parameters
+                dataType: 'json',
+                success: function(data) {
+                    var selectedSkills = $('#id_skills').val();
+                    var selectedSkillsText = [];
+    
+                    $('#id_skills option:selected').each(function() {
+                        selectedSkillsText.push($(this).text());
+                    });
+    
+                    $('#id_skills').empty(); // Clear existing options
+    
+                    data.skills.forEach(function(skill) {
+                        var newOption = new Option(skill.skill, skill.skill_id, false, false);
+                        $('#id_skills').append(newOption).trigger('change');
+                    });
+    
+                    // Reapply the selected options
+                    $('#id_skills option').each(function() {
+                        if (selectedSkillsText.includes($(this).text())) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+    
+                    $('#id_skills').trigger('change'); // Trigger change to update select2 display
+                },
+                error: function(error) {
+                    console.error('Error filtering skills by tags:', error);
+                }
+            });
+        });
+    });
+
+    
+    
+</script>
+
+<script>
+    function formatOptionWithTooltip(option) {
+        if (!option.id) {
+            return option.text;
+        }
+        const selectElement = $(option.element).closest('select');
+        const attribute = `data-toggle-skills-${option.id}`;
+
+        
+        const description = selectElement.attr(attribute);
+
+        const $option = $('<span></span>');
+        $option.text(option.text);
+        tippy($option.get(0), {
+            content: description,
+        });
+    
+        return $option;
+    }
+
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            templateResult: formatOptionWithTooltip,
+            templateSelection: formatOptionWithTooltip
+        });
+    });
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Click to select options",
+            templateResult: formatOptionWithTooltip,
+            templateSelection: formatOptionWithTooltip
+        });
+        $('.select2.skills').select2({
+            placeholder: "Select Main Skill first",  // Custom placeholder for skills
+            allowClear: true  // Allow clearing the selection
+        });
+    });
+    
+</script>
+
+<script>
+    function showAllSkills() {
+        const skillListHtml = `
+            
+            <ul class="modal-skill-list">
+                {% for skill in skills %}
+                <li class="modal-skill-item">
+                    <i class="skill-icon fas fa-code"></i> <!-- Replace with appropriate icon -->
+                    <div class="skill-details">
+                        <span>{{ skill.skill }}</span>
+                        {% for tag in skill.tags.all %}
+                        <div class="skill-status">{{ tag.name }}</div>
+                        {% endfor %}
+                        <p>{{skill.description}}</p>
+                    </div>
+                    <form method="post" style="margin-left: 10px; display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="remove_skill" value="{{ skill.skill_id }}">
+                        <button type="submit" class="remove-button" title="Remove" onclick="confirmRemove(event)">
+                            &#10006;
+                        </button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+
+           
+        `;
+
+        Swal.fire({
+            title: 'All Skills  <button id="toggleButton" class="btn btn-submit" onclick="toggleRemoveButton()"><i class="fas fa-edit"></i> Toggle Edit</button>',
+            html: skillListHtml,
+            confirmButtonText: 'Close',
+            customClass: {
+                popup: 'display-skill-modal',
+            },
+        });
+    }
+
+    function toggleRemoveButton() {
+        const removeButtons = document.querySelectorAll('.remove-button');
+        removeButtons.forEach(button => {
+            button.style.display = button.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+    function confirmRemove(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Please note: this action cannot be undone.!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<b>Yes</b>',
+            cancelButtonText: 'No',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true // Ensures Yes is on the right
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.closest('form').submit();
+            }
+        });
+    }
+</script>
+
+<script>
+    document.querySelector('.timeline-container').style.scrollBehavior = 'smooth';
+</script>
+
+
+{% endblock content %}
+

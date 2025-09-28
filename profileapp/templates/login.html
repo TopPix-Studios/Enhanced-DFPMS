@@ -1,0 +1,225 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load socialaccount %}
+
+
+
+{% block content %}
+<style>
+    .password-container {
+        position: relative;
+    }
+    
+    .password-container .form-control {
+        padding-right: 30px; /* Adjust padding to make space for the icon */
+    }
+    
+    .password-container .field-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #aaa;
+    }
+
+    .swal2-confirm swal2-styled, .swal2-cancel swal2-styled, .swal2-styled {
+        border-radius: 5px;
+        background-color: var(--secondary-color);
+        color: #ebecff;
+        border: none; /* No border */
+        padding: 10px 20px;; /* Padding around the text */
+        font-size: 16px; /* Font size of the text */
+        cursor: pointer; /* Cursor style on hover */
+        float: right;
+        text-align: center;
+        font-family: 'Garet';
+        margin: 0 auto;
+        display: flex;
+        font-weight: 700;
+        margin-right: 1rem
+    }
+
+    .swal2-confirm swal2-styled:hover, .swal2-cancel swal2-styled:hover, .swal2-styled:hover {
+        background-color: var(--background-color);
+        color: var(--secondary-color);
+        border: 1px var(--secondary-color) solid;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'login.css' %}">
+<div class="main">
+    <div class="login-container">
+        <h2>Login</h2>
+        {% if messages %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '{{ message|escapejs }}'
+                            });
+                        {% elif message.tags == 'success' %}
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '{{ message|escapejs }}'
+                            });
+                        {% elif message.tags == 'info' %}
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Info',
+                                text: '{{ message|escapejs }}'
+                            });
+                            showOTPModal({{ user_id }});
+                        {% endif %}
+                    {% endfor %}
+                });
+            </script>
+        {% endif %}
+        <div class="third-party-login">
+            <div class="third-party-login-container">
+                <img src="{% static '/img/image Google.png' %}" alt="Google Logo">
+                <a href="{% provider_login_url "google" %}" >Sign Up with Google</a> 
+            </div>
+           
+        </div>
+        <div class="login-divider">
+            <hr>
+            <h3>Or</h3>
+            <hr>
+        </div>
+        <form id="loginForm" method="post" action="{% url 'user_login' %}">
+            {% csrf_token %}
+            <div class="form-group">      
+                {{ form.username }}
+            </div>
+            <div class="form-group password-container">
+                <input type="password" name="password" placeholder="Password" class="form-control" id="password-field">
+                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+            </div>
+            <button id="login-button" type="submit">Login</button>
+        </form>
+        <div class="signin">
+            <p>Don’t have an Account? <a href="{% url 'create_account' %}">Sign Up</a></p>
+            <p>Forgot your password? <a href="{% url 'password_reset' %}">Reset Password</a></p>
+        </div>
+       
+    </div> 
+</div>
+<script>
+    function showOTPModal(userId) {
+        Swal.fire({
+            title: 'Enter OTP',
+            input: 'text',
+            inputLabel: 'Enter the OTP sent to your email',
+            inputPlaceholder: 'OTP',
+            showCancelButton: true,
+            confirmButtonText: 'Verify',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+            didOpen: () => {
+                setTimeout(() => {
+                    const resendOtpButton = document.createElement('button');
+                    resendOtpButton.innerText = 'Resend OTP';
+                    resendOtpButton.classList.add('swal2-styled');
+                    resendOtpButton.style.background = '#3085d6';
+                    resendOtpButton.style.marginLeft = '1rem';
+    
+                    resendOtpButton.onclick = () => {
+                        fetch("{% url 'resend_otp' %}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({ user_id: userId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            const popup = Swal.getPopup();
+                            const contentEl = popup.querySelector('.swal2-html-container');
+    
+                            // Clear any old messages
+                            popup.querySelectorAll('.swal2-validation-message, .swal2-success-message')
+                                 .forEach(el => el.remove());
+    
+                            if (data.status === 'failed') {
+                                const msg = document.createElement('div');
+                                msg.className = 'swal2-validation-message';
+                                msg.textContent = data.message;
+                                msg.style.display = 'block';
+                                contentEl.appendChild(msg);
+                            } else {
+                                const msg = document.createElement('div');
+                                msg.className = 'swal2-success-message';
+                                msg.style.color = 'green';
+                                msg.style.fontWeight = 'bold';
+                                msg.style.marginTop = '10px';
+                                msg.textContent = 'OTP has been resent.';
+                                contentEl.appendChild(msg);
+                            }
+                        })
+                        .catch(error => {
+                            const popup = Swal.getPopup();
+                            const contentEl = popup.querySelector('.swal2-html-container');
+                            const msg = document.createElement('div');
+                            msg.className = 'swal2-validation-message';
+                            msg.style.display = 'block';
+                            msg.textContent = `Request failed: ${error}`;
+                            contentEl.appendChild(msg);
+                        });
+                    };
+    
+                    document.querySelector('.swal2-actions').appendChild(resendOtpButton);
+                }, 60000); // Enable "Resend OTP" after 1 minute
+            },
+            preConfirm: (otp) => {
+                return fetch("{% url 'otp_verification' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ user_id: userId, otp: otp })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'failed') {
+                        throw new Error(data.message);
+                    }
+                    return data;
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(`Request failed: ${error}`);
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed && result.value && result.value.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'OTP verified. You are now logged in.'
+                }).then(() => {
+                    window.location.href = '{% url "profile_detail" %}';
+                });
+            }
+        });
+    }
+    
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const togglePassword = document.querySelector('.toggle-password');
+        const passwordField = document.querySelector('#password-field');
+        
+        togglePassword.addEventListener('click', function () {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
+    
+{% endblock %}

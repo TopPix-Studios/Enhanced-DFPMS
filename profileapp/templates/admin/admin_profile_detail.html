@@ -1,0 +1,426 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .profile-initials {
+        margin-right: 10px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+        background-color: #ccc;
+        color: #0078ae;
+    }
+    
+    .profile-initials {
+        font-weight: bold;
+        font-size: 36px;
+    }
+</style>
+
+
+
+<div class="container" id="profile-content">
+    <!-- Profile content -->
+    <div class="row">
+        <!-- Profile Information and Projects on the left side -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="card-title">Profile Information</h2>
+                </div>
+                <div class="card-body">
+                    <h4 style="text-align: center;">{{ profile.first_name }} {{ profile.last_name }}</h4>
+                    <div style="justify-content:center; display: flex">
+                        {% if profile.picture %}
+                        <img src="{{ profile.picture.url }}" id="profile-picture" class="img-fluid rounded-circle mb-2" style="width: 150px; height:150px;" alt="{{ profile.first_name }}'s photo">
+                        {% else %}
+                        <div class="profile-initials">
+                            {{ profile.first_name|slice:":1" }}. {{ profile.last_name|slice:":1" }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <p class="card-text"><strong>Gender:</strong> {{ profile.gender }}</p>
+                    <p class="card-text"><strong>Date of Birth:</strong> {{ profile.date_of_birth }}</p>
+                    <p class="card-text"><strong>Contact No:</strong> {{ profile.contact_no }}</p>
+                    <p class="card-text"><strong>Email Address:</strong> {{ profile.account_id.email }}</p>
+                    <p class="card-text"><strong>Address:</strong> {{ profile.house_no }} {{ profile.street }}, {{ profile.barangay }}, {{ profile.city }}, {{ profile.province }}, {{ profile.region }}, {{ profile.zip }}</p>
+                    <p class="card-text"><strong>Quote:</strong> {{ profile.qoute }}</p>
+                    <p class="card-text"><strong>Pronoun:</strong> {{ profile.pronoun }}</p>
+                </div>
+                
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="card-title">Projects</h2>
+                </div>
+                <div class="card-body">
+                    {% if projects %}
+                    <ul class="list-group list-group-flush">
+                        {% for project in projects %}
+                        <li class="list-group-item mb-3 p-3" style="border: 1px solid #dee2e6; border-radius: 8px;">
+                            <h5 class="mb-2" style="font-weight: bold;">{{ project.title }}</h5>
+                            <p style="margin-bottom: 1rem;">{{ project.description }}</p>
+                            {% if project.pdf_file %}
+                                <a href="{{ project.pdf_file.url }}" download class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-download"></i> Download Project
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    
+                    </ul>
+                    {% else %}
+                    <p>No projects available.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% if resume and resume.resume_file %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="card-title">Resume</h2>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Uploaded:</strong> {{ resume.uploaded_at }}</p>
+                        <a href="{{ resume.resume_file.url }}" download class="btn btn-outline-primary">
+                            <i class="fas fa-file-download"></i> Download Resume
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Certificates and Background Information on the right side -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="card-title">Certificates</h2>
+                </div>
+                <div class="card-body">
+                    {% if certificates %}
+                    <ul class="list-group list-group-flush">
+                        {% for certificate in certificates %}
+                            <li class="list-group-item mb-3 p-3" style="border: 1px solid #dee2e6; border-radius: 8px;">
+                                <h5 class="mb-2" style="font-weight: bold;">{{ certificate.certificate_title }}</h5>
+                                <p><strong>Issued By:</strong> {{ certificate.issued_by|default:"N/A" }}</p>
+                                <p><strong>Date Issued:</strong> {{ certificate.date_issued|date:"F d, Y"|default:"N/A" }}</p>
+                                {% if certificate.image_file %}
+                                    <a href="{{ certificate.image_file.url }}" download class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download"></i> Download Certificate
+                                    </a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    
+
+                    </ul>
+                    {% else %}
+                    <p>No certificates available.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h2 class="card-title mb-0">Background Information</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Affiliation:</strong></p>
+                        <p class="text-muted">{{ profile.bg_id.affiliation|default:"No affiliation available." }}</p>
+                    </div>
+            
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Specialization:</strong></p>
+                        <p class="text-muted">{{ profile.bg_id.specialization.specialization|default:"No specialization available." }}</p>
+                    </div>
+            
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Skills:</strong></p>
+                        {% if profile.bg_id.skills.all %}
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for skill in profile.bg_id.skills.all %}
+                                    <span class="badge badge-pill badge-primary px-3 py-2 my-1 mx-1" style="background-color: #1E3A8A; color: white;">
+                                        <i class="fas fa-tools mr-1"></i> {{ skill.skill }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No skills available.</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Languages:</strong></p>
+                        {% if profile.bg_id.language.all %}
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for language in profile.bg_id.language.all %}
+                                    <span class="badge badge-pill bg-success px-3 py-2 text-white mx-1 my-1">
+                                        <i class="fas fa-language mr-1"></i> {{ language.language }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No languages available.</p>
+                        {% endif %}
+                    </div>
+                    
+            
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Past Experiences:</strong></p>
+                        {% if profile.bg_id.past_experiences.all %}
+                            <div class="d-flex flex-column gap-2">
+                                {% for experience in profile.bg_id.past_experiences.all %}
+                                    <div class="border rounded px-3 py-2 bg-light">
+                                        <i class="fas fa-briefcase mr-1 text-secondary"></i> {{ experience }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No past experiences available.</p>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-end mb-3">
+                <button id="exportProfileToPDF" class="btn btn-secondary">Export Profile to PDF</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+    document.getElementById('exportProfileToPDF').addEventListener('click', function () {
+        const { jsPDF } = window.jspdf;
+
+        const doc = new jsPDF();
+        const pageHeight = doc.internal.pageSize.height;
+
+        // Utility function to check Y-position and add a page if needed
+        const checkPageOverflow = (yPos) => {
+            if (yPos > pageHeight - 20) {
+                doc.addPage();
+                return 20; // Reset Y-position
+            }
+            return yPos;
+        };
+
+        // Add profile picture
+        let imgUrl = "{% if profile.picture %}{{ profile.picture.url }}{% else %}{% static 'img/DarkBlue/dark blue.png' %}{% endif %}";
+        const imgWidth = 15; // Set image width
+        const imgHeight = 15; // Set image height
+
+        // Check if the image URL exists or is valid
+        if (imgUrl) {
+            doc.addImage(imgUrl, 'JPEG', 15, 15, imgWidth, imgHeight); // Top-left position for profile picture
+        } else {
+            console.error("Profile picture not found, using fallback.");
+        }
+
+
+        // Set header with styling next to the picture
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(18);
+        doc.setTextColor(40, 113, 160);
+        doc.text("Profile Information", 30, 25);
+
+        // Draw a line under the header
+        doc.setLineWidth(0.5);
+        doc.line(15, 30, 200, 30);
+
+        // Profile Section
+        let yPos = 40;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 0, 0);
+
+        doc.text("Name:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.first_name }} {{ profile.last_name }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Gender:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.gender }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Date of Birth:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.date_of_birth }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Contact No:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.contact_no }}", 60, yPos);
+
+        // Address Section
+        yPos += 10;
+        yPos = checkPageOverflow(yPos);
+        const address = [
+            "{{ profile.house_no }} {{ profile.street }}, {{ profile.barangay }},",
+            "{{ profile.city }}, {{ profile.province }}, {{ profile.region }}, {{ profile.zip }}"
+        ];
+        doc.setFont('helvetica', 'bold');
+        doc.text("Address:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text(address[0], 60, yPos);
+        yPos += 8;
+        doc.text(address[1], 60, yPos);
+
+        // Email, Quote, and Pronoun
+        yPos += 10;
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Email:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.account_id.email }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Quote:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.qoute }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Pronoun:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.pronoun }}", 60, yPos);
+
+        // Background Information Section
+        yPos += 10;
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.setTextColor(40, 113, 160);
+        doc.text("Background Information", 15, yPos);
+        doc.setLineWidth(0.3);
+        doc.line(15, yPos + 3, 200, yPos + 3);
+
+        yPos += 10;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 0, 0);
+        doc.text("Affiliation:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.bg_id.affiliation }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Specialization:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ profile.bg_id.specialization.specialization }}", 60, yPos);
+
+        // Skills Section
+        yPos += 10;
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Skills:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        {% for skill in profile.bg_id.skills.all %}
+        yPos += 8;
+        yPos = checkPageOverflow(yPos);
+        doc.text("• {{ skill.skill }}", 25, yPos);
+        {% endfor %}
+
+        // Languages Section
+        yPos += 10;
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Languages:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        {% for language in profile.bg_id.language.all %}
+        yPos += 8;
+        yPos = checkPageOverflow(yPos);
+        doc.text("• {{ language.language }}", 25, yPos);
+        {% endfor %}
+
+       // Projects Section
+        yPos += 10;
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.setTextColor(40, 113, 160);
+        doc.text("Projects", 15, yPos);
+        doc.line(15, yPos + 3, 200, yPos + 3);
+
+        yPos += 10;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        {% for project in projects %}
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 0, 0);
+        doc.text("Project:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ project.title }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Description:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ project.description | escapejs }}", 60, yPos);
+
+        yPos += 12;
+        {% endfor %}
+
+        // Certificates Section
+        yPos += 10;
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.setTextColor(40, 113, 160);
+        doc.text("Certificates", 15, yPos);
+        doc.line(15, yPos + 3, 200, yPos + 3);
+
+        yPos += 10;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        {% for certificate in certificates %}
+        yPos = checkPageOverflow(yPos);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 0, 0);
+        doc.text("Certificate:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ certificate.certificate_title }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Issued By:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ certificate.issued_by }}", 60, yPos);
+
+        yPos += 8;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Date Issued:", 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text("{{ certificate.date_issued }}", 60, yPos);
+
+        yPos += 12;
+        {% endfor %}
+
+
+        // Save the PDF
+        setTimeout(function () {
+            doc.save('profile.pdf');
+        }, 1000);
+    });
+</script>
+
+
+
+{% endblock %}

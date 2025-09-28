@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complete Your Profile - {{ site_title }}</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #f8f9fa; padding: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+  <div class="container bg-white p-4 shadow-sm rounded" style="max-width: 600px; margin: auto;">
+    
+    <!-- Header Title Only -->
+    <div class="mb-4 text-center">
+      <h2 class="text-primary mb-1">{{ site_title }}</h2>
+      <small class="text-muted">Digital Freelancer Profiling System</small>
+    </div>
+
+    <h4 class="mb-3 text-primary">Hi {{ user.first_name }},</h4>
+
+    <p>Your registration for <strong>{{ site_name }}</strong> is almost complete — you're just one step away from full approval!</p>
+
+    <p>To finalize your profile, please provide the following missing requirement{% if missing_items|length > 1 %}s{% endif %}:</p>
+
+    <ul>
+      {% for item in missing_items %}
+        <li>{{ item|capfirst }}</li>
+      {% endfor %}
+    </ul>
+    
+    <p>Once you upload the required file{% if missing_items|length > 1 %}s{% endif %}, we'll be able to process your registration smoothly.</p>
+    
+    <div class="text-center my-4">
+      <a href="{{ edit_link }}" class="btn btn-primary px-4 py-2" style="text-decoration: none;">
+        Upload Now & Complete Your Profile
+      </a>
+    </div>
+
+    <div class="alert alert-warning" role="alert">
+      ⚠️ <strong>This secure link is valid for 14 days only.</strong> Please make sure to update your profile before it expires.
+    </div>
+
+    <p class="text-muted mt-4">Thanks for being part of {{ site_name }}!<br>— The {{ site_name }} Team</p>
+  </div>
+
+</body>
+</html>

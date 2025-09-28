@@ -1,0 +1,117 @@
+{% extends "admin/profile_chart.html" %}
+{% load static %}
+{% block chart_content %}
+  <div class="col-md-11">
+    <hr>
+    <div id="filters">
+      <form id="filtersForm" method="GET" class="filter-form">
+        <h5 class="text-bold">Barangay Filter:</h5>
+        <div id="barangayFilters" class="form-group">
+          <label for="barangayFilter">Barangay:</label>
+          <select id="barangayFilter" name="barangay" class="form-control">
+            <option value="">All</option>
+            {% for barangay in unique_barangays %}
+            <option value="{{ barangay }}" {% if request.GET.barangay == barangay %}selected{% endif %}>{{ barangay }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <hr>
+        <div class="form-group full-width d-flex align-items-end">
+          <button type="submit" id="submitFilters" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+    <div id="barangayChartDiv" class="chart-container">
+      <h3 class="text-bold">Freelancer Barangay Distribution Chart <i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h3>
+      <canvas id="barangayChart"></canvas>
+    </div>
+    <div class="container analysis-section">
+      <h2 class="text-bold">Analysis of Barangay Distribution Chart</h2>
+      <p>This section provides insights into the trends and patterns observed in the Barangay Distribution Chart.</p>
+      <ul>
+        {% for insight in insights %}
+          <li>{{ insight | safe }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="form-group d-flex flex-row justify-content-end align-items-center gap-2" style="width: 70vw;">
+
+      <!-- Export to PDF -->
+      <button type="button" id="exportButton" class="btn btn-secondary w-50 mx-2" style="height: 50px;">Export to PDF</button>
+    
+      <!-- Export to Excel -->
+      <button type="button" class="btn btn-primary w-50 mx-2" style="height: 50px;" onclick="exportBarangayChartToExcel()">Export to Excel</button>
+    
+    </div>
+    
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="{% static "js/generatePDF.js" %}"></script>
+  <script>
+    tippy('#chartInfoIcon', {
+        content: 'This chart shows the distribution of users per barangay. Use the barangay filters above to adjust data to a specific barangay.',
+        placement: 'top',
+    });
+
+    function exportBarangayChartToExcel() {
+      const barangay = document.getElementById('barangayFilter').value;
+      const params = new URLSearchParams();
+      if (barangay) params.append('barangay', barangay);
+  
+      window.location.href = `/export-barangay-chart-excel/?${params.toString()}`;
+  }
+  
+    // Barangay data for chart
+    var barangayData = {{ barangay_data|safe }};
+    var barangayLabels = barangayData.map(function(e) { return e['barangay__barangay']; });
+    var barangayCounts = barangayData.map(function(e) { return e.count; });
+
+    // Create the chart
+    var barangayCtx = document.getElementById('barangayChart').getContext('2d');
+    var barangayChart = new Chart(barangayCtx, {
+        type: 'bar',
+        data: {
+            labels: barangayLabels,
+            datasets: [{
+                label: 'Barangay Distribution',
+                data: barangayCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Export to PDF Button
+    document.getElementById('exportButton').addEventListener('click', function() {
+        const chartImageData = barangayChart.toBase64Image();
+
+        const barangayFilter = "{{ request.GET.barangay|default:'ALL' }}";
+        const filters = `Barangay: ${barangayFilter}`;
+
+        const tableHeaders = ['Barangay', '# of Users'];
+        const tableData = barangayLabels.map((barangay, index) => [barangay, barangayCounts[index]]);
+
+        generatePDF({
+            title: 'Freelancer Barangay Distribution Report',
+            chartImageData: chartImageData,
+            filters: filters,
+            tableHeaders: tableHeaders,
+            tableData: tableData,
+            fileName: 'freelancer_barangay_distribution_summary.pdf',
+        });
+    });
+</script>
+
+
+{% endblock %}

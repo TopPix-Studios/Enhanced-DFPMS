@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar with Events and Types</title>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.1/dist/tippy.css">
+    <link rel="stylesheet" href={% static "calendar.css" %}>
+</head>
+<body>
+    <div class="calendar">
+        <h1 id="month-year"></h1>
+        <div class="calendar-grid">
+            <div class="calendar-header">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <div class="calendar-days">
+                <!-- Calendar days will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Legend for Event Types -->
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-circle legend-physical"></div>
+            <span>Physical Event</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-circle legend-virtual"></div>
+            <span>Virtual Event</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-circle legend-both"></div>
+            <span>Both</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        // Define the static image URL using Django's static template tag
+        const defaultImageUrl = "{% static 'img/General_Santos_City_seal_2.jpg' %}";
+
+        const calendarDaysElement = document.querySelector('.calendar-days');
+        const monthYearElement = document.getElementById('month-year');
+        
+        // Get the current date
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        
+        // Set the month and year in the header
+        const monthNames = [
+            'January', 'February', 'March', 'April',
+            'May', 'June', 'July', 'August',
+            'September', 'October', 'November', 'December'
+        ];
+        monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        
+        // Get the number of days in the current month
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        
+        // Get the day of the week for the first day of the month
+        const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
+        
+        // Generate the calendar days
+        for (let i = 0; i < firstDayOfWeek; i++) {
+            const emptyDayElement = document.createElement('div');
+            emptyDayElement.classList.add('calendar-day');
+            calendarDaysElement.appendChild(emptyDayElement);
+        }
+        
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.classList.add('calendar-day');
+            dayElement.textContent = day;
+            dayElement.dataset.date = `${currentYear}-${currentMonth + 1}-${day}`;
+            calendarDaysElement.appendChild(dayElement);
+        }
+        
+        // Highlight today's date
+        const today = currentDate.getDate();
+        const todayElements = document.querySelectorAll('.calendar-day');
+        todayElements[today + firstDayOfWeek - 1].classList.add('today');
+        
+        let events = [];
+        
+        // Fetch events data from the server
+        fetch('/api/events/')
+            .then(response => response.json())
+            .then(data => {
+                events = data;
+                events.forEach(event => {
+                    const eventDate = new Date(event.start_datetime);
+                    if (eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear) {
+                        const dayIndex = eventDate.getDate() + firstDayOfWeek - 1;
+                        const dayElement = todayElements[dayIndex];
+                        
+                        const circleElement = document.createElement('div');
+                        circleElement.classList.add('event-circle');
+
+                        // Add a specific class based on event type
+                        if (event.type === 'physical') {
+                            circleElement.classList.add('event-physical');
+                        } else if (event.type === 'virtual') {
+                            circleElement.classList.add('event-virtual');
+                        } else if (event.type === 'both') {
+                            circleElement.classList.add('event-both');
+                        }
+
+                        dayElement.appendChild(circleElement);
+
+                        dayElement.addEventListener('click', () => {
+                            const eventsForTheDay = events.filter(e => {
+                                const eventDay = new Date(e.start_datetime).getDate();
+                                return eventDay === eventDate.getDate();
+                            });
+
+                            let eventsContent = '<p>There are no events on this date.</p>';
+
+                            if (eventsForTheDay.length > 0) {
+                                eventsContent = '<div class="event-list-container">';  // Start the grid container
+                            
+                                eventsForTheDay.forEach(event => {
+                                    const imageUrl = event.image || defaultImageUrl; // Use default image if event has no image
+                                    const truncatedDescription = event.description.length > 150 
+                                        ? event.description.substring(0, 150) + '...' 
+                                        : event.description;
+                            
+                                    eventsContent += `
+                                        <div class="event-details-grid">
+                                            <!-- First Row: Date and Status -->
+                                            <div class="event-date-status">
+                                                <p><strong>Date:</strong> ${new Date(event.start_datetime).toLocaleDateString()}</p>
+                                                ${
+                                                    new Date() > new Date(event.end_datetime) 
+                                                    ? '<p><strong>Status:</strong> This event is already done.</p>' 
+                                                    : `<p><strong>Days Left:</strong> ${Math.ceil((new Date(event.start_datetime) - new Date()) / (1000 * 60 * 60 * 24))} days</p>`
+                                                }
+                                            </div>
+                                            
+                                            <!-- Second Row: Image and Details -->
+                                            <div class="event-content-wrapper">
+                                                <div class="event-image-container">
+                                                    <img src="${imageUrl}" alt="${event.title} Image" class="event-image" style="margin-bottom: 0;">
+                                                </div>
+                                                <div class="event-info-container" style="justify-content: baseline;">
+                                                    <p style="font-size: 24px"><strong>${event.title}</strong> </p><br>
+                                                    <p style="font-size: 16px"><strong>Organizer:</strong> ${event.organizer}</p><br>
+                                                    ${event.location ? `<p style="font-size: 16px"><strong>Location:</strong> ${event.location.name}</p><br>` : ''}
+                                                  
+                                                </div>
+                                               
+                                            </div>
+                                            
+                                            <!-- Third Row: RSVP Button and Redirect Button -->
+                                            <div class="event-buttons">
+                                                <button class="rsvp-button" onclick="window.location.href='/profile/events/${event.id}/'">
+                                                    <i class="fas fa-calendar" style="margin-right: 10px"></i> Register
+                                                </button>
+                                                
+                                                <button class="redirect-button" onclick="window.location.href='/profile/events/${event.id}/';">
+                                                    <i class="fa fa-eye" style="margin-right: 10px"></i> See More 
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+                            
+                                eventsContent += '</div>';  // End the grid container
+                            }
+                            
+
+                            // Display SweetAlert popup with event details
+                            Swal.fire({
+                                title: `Events on ${eventDate.toDateString()}`,
+                                html: eventsContent,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Close',
+                                width: '700px', /* Adjust modal width */
+                                customClass: {
+                                    popup: 'swal2-events-popup'
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+    </script>
+</body>
+</html>

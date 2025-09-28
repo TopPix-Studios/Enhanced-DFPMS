@@ -1,0 +1,414 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-2">
+ 
+    {% if event_image_url %}
+        <img src="{{ event_image_url }}" alt="Event Image" class="d-flex img-fluid mb-3" style="max-width: 100%; height: auto; margin: 0 auto;">
+    {% else %}
+        <img src="https://picsum.photos/1200/720" alt="Default Event Image" class="d-flex img-fluid justify-content-center mx-auto mb-3" style="max-width: 100%; height: auto; margin: 0 auto;">
+    {% endif %}
+
+    <h1 id="event-title" class="text-center mb-3">{{ event_title }}</h1>
+    <p id="event-date" class="text-center text-muted">Date: {{ event_date|date:"F j, Y" }}</p>
+
+    <!-- Event Details Section -->
+    <div class="card mt-4 mb-4" id="event-details">
+        <div class="card-header">
+            <h3>Event Details</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Description:</strong> {{ event_description }}</p>
+            <p><strong>Organizer:</strong> {{ event_organizer }}</p>
+            <p><strong>Location Type:</strong> {{ event_location_type }}</p>
+            <p><strong>Location:</strong> {{ event_location_name }}</p>
+            <p><strong>Virtual Platform:</strong> {{ event_virtual_platform }}</p>
+        </div>
+    </div>
+
+    <!-- Chart Grid for Event Statistics -->
+    <div class="row" id="charts">
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">Attendance per Day</h2>
+            <canvas id="attendanceChart"></canvas>
+        </div>
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">RSVP and Attendance Comparison</h2>
+            <canvas id="rsvpAttendanceChart"></canvas>
+        </div>
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">Gender Ratio</h2>
+            <canvas id="genderRatioChart"></canvas>
+        </div>
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">Age Range Distribution</h2>
+            <canvas id="ageRangeChart"></canvas>
+        </div>
+    </div>
+
+     <!-- Attendance List Section -->
+    <div class="card mt-5" id="attendance-list-section">
+        <div class="card-header">
+            <h3>Attendance List</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered" id="attendance-list">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Age Range</th>
+                        <th>Gender</th>
+                        <th>PWD</th>
+                        <th>4Ps</th>
+                        <th>Affiliation</th>
+                    </tr>
+                </thead>
+                <tbody id="attendance-list-body">
+                    <!-- JavaScript will populate this list -->
+                </tbody>
+            </table>
+            <button class="btn btn-primary btn-sm mt-2" id="toggle-attendance-list">Show More</button>
+        </div>
+    </div>
+
+    <!-- RSVP List Section -->
+    <div class="card mt-5" id="rsvp-list-section">
+        <div class="card-header">
+            <h3>RSVP List</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered" id="rsvp-list">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="rsvp-list-body">
+                    <!-- JavaScript will populate this list -->
+                </tbody>
+            </table>
+            <button class="btn btn-primary btn-sm mt-2" id="toggle-rsvp-list">Show More</button>
+        </div>
+    </div>
+
+
+    <!-- Event Insights Section -->
+    <div class="mt-5" id="event-insights">
+        <h2>Other Event Statistics</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Total Number of Attendees:</strong> <span id="total-attendees"></span>
+            </li>
+            <li class="list-group-item">
+                <strong>Number of PWD attendees:</strong> <span id="pwd-count"></span> (<span id="pwd-percentage"></span>%)
+            </li>
+            <li class="list-group-item">
+                <strong>Number of 4Ps attendees:</strong> <span id="four-ps-count"></span> (<span id="four-ps-percentage"></span>%)
+            </li>
+            <li class="list-group-item">
+                <strong>RSVP to Attendance Conversion:</strong> <span id="rsvp-to-attendance-count"></span> (<span id="rsvp-to-attendance-percentage"></span>%)
+            </li>
+            <li class="list-group-item">
+                <strong>Percentage of freelancers with matching skills:</strong>
+                <div class="progress progress-container">
+                    <div id="matching-skills-bar" class="progress-bar" role="progressbar"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center align-items-center gap-3 mb-4">
+        <!-- PDF Export Button -->
+        <button class="btn btn-secondary w-50 mx-2" style="height: 50px;" id="export-report" onclick="exportOverallReport()">Download PDF Report</button>
+    
+        <!-- Excel Export Button -->
+        <button class="btn btn-primary w-50 mx-2" style="height: 50px;" onclick="exportEventStatisticsExcel()">Download Excel Report</button>
+    </div>
+    
+    
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
+<script src="{% static 'js/generateEventStatistic.js' %}"></script>
+
+
+<script>
+    const chartDataForReport = {};
+    function exportEventStatisticsExcel() {
+        const eventId = "{{ event_id }}";  // Make sure `event_id` is available in your template context
+        window.location.href = `/export-event-statistics-excel/${eventId}/`;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const eventId = {{ event_id }};
+        
+        fetch(`/admin/event_statistics/data/${eventId}/`)
+            .then(response => response.json())
+            .then(data => {
+                displayInsights(data);
+                populateLists(data);
+                createCharts(data);
+
+                  // Set up export button to generate PDF
+                  document.getElementById('export-report').addEventListener('click', () => {
+                    generateEventPDF({
+                        title: "Overall Event Statistics Report",
+                        eventDetails: {
+                            description: "{{ event_title|escapejs}}",
+                            organizer: "{{ event_organizer|escapejs }}",
+                            locationType: "{{ event_location_type|escapejs }}",
+                            locationName: "{{ event_location_name|escapejs}}",
+                            virtualPlatform: "{{ event_virtual_platform|escapejs }}",
+                        },
+                        charts: [
+                            { id: "attendanceChart", label: "Attendance Per Day", data: chartDataForReport.attendance },
+                            { id: "rsvpAttendanceChart", label: "RSVP Attendance Comparison", data: chartDataForReport.rsvp },
+                            { id: "genderRatioChart", label: "Gender Ratio Distribution", data: chartDataForReport.genderRatio },
+                            { id: "ageRangeChart", label: "Age Range Distribution", data: chartDataForReport.ageRange },
+                        ],
+                        insights: [
+                            ["Total Number of Attendees", document.getElementById('total-attendees').innerText],
+                            ["Number of PWD attendees", `${document.getElementById('pwd-count').innerText} (${document.getElementById('pwd-percentage').innerText}%)`],
+                            ["Number of 4Ps attendees", `${document.getElementById('four-ps-count').innerText} (${document.getElementById('four-ps-percentage').innerText}%)`],
+                            ["RSVP to Attendance Conversion", `${document.getElementById('rsvp-to-attendance-count').innerText} (${document.getElementById('rsvp-to-attendance-percentage').innerText}%)`],
+                            ["Percentage of freelancers with matching skills", `${document.getElementById('matching-skills-bar').innerText}`]
+                        ],
+                        fileName: "Event_Detail_Report.pdf",
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching event statistics:', error));
+    });
+
+    function displayInsights(data) {
+        document.getElementById('total-attendees').innerText = data.total_attendees;
+        document.getElementById('pwd-count').innerText = data.pwd_count;
+        document.getElementById('pwd-percentage').innerText = data.pwd_percentage.toFixed(2);
+        document.getElementById('four-ps-count').innerText = data.four_ps_count;
+        document.getElementById('four-ps-percentage').innerText = data.four_ps_percentage.toFixed(2);
+        document.getElementById('rsvp-to-attendance-count').innerText = data.rsvp_to_attendance_count;
+        document.getElementById('rsvp-to-attendance-percentage').innerText = data.rsvp_to_attendance_percentage.toFixed(2);
+        const matchingSkillsPercentage = data.matching_skills_percentage.toFixed(2);
+        const matchingSkillsBar = document.getElementById('matching-skills-bar');
+        matchingSkillsBar.style.width = `${matchingSkillsPercentage}%`;
+        matchingSkillsBar.innerText = `${matchingSkillsPercentage}%`;
+    }
+
+    function populateLists(data) {
+        const attendanceList = document.getElementById('attendance-list-body');
+        data.attendance.forEach(att => {
+            const row = `<tr>
+                <td>${att.name}</td>
+                <td>${new Date(att.date).toLocaleDateString()}</td>
+                <td>${att.age_range}</td>
+                <td>${att.gender}</td>
+                <td>${att.pwd ? 'Yes' : 'No'}</td>
+                <td>${att.four_ps ? 'Yes' : 'No'}</td>
+                <td>${att.affiliation || '-'}</td>
+            </tr>`;
+            attendanceList.insertAdjacentHTML('beforeend', row);
+        });
+
+        const rsvpList = document.getElementById('rsvp-list-body');
+        data.rsvp.forEach(rsvp => {
+            const row = `<tr>
+                <td>${rsvp.user__username}</td>
+                <td>${rsvp.status}</td>
+                <td>${new Date(rsvp.timestamp).toLocaleString()}</td>
+            </tr>`;
+            rsvpList.insertAdjacentHTML('beforeend', row);
+        });
+
+        // Show/Hide functionality for attendance list
+        toggleRows('attendance-list-body', 'toggle-attendance-list');
+
+        // Show/Hide functionality for RSVP list
+        toggleRows('rsvp-list-body', 'toggle-rsvp-list');
+    }
+
+    function toggleRows(tableBodyId, toggleButtonId) {
+        const tableBody = document.getElementById(tableBodyId);
+        const toggleButton = document.getElementById(toggleButtonId);
+
+        if (tableBody.rows.length > 5) {
+            // Initially hide rows after the 5th
+            Array.from(tableBody.rows).forEach((row, index) => {
+                if (index >= 5) {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Toggle functionality
+            toggleButton.addEventListener('click', () => {
+                const hiddenRows = Array.from(tableBody.rows).filter(row => row.style.display === 'none');
+                if (hiddenRows.length > 0) {
+                    // Show all rows
+                    hiddenRows.forEach(row => (row.style.display = 'table-row'));
+                    toggleButton.textContent = 'Show Less';
+                } else {
+                    // Hide rows after the 5th
+                    Array.from(tableBody.rows).forEach((row, index) => {
+                        if (index >= 5) {
+                            row.style.display = 'none';
+                        }
+                    });
+                    toggleButton.textContent = 'Show More';
+                }
+            });
+        } else {
+            // Hide the toggle button if there are 5 or fewer rows
+            toggleButton.style.display = 'none';
+        }
+    }
+
+    function createCharts(data) {
+        createAttendanceChart(data.attendance_by_date);
+        createRSVPAttendanceChart(data);
+        createGenderRatioChart(data.gender_ratio);
+        createAgeRangeChart(data.age_distribution);
+    }
+
+    function createAttendanceChart(attendanceData) {
+        const dates = attendanceData.map(item => item.date);
+        const counts = attendanceData.map(item => item.count);
+        chartDataForReport.attendance = attendanceData.map(item => [item.date, item.count]);
+
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: { labels: dates, datasets: [{ label: 'Attendance', data: counts, backgroundColor: 'rgba(75, 192, 192, 0.2)', borderColor: 'rgba(75, 192, 192, 1)', borderWidth: 1 }] },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: true, position: 'top' }, title: { display: true, text: 'Attendance Per Day' } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Count' } }, x: { title: { display: true, text: 'Date' } } }
+            }
+        });
+    }
+
+    function createRSVPAttendanceChart(data) {
+        chartDataForReport.rsvp = [
+            ["Interested", data.interested_count, data.interested_percentage.toFixed(2)],
+            ["Attending", data.attending_count, data.attending_percentage.toFixed(2)],
+            ["Not Attending", data.not_attending_count, data.not_attending_percentage.toFixed(2)],
+            ["Converted Attendance", data.rsvp_to_attendance_count, data.rsvp_to_attendance_percentage.toFixed(2)]
+        ];
+
+        const ctx = document.getElementById('rsvpAttendanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Interested', 'Attending', 'Not Attending', 'Converted Attendance'],
+                datasets: [
+                    { label: 'RSVP Count', data: [data.interested_count, data.attending_count, data.not_attending_count, data.rsvp_to_attendance_count], backgroundColor: 'rgba(153, 102, 255, 0.2)', borderColor: 'rgba(153, 102, 255, 1)', borderWidth: 1 },
+                    { label: 'Percentage (%)', data: [data.interested_percentage, data.attending_percentage, data.not_attending_percentage, data.rsvp_to_attendance_percentage], backgroundColor: 'rgba(255, 159, 64, 0.2)', borderColor: 'rgba(255, 159, 64, 1)', borderWidth: 1 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { 
+                    legend: { display: true, position: 'top' }, 
+                    title: { display: true, text: 'RSVP and Attendance Comparison' },  
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.datasetIndex === 1) { // Check if it's the second dataset
+                                    return `${context.label}: ${context.raw}%`;
+                                } else {
+                                    return `${context.label}: ${context.raw}`;
+                                }
+                            }
+                        }
+                    
+                } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Count / Percentage' } }, x: { title: { display: true, text: 'RSVP Status' } } }
+            }
+        });
+    }
+
+    function createGenderRatioChart(genderData) {
+        const labels = genderData.map(item => item.gender);
+        const counts = genderData.map(item => item.count);
+        chartDataForReport.genderRatio = genderData.map(item => [item.gender, item.count]);
+
+        const ctx = document.getElementById('genderRatioChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{ label: 'Gender Ratio', data: counts, backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'], borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'], borderWidth: 1 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: true, position: 'top' }, title: { display: true, text: 'Gender Ratio Distribution' } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Count' } }, x: { title: { display: true, text: 'Gender' } } }
+            }
+        });
+    }
+
+    function createAgeRangeChart(ageDistribution) {
+        const ageRangeMapping = { 'A': '20 below', 'B': '20-29', 'C': '30-39', 'D': '40-49', 'E': '50+' };
+        const ageRanges = ['20 below', '20-29', '30-39', '40-49', '50+'];
+        const counts = ageRanges.map(label => {
+            const code = Object.keys(ageRangeMapping).find(key => ageRangeMapping[key] === label);
+            const item = ageDistribution.find(a => a.age_range === code);
+            return item ? item.count : 0;
+        });
+        chartDataForReport.ageRange = ageRanges.map((label, index) => [label, counts[index]]);
+
+        const ctx = document.getElementById('ageRangeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ageRanges,
+                datasets: [{ 
+                    label: 'Age Range Distribution', 
+                    data: counts, 
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)', 
+
+                    ], 
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)', 
+                    ], 
+                    borderWidth: 1 
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: true, position: 'top' }, title: { display: true, text: 'Age Range Distribution' } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Count' } }, x: { title: { display: true, text: 'Age Range' } } }
+            }
+        });
+    }
+  
+    
+    // Helper function for loading images
+    function getBase64ImageFromURL(url, callback) {
+        const img = new Image();
+        img.setAttribute('crossOrigin', 'anonymous');
+        img.onload = function() {
+            const canvas = document.createElement("canvas");
+            canvas.width = this.width;
+            canvas.height = this.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(this, 0, 0);
+            const dataURL = canvas.toDataURL("image/png");
+            callback(dataURL);
+        };
+        img.src = url;
+    }
+    
+    
+</script>
+{% endblock %}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Charts</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"> <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap 4.5 -->
+</head>
+<body>
+    <div class="container-fluid mt-4">
+        <h1 class="text-center mb-4">Charts</h1>
+        <hr>
+
+        <!-- Demographics Section -->
+        <h3 class="text-primary mb-3">Demographics</h3>
+        <div class="row">
+               <!-- Profile Charts -->
+               <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-user-circle fa-2x mr-2 text-primary mb-3"></i>User Charts</h5>
+                        <p class="card-text">Comprehensive insights on user join rate.</p>
+                        <a href="{% url 'profile_charts' %}" class="btn btn-primary">View Charts</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gender Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-venus-mars fa-2x mr-2 text-primary mb-3"></i>Gender Chart</h5>
+                        <p class="card-text">View data distribution by gender.</p>
+                        <a href="{% url 'gender_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-globe fa-2x mr-2 text-primary mb-3"></i>Region Chart</h5>
+                        <p class="card-text">Explore data distribution by region.</p>
+                        <a href="{% url 'region_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Province Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-map fa-2x mr-2 text-primary mb-3"></i>Province Chart</h5>
+                        <p class="card-text">View data for different provinces.</p>
+                        <a href="{% url 'province_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- City Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-city fa-2x mr-2 text-primary mb-3"></i>City Chart</h5>
+                        <p class="card-text">Analyze data based on cities.</p>
+                        <a href="{% url 'city_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barangay Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-map-marker-alt fa-2x mr-2 text-primary mb-3"></i>Barangay Chart</h5>
+                        <p class="card-text">View data based on barangays.</p>
+                        <a href="{% url 'barangay_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+
+        <!-- Skills & Specializations Section -->
+        <h3 class="text-primary mb-3">Background Information</h3>
+        <div class="row">
+            <!-- Skills Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-chart-bar fa-2x mr-2 text-primary mb-3"></i>Skills Chart</h5>
+                        <p class="card-text">Insights on skills distribution.</p>
+                        <a href="{% url 'skills-chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Language Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-language fa-2x mr-2 text-primary mb-3"></i>Language Chart</h5>
+                        <p class="card-text">Analyze data based on languages.</p>
+                        <a href="{% url 'language_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Specialization Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-tools fa-2x mr-2 text-primary mb-3"></i>Specialization Chart</h5>
+                        <p class="card-text">Analyze specializations and trends.</p>
+                        <a href="{% url 'specialization_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Past Experience Chart -->
+            {% comment %} <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-briefcase fa-2x mr-2 text-primary mb-3"></i>Past Experience Chart</h5>
+                        <p class="card-text">View trends in past experiences.</p>
+                        <a href="{% url 'past_experience_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+
+        <hr>
+
+        <!-- Events & Experiences Section -->
+        <h3 class="text-primary mb-3">Events</h3>
+        <div class="row">
+            <!-- Event Chart -->
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-calendar-alt fa-2x mr-2 text-primary mb-3"></i>Event Chart</h5>
+                        <p class="card-text">View insights and data related to events.</p>
+                        <a href="{% url 'event_chart' %}" class="btn btn-primary">View Chart</a>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

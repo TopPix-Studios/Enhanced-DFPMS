@@ -1,0 +1,137 @@
+{% extends 'sign-up.html' %}
+
+{% block title %}Submit Project{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<div  id="step4" class='registration-step'> 
+    <div id="submitProject" class="submit-project-form">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <h1> Sign up </h1>
+        <form method="post" enctype="multipart/form-data" id="projectForm" class="form-grid">
+            {% csrf_token %}
+            <div class="resume-form form-column">
+                
+                <label for="id_resume_file">Upload Resume:</label>
+                <div id="fileDropArea" class="drop-area">
+                    <span class="material-symbols-outlined">
+                        cloud
+                        </span>
+                    <div class="drop-text">Drag and drop your file here</div>
+                    <input type="file" name="resume_file" id="id_resume_file" class="file-input" accept=".pdf, .doc, .docx">
+                    <div id="resumeDropLabel" class="drop-label"></div>
+                  
+                </div>
+                <p>We accept any type of image, doc, docx, rtf, txt, pdf up to 2mb.</p>
+
+              
+            </div>
+
+
+            <div class="project-form form-column">
+                <label id='id_title' for="id_title">Upload your Recent Project:</label>
+                <input type="text" name="title" id="id_title" placeholder="Title">
+                <textarea name="description" id="id_description" placeholder="Description"></textarea>
+                <label for="id_pdf_file">PDF File:</label>
+                <div id="projectDropArea" class="drop-area">
+                    <span class="material-symbols-outlined">
+                        cloud
+                        </span>
+                    <div class="drop-text">Drag and drop your project file here</div>
+                    <input type="file" name="pdf_file" id="id_pdf_file" class="file-input" accept=".pdf">
+                    <div id="projectDropLabel" class="drop-label"></div>
+                </div>
+                <p>We accept any type of image, doc, docx, rtf, txt, pdf up to 2mb.</p>       
+            </div>
+            <div class="form-check">
+                
+                <input class="form-check-input" type="checkbox" value="" id="confirmApproval" required>
+                <label class="form-check-label" for="confirmApproval">
+                    I confirm that I have read and agree to the Terms and Conditions.
+                </label>
+            </div>
+            <div class="button-container">
+                <button type="button" onclick="window.history.back()">Previous</button>
+                <button type="submit" class="submit-project">Next</button>
+            </div>
+        </form>
+    </div>    
+</div>
+
+
+<script>
+    document.getElementById('projectForm').addEventListener('submit', function (event) {
+        // Validate that there is at least one project before submitting the form
+        if (document.querySelectorAll('.project-form').length > 1) {
+            alert('Please submit only one project at a time.');
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+
+    const fileDropArea = document.getElementById('fileDropArea');
+    const resumeDropLabel = document.getElementById('resumeDropLabel');
+
+    fileDropArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        fileDropArea.classList.add('drag-over');
+        resumeDropLabel.innerText = 'Drop here';
+    });
+
+    fileDropArea.addEventListener('dragleave', () => {
+        fileDropArea.classList.remove('drag-over');
+        resumeDropLabel.innerText = '';
+    });
+
+    fileDropArea.addEventListener('drop', (event) => {
+        event.preventDefault();
+        fileDropArea.classList.remove('drag-over');
+        resumeDropLabel.innerText = '';
+    
+        const fileInput = document.getElementById('id_resume_file');
+        const files = event.dataTransfer.files;
+    
+        if (files.length > 0) {
+            fileInput.files = files;
+            resumeDropLabel.innerText = files[0].name;  // Display the file name in the label
+        }
+    });
+
+
+    const projectDropArea = document.getElementById('projectDropArea');
+    const projectDropLabel = document.getElementById('projectDropLabel');
+
+    projectDropArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        projectDropArea.classList.add('drag-over');
+        projectDropLabel.innerText = 'Drop here';
+    });
+
+    projectDropArea.addEventListener('dragleave', () => {
+        projectDropArea.classList.remove('drag-over');
+        projectDropLabel.innerText = '';
+    });
+
+    projectDropArea.addEventListener('drop', (event) => {
+        event.preventDefault();
+        projectDropArea.classList.remove('drag-over');
+        projectDropLabel.innerText = '';
+    
+        const fileInput = document.getElementById('id_pdf_file');
+        const files = event.dataTransfer.files;
+    
+        if (files.length > 0) {
+            fileInput.files = files;
+            projectDropLabel.innerText = files[0].name;  // Display the file name in the label
+        }
+    });
+
+    
+
+</script>
+{% endblock %}

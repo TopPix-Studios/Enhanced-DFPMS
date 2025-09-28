@@ -1,0 +1,189 @@
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+}
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+    --button-bg-color: #0a2472;
+    --button-hover-bg-color: #1a43bf;
+    --button-danger-bg-color: #0a2472;
+    --button-danger-hover-bg-color: #1a43bf;
+}
+
+.languages-page {
+    width: auto;
+    margin: auto;
+    padding: 1rem;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.back-button {
+    background-color: var(--secondary-color);
+    color: #ebecff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 5px;
+}
+
+
+.back-button:hover {
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.language-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 88vw); /* Creates exactly 4 columns, each with a minimum width of 250px */
+    gap: 20px;
+}
+
+.lang-prof {
+    font-size: 14px;  /* Set the desired font size */
+    color: #333;      /* Set the desired text color */
+}
+
+.first-word {
+    font-weight: bold; /* Make the first word bold */
+}
+
+.language-card {
+    background-color: var(--background-color);
+    border-bottom: #00072d 2px solid;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for the effects */
+}
+
+.language-card:hover {
+    transform: translateY(-5px); /* Slightly lift the card */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+
+    .button-container {
+        display: flex;
+    }
+}
+
+
+.update-button,
+.delete-button,
+.remove-button{
+    background-color: #ebecff !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif; /* Use the custom font for buttons */
+    font-size: 16px; /* Adjust font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem !important; /* Circular button */
+    width: 40px !important; /* Fixed size for buttons */
+    height: 40px !important;
+    margin: 0 !important;
+    transition: all 0.3s, ease-in-out;
+
+}
+
+.update-button:hover,
+.delete-button:hover,
+.remove-button:hover {
+    background-color: var(--secondary-color)  !important;
+    color:#ebecff !important;
+}
+
+.language-card-btn-add {
+    background-color: var(--background-color);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 50px;
+    justify-content: center;
+    margin-left: auto;
+    margin-bottom: 1rem;
+}
+
+
+.language-card-btn-add button{
+    width: 50px;
+    height: 50px;
+    background-color: unset !important;
+    font-size: 3rem;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+.language-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: 'Garet', sans-serif;
+    color: var(--primary-color);
+}
+
+.language-icon {
+    margin-right: 10px;
+    font-size: 24px;
+    color: var(--accent-color);
+}
+
+.language-remove-form {
+    align-self: flex-end;
+}
+
+.remove-button {
+    background-color: #ebecff !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem !important;
+    width: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+}
+
+.remove-button:hover {
+    color: var(--button-danger-hover-bg-color);
+}
+
+.header-container-col {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-right: auto;
+}

@@ -1,0 +1,127 @@
+{% extends "admin/profile_chart.html" %}
+{% load static %}
+{% block chart_content %}
+  <div class="col-md-11">
+    <hr>
+    <div id="filters">
+      <form id="filtersForm" method="GET" class="filter-form">
+        <h5 class="text-bold">Gender Filter:</h5>
+
+        <div id="genderFilters" class="form-group">
+          <label for="genderFilter">Gender:</label>
+          <select id="genderFilter" name="gender" class="form-control">
+            <option value="">All</option>
+            {% for gender in unique_genders %}
+            <option value="{{ gender }}" {% if request.GET.gender == gender %}selected{% endif %}>{{ gender }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <hr>
+        <div class="form-group full-width d-flex align-items-end">
+            <button type="submit" id="submitFilters" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+    <div id="genderChartDiv" class="chart-container">
+      <h3 class="text-bold">Freelancer Gender Distribution Chart <i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h3>
+      <canvas id="genderChart"></canvas>
+    </div>
+    <hr>
+    <div class="container analysis-section">
+      <h2 class="text-bold">Analysis of Gender Distribution Chart</h2>
+      <p>This section provides insights into the trends and patterns observed in the Gender Distribution Chart.</p>
+      <ul>
+        {% for insight in insights %}
+          <li>{{ insight|safe }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <form id="exportForm" method="POST" action="{% url 'export_gender_chart_to_pdf' %}">
+      {% csrf_token %}
+      <input type="hidden" id="chartImage" name="chartImage">
+  
+      <div class="form-group d-flex flex-row justify-content-end align-items-center gap-2 w-100">
+    
+        <!-- Export to PDF -->
+        <button type="button" id="exportButton" class="btn mx-2 btn-secondary w-50" style="height: 50px;">Export to PDF</button>
+    
+        <!-- Export to Excel -->
+        <button type="button" class="btn mx-2 btn-primary w-50" style="height: 50px;" onclick="exportGenderChartToExcel()">Export to Excel</button>
+    
+    </div>
+    
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+  <script>
+    tippy('#chartInfoIcon', {
+        content: 'This chart shows the distribution of gender of freelancers. Use the gender filters above to adjust data to specific gender.',
+        placement: 'top',
+    });
+
+    // Gender data for chart
+    const genderData = {{ gender_data|safe }};
+    const genderLabels = genderData.map(e => e.gender);
+    const genderCounts = genderData.map(e => e.count);
+
+    // Create the chart
+    const genderCtx = document.getElementById('genderChart').getContext('2d');
+    const genderChart = new Chart(genderCtx, {
+        type: 'bar',
+        data: {
+            labels: genderLabels,
+            datasets: [{
+                label: 'Gender Distribution',
+                data: genderCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
+    // Export chart and data to PDF using generatePDF.js
+    document.getElementById('exportButton').addEventListener('click', function () {
+        const chartImageData = genderChart.toBase64Image();
+
+        const genderFilter = "{{ request.GET.gender|default:'ALL' }}";
+        const filters = `Gender: ${genderFilter}`;
+
+        const tableHeaders = ['Gender', '# of Users'];
+        const tableData = genderLabels.map((gender, index) => [gender, genderCounts[index]]);
+
+        generatePDF({
+            title: 'Freelancer Gender Distribution Report',
+            chartImageData: chartImageData,
+            filters: filters,
+            tableHeaders: tableHeaders,
+            tableData: tableData,
+            fileName: 'freelancer_gender_distribution_summary.pdf',
+            
+        });
+    });
+    function exportGenderChartToExcel() {
+        const gender = document.getElementById('genderFilter').value;
+        const params = new URLSearchParams();
+        if (gender) {
+            params.append('gender', gender);
+        }
+        window.location.href = `/export-gender-chart-excel/?${params.toString()}`;
+    }
+  
+  
+</script>
+
+
+{% endblock %}

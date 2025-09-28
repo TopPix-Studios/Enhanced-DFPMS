@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your OTP Code</title>
+</head>
+
+<body style="margin:0;padding:0;background:#f4f4f4;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">
+    <tr>
+      <td align="center">
+        <!-- outer wrapper -->
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
+          
+          <!-- header with logo -->
+          <tr>
+            <td align="center" style="padding:20px;background:#1e3a8a;">
+              <img
+                src="https://{{ domain }}{% static 'img/DarkBlue/dark_blue.png' %}"
+                alt="DFPS Logo"
+                width="80"
+                style="display:block;border:0;outline:none;text-decoration:none;"
+              />
+            </td>
+          </tr>
+          
+          <!-- body content -->
+          <tr>
+            <td style="padding:30px;font-family:Arial,sans-serif;color:#333333;line-height:1.5;">
+              <h2 style="margin-top:0;color:#1e3a8a;">Your One-Time Password</h2>
+              <p style="margin:0 0 16px;">
+                Use the code below to complete your login. It’s valid for <strong>10 minutes</strong>.
+              </p>
+              <p style="font-size:28px;font-weight:bold;color:#2c3e50;margin:16px 0;text-align:center;">
+                {{ otp }}
+              </p>
+              <p style="margin:0 0 24px;">
+                If you didn’t request this, you can safely ignore this email.
+              </p>
+              <hr style="border:none;border-top:1px solid #e0e0e0;margin:24px 0;" />
+              <p style="font-size:12px;color:#888888;margin:0;">
+                DFPS · Digital Freelancer Profiling System<br/>
+                General Santos City · gensanity.information@gmail.com
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+        <!-- end outer wrapper -->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

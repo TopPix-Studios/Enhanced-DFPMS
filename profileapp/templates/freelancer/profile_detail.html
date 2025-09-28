@@ -1,0 +1,289 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+
+<header> 
+    <title>DFPS: Digital Freelancer Profiling System - Landing Page</title>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="{% static "event-tab.css" %}">
+
+</header>
+
+<div class="content">
+    <div class="dashboard">
+        <h1 class="welcome-header">Dashboard</h1>
+        <p class="welcome-date">Date: {{ current_date }}</p>
+        <div class="dashboard-box">
+            <div class="dashboard-text">
+                <h2 class="welcome-title">Hello {{ profile.account_id.username }}!</h2>
+                <p class="welcome-1"> Welcome! It's great to have you here.</p>
+                <p class="welcome-1"> Let's make today a productive and successful day together!</p>
+            </div>          
+            <img src="{% static 'img/Login Image.png' %}" alt="Login Image">
+        </div> 
+        <h1 class="welcome-header">Events</h1>
+        <div class="dashboard-box-events">
+            <!-- Tabs Navigation -->
+            <div class="event-tabs">
+                <button class="event-tab-link active" onclick="openEventTab(event, 'EventUpcoming')">Upcoming</button>
+                <button class="event-tab-link" onclick="openEventTab(event, 'EventAttended')">Attended</button>
+                <button class="event-tab-link" onclick="openEventTab(event, 'EventPrevious')">Previous</button>
+            </div>
+        
+            <!-- Upcoming Events Tab -->
+            <div id="EventUpcoming" class="event-tab-content active">
+                {% for event in upcoming_events %}
+                    <div class="event-db-card">
+                        <div class="event-db-card-header" style="position: relative;">
+                            {% if event.image %}
+                            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                            {% else %}
+                            <img src="{% static 'img/event.png' %}" alt="{{ event.title }}">
+                            {% endif %}
+                            <div class="event-db-date-box">
+                                <p class="event-db-date-day-name" style="width: unset">{{ event.start_datetime|date:'D' }}</p>
+                                <p class="event-db-date-day"  style="width: unset">{{ event.start_datetime|date:'d' }}</p>
+                                <p class="event-db-date-month-year"  style="width: unset">{{ event.start_datetime|date:'M Y' }}</p>
+                            </div>
+                        </div>
+                        <div class="event-db-card-body">
+                            <h3>{{ event.title }}</h3>
+                            <p class="location-text"><strong>Location:</strong> {{ event.location }}</p>
+        
+                            <!-- RSVP status -->
+                            {% if event.rsvp_status %}
+                            <p class="rsvp-text"><strong>Your RSVP:</strong> {{ event.rsvp_status|title }}</p>
+                            {% else %}
+                            <p class="rsvp-text"><strong>Your RSVP:</strong> Not Responded</p>
+                            {% endif %}
+        
+                            <a href="{% url 'event_detail_view' event.id %}" id="redirectButton" style="width: fit-content; margin-bottom: 0.5rem;" class="event-read-more">
+                                <i class="fas fa-calendar"></i> Read More
+                            </a>
+                        </div>
+                        <br>
+                    </div>
+                {% empty %}
+                    <div class="event-db-card-none">
+                        <div class="event-db-card-body">
+                            <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                            <p class="event-card-missing-text" >No upcoming events at the moment.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        
+            <!-- Attended Events Tab -->
+            <div id="EventAttended" class="event-tab-content">
+                {% for event in attended_events %}
+                    <div class="event-db-card">
+                        <div class="event-db-card-header" style="position: relative;">
+                            {% if event.image %}
+                            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                            {% else %}
+                            <img src="{% static 'img/event.png' %}" alt="{{ event.title }}">
+                            {% endif %}
+                            <div class="event-db-date-box">
+                                <p class="event-db-date-day-name">{{ event.start_datetime|date:'D' }}</p>
+                                <p class="event-db-date-day">{{ event.start_datetime|date:'d' }}</p>
+                                <p class="event-db-date-month-year">{{ event.start_datetime|date:'M Y' }}</p>
+                            </div>
+                        </div>
+                        <div class="event-db-card-body">
+                            <h3>{{ event.title }}</h3>
+                            <p class="location-text"><strong>Location:</strong> {{ event.location }}</p>
+                            <a href="{% url 'event_detail_view' event.id %}" id="redirectButton" style="width: fit-content; margin-bottom: 0.5rem;" class="event-read-more" >
+                                <i class="fas fa-calendar"></i> Read More
+                            </a>
+                        </div>
+                        <br>
+                    </div>
+                {% empty %}
+                    <div class="event-db-card-none">
+                        <div class="event-db-card-body">
+                            <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+
+                            <p class="event-card-missing-text">No attended events at the moment.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        
+            <!-- Previous Events Tab -->
+            <div id="EventPrevious" class="event-tab-content">
+                {% for event in previous_events %}
+                    <div class="event-db-card">
+                        <div class="event-db-card-header" style="position: relative;">
+                            {% if event.image %}
+                            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                            {% else %}
+                            <img src="{% static 'img/event.png' %}" alt="{{ event.title }}">
+                            {% endif %}
+                            <div class="event-db-date-box">
+                                <p class="event-db-date-day-name">{{ event.start_datetime|date:'D' }}</p>
+                                <p class="event-db-date-day">{{ event.start_datetime|date:'d' }}</p>
+                                <p class="event-db-date-month-year">{{ event.start_datetime|date:'M Y' }}</p>
+                            </div>
+                        </div>
+                        <div class="event-db-card-body">
+                            <h3>{{ event.title }}</h3>
+                            <p class="location-text"><strong>Location:</strong> {{ event.location }}</p>
+                            <a href="{% url 'event_detail_view' event.id %}" id="redirectButton" style="width: fit-content; margin-bottom: 0.5rem;" class="event-read-more">
+                                <i class="fas fa-calendar"></i> Read More
+                            </a>
+                        </div>
+                        <br>
+                    </div>
+                {% empty %}
+                    <div class="event-db-card-none">
+                        <div class="event-db-card-body">
+                            <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                            <p class="event-card-missing-text">No previous events at the moment.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+        
+    </div>
+    <div class="dashboard-2">
+        <div class="portfolio-announcement-col">
+            <div class="announcement-block">
+                <a href="{% url 'announcement' %}"> <h1  class="welcome-header">Suggested for you</h1> </a>
+
+                {% if announcements %}
+                    {% for announcement in announcements %}
+                        <div class="announcement-container-dashboard">
+                            {% if announcement.image %}
+                                <div class="ann-image">
+                                    <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}">
+                                </div>
+                            {% else %}
+                                <div class="ann-image">
+                                    <img src="{% static 'img/event.png'  %}" alt="{{ announcement.title }}">
+                                </div>
+                            {% endif %}
+                            <div class="ann-con-header">
+                                <h3>{{ announcement.title }}</h3>
+                            </div>
+                            <p class="event-date-header">{{ announcement.created_at }}</p>
+
+                            <p class="ann-location"><i class="fas fa-map-marker-alt"></i> {{ announcement.address }}</p>
+                            <p>{{ announcement.author.username }}</p>
+                            <p>{{ announcement.content }}</p>
+                            <div class="tags-container">
+                                <div class="tag-p">
+                                    <p>Tags:</p>
+                                </div>
+                                {% for tag in announcement.tags.all %}
+                                    <a href="#" class="tag-box">{{ tag }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+            
+                <div class="event-db-card-none">
+                    <div class="event-db-card-body">
+                        <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+                        <p>No announcements for today.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="calendar-event-col">
+            <div class="calendar">
+                <a href="{% url 'event' %}">  <h1 style="margin-bottom: 10px" class="welcome-header">Event Calendar</h1> </a>
+                {% include "freelancer/calendar.html" %}
+            </div>
+            <div class="events">
+                <br>
+                <a href="{% url 'event' %}">  <h1 class="welcome-header">Events</h1> </a>
+                
+                <div class="event-container">
+                    <div class="event-header-box">
+                        <div class="date">
+                            <p class="date-month-day">{{ current_date|date:"F d" }}</p>
+                            <p class="date-day">{{ current_date|date:"l" }}</p>
+                        </div>
+                    </div>
+                    {% if current_day_events %}
+                        <div class="today-events">
+                            {% for event in current_day_events %}
+                                <div class="event">
+                                    <p>{{ event.start_datetime|time:"g:i A" }}</p>
+                                    <span class="event-divider"></span>
+                                    <a href="{% url 'event_detail_view' event.id %}">{{ event.title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                    {% else %}
+                        <div class="event" style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                            <p>No events today.</p>
+                        </div>
+                    {% endif %}
+                    {% if tomorrow_events %}
+                        <div class="tomorrow-con">
+                            <h3>TOMORROW</h3>
+                            {% for event in tomorrow_events %}
+                                <div class="event">
+                                    <p>{{ event.start_datetime|time:"g:i A" }}</p>
+                                    <span class="event-divider"></span>
+                                    <a href="{% url 'event_detail_view' event.id %}">{{ event.title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if next_week_events %}
+                        <div class="tomorrow-con">
+                            <h3>Next 7 days Events</h3>
+                            {% for event in next_week_events %}
+                                <div class="event">
+                                    <p>{{ event.start_datetime|time:"g:i A" }}</p>
+                                    <span class="event-divider"></span>
+                                    <a href="{% url 'event_detail_view' event.id %}">{{ event.title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if not current_day_events and not tomorrow_events and not next_week_events %}
+                        <div class="event" style="display: flex; justify-content: center; align-items: center; text-align: center; width: 80%; margin: 30px;">
+                            <p>There are currently no upcoming events.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function openEventTab(evt, tabName) {
+        var i, eventTabContent, eventTabLinks;
+    
+        // Hide all event tab contents
+        eventTabContent = document.getElementsByClassName("event-tab-content");
+        for (i = 0; i < eventTabContent.length; i++) {
+            eventTabContent[i].style.display = "none";
+        }
+    
+        // Remove active class from all event tabs
+        eventTabLinks = document.getElementsByClassName("event-tab-link");
+        for (i = 0; i < eventTabLinks.length; i++) {
+            eventTabLinks[i].className = eventTabLinks[i].className.replace(" active", "");
+        }
+    
+        // Show the current event tab content and mark the tab as active
+        document.getElementById(tabName).style.display = "flex";
+        evt.currentTarget.className += " active";
+    }
+    
+    // Set the first event tab (Upcoming) as default
+    document.getElementById("EventUpcoming").style.display = "flex";
+    
+</script>
+{% endblock %}

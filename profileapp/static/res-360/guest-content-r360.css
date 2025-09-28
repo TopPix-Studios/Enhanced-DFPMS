@@ -1,0 +1,551 @@
+
+@media (max-width: 400.98px) { 
+    .lp-btn-container {
+        flex-direction: row !important;
+        gap: 10px;
+    }
+}
+
+
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) { 
+    /* Styles */
+    .header {
+        grid-template-columns: 100px auto ;
+        height: auto;
+        padding: 10px;
+    }
+
+    .header-logo {
+        font-size: 24px;
+        grid-column: 1;
+        text-align: left;
+        margin-left: 0 !important;
+    }
+
+    .links {
+        display: none;
+    }
+
+    .searchbar {
+        display: none;
+    }
+
+    .header-buttons {
+        grid-column: 2  ;
+        text-align: right;
+    }
+
+    .header-buttons a {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .sign-up-button {
+        font-size: 14px;
+        width: 70px;
+        height: 30px;
+        margin-right: 2px;
+    }
+
+    .menu-icon {
+        display: none;
+    }
+
+    .g-content {
+        width: 100vw;
+        padding: 10px;
+        margin-top: 0.5rem !important;
+        grid-template-columns: 1fr !important;
+    }
+    
+    .dots-design{
+        display: none;
+    }
+    .tagline {
+        width: auto !important;
+        text-align: center;
+        margin-top: 0 !important;
+    } 
+
+    .tagline h1 {
+        font-size: 24px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+    }
+
+    span#special-h1 {
+        color: var(--accent-color);
+        font-family: 'Garet';
+        font-size: 42px !important;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 48px;
+    }
+
+    .tagline h2 {
+        font-size: 16px !important;
+        line-height: 1.4;
+    }
+
+    .tagline p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .lp-btn-container {
+        flex-direction: row !important;
+        gap: 10px;
+    }
+
+    .register-btn {
+        width: 150px !important ;
+        height: 40px ;
+        font-size: 16px !important;
+        line-height: 1.4  ;
+    }
+
+    .learn-btn a {
+        font-size: 16px !important;
+        width: 80% !important;
+    }
+
+    .learn-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .image-showcase {
+        display: none;
+        width: 100%;
+        height: auto;
+        margin: 20px 0;
+        border-radius: 20px;
+    }
+
+    .login-container{
+        background-color: #f2f9fc;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        flex-shrink: 0;
+        border-radius: 16px;
+        position: absolute;
+        width: fit-content !important;
+        height: fit-content !important;
+        padding: 16px !important;
+    }
+
+    .login-divider hr{
+        display: block;
+        width: 40% !important;
+        height: 2px;
+        flex-shrink: 0;
+        background-color: #005A82;
+    }
+    
+    .login-container input{
+        color: #005A82;
+        font-family: Inter;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        width: 300px !important;
+        height: 48px;
+        flex-shrink: 0;
+        background-color: #DCF0FA;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+        border: none;
+        border-radius: 8px;
+    }
+    
+    .third-party-login-container{
+        width: 300px !important;
+        height: 20px;
+        padding: 10px;
+        border-radius: 29px;
+        border: 2px solid #005A82;
+        background: rgba(217, 217, 217, 0.00);
+        align-items: center;
+        margin-bottom: 2px;
+        flex-direction:row ;
+        text-align: center;
+    }
+      
+    #login-button{
+        width: 200px !important;
+        height: 36px;
+        flex-shrink: 0;
+        border-radius: 29px;
+        border: 2px solid #0078AE;
+        background: #0078AE;
+        color: var(--Color, #FFF);
+        font-family: Inter;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    h1#reg-title-page{
+        display: none !important;
+    }
+
+    .registration-container {
+        text-align: center;
+        align-items: center;
+        vertical-align: middle;
+        display: grid;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .center-box{
+        display: flex;
+        flex-direction: column !important;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .breadcrumbs{
+        flex-direction: row !important;
+        width: 80vw !important;
+        gap: 2px !important;
+        margin: 0 auto;
+        margin-top: 1rem;
+    }
+
+    hr.previous, hr.current, hr.br_active{
+        width: 3rem !important;
+        height: 2px !important;
+
+    }
+
+    div.previous, div.br_active {
+        display: none;
+    }
+
+    .sign-up-divider {
+        display: flex;
+        flex-direction: row !important; 
+        align-items: center;
+        vertical-align: middle;
+        justify-content: center !important;
+    }
+    .sign-up-divider hr{
+        width: 30% !important;
+        height: 2px !important;
+    }
+
+    .third-party-login-reg {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: fit-content !important;
+        padding-top: 3rem !important;
+    }
+    
+
+
+    .registration-step {
+        grid-template-columns: unset !important;
+        grid-template-rows: auto 5rem auto !important;
+        width: 95vw !important;
+
+    }
+
+    .registration-step-2 {
+        width: 95vw !important;
+    }
+
+    .sign-up-row-2-2-3 {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: unset;
+        row-gap: unset;
+    }
+    .third-party-login-container-reg {
+        width: 300px !important;
+        height: 20px;
+        padding: 10px;
+        border-radius: 29px;
+        border: 2px solid #005A82;
+        background: rgba(217, 217, 217, 0.00);
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 2rem;
+    }
+
+    .sign-up-col-1 input {
+        width: 300px !important;
+    }
+
+    .input-container.checkbox-container {
+        margin-top: -10px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+    }
+    .sign-up-col-1 input[type="checkbox"] {
+        width: unset !important;
+    }
+        
+
+    .sign-up-2 {
+        flex-direction: column !important;
+        
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .sign-up-row-2 {
+        display: flex !important;
+        flex-direction: row; /* Change flex direction to column */
+        flex-wrap: wrap; /* Allow wrapping of elements */
+        gap: 1rem; /* Optional: Add gap between items */
+    }
+    
+    .sign-up-row-2 input {
+        width: 120px !important;
+        height: 36px;
+        flex-shrink: 0;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        margin-bottom: 1rem; /* Add margin for spacing between inputs */
+    }
+    
+    .sign-up-row-2 > :nth-child(1) {
+        width: 120px !important;
+        height: 36px;
+        flex-shrink: unset !important;
+        order: -1; /* Move these elements to the top */
+    }
+
+    .sign-up-row-2 > :nth-child(4) {
+        width: 120px !important;
+        height: 36px;
+        flex-shrink: unset !important;
+        order: -1; /* Move these elements to the top */
+    }
+    
+    .sign-up-row-2 > :nth-child(4) {
+        order: 1; /* Ensures the fourth child appears right after the first */
+    }
+    
+    .sign-up-row-2-2-3-1 {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+        margin-top: 6vw !important;
+    }
+
+    .signup-input-field{
+        padding: 0 !important;
+    }
+
+    .sign-up-row-2-2 {
+        display: grid;
+        grid-template-columns: repeat(1, 90vw) !important;
+        gap: 0;
+        row-gap: 5px;
+        column-gap: 20px;
+        text-align: center;
+        align-items: center;
+        vertical-align: middle;
+    }
+
+    .sign-up-row-2-2 select {
+        width: 90vw !important;
+        margin-bottom: 5%;
+
+    }
+
+
+
+    .sign-up-row-2-2 label {
+        display: none;
+    }
+
+    .sign-up-row-2-2-1 > :nth-child(1) {
+        grid-area: 1 / 1 / 2 / 2;
+        width: 90vw !important;
+        height: 36px;
+    }
+
+    .sign-up-row-2-2-1 > :nth-child(2) {
+        grid-area: 2 / 1 / 3 / 2;
+        width: 41vw !important;
+        margin: 0;
+        height: 36px;
+    }
+
+    .sign-up-row-2-2-1 {
+        display: flex;
+        flex-wrap: wrap;
+        grid-template-columns: unset!important;
+        grid-template-rows: unset;
+        gap: 20px;
+        text-align: center;
+        align-items: center;
+        vertical-align: middle;
+        margin-top: 20px;
+    }
+
+    .sign-up-row-2-2-1 > :nth-child(3) {
+        grid-area: 2 / 2 / 3 / 3;
+        width: 30vw !important;
+        height: 36px;
+    }
+
+    .sign-up-row-2-2-3 > :nth-child(1) {
+        width: 90vw !important;
+    }
+    .sign-up-row-2-2-3 > :nth-child(2) {
+        width: 90vw !important;
+    }
+    .sign-up-row-2-2-3 > :nth-child(3) {
+        width: 90vw !important;
+    }
+
+    .step-3-container-grid {
+        display:flex !important;
+        flex-direction: column;
+        grid-template-columns: unset !important;
+        grid-template-rows: auto auto !important;
+        width: 80vw;
+        padding: 1rem !important;
+        justify-content: center;
+        align-items: center;
+        vertical-align: middle;
+    }
+
+    .select2-container--default .select2-selection--multiple {
+        width: 18rem !important;
+        height: auto;
+    }
+
+    .formInput2-1 select {
+        width: 18rem !important;
+    }
+    .past-experience-form select {
+        width: 15rem;
+    }
+
+    .signup-input-field-2 {
+        display: flex;
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+    .grid-container {
+        display: flex;
+        flex-direction: column !important;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .resume-form{
+        width: 280px !important;
+    }
+
+    .project-form{
+        width: 280px !important;
+    }
+
+    #pastExperienceFormset {
+        margin-top: 1rem;
+        max-height: 40rem;
+        overflow-y: auto;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        width: auto !important;
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .col-2-header-row {
+        flex-direction: column;
+    }
+
+    #pastExperienceFormset .form-row {
+        width: auto;
+    }
+
+    .formInput2-1fs-button.circle-icon {
+        width: 48px;
+        margin: 0 auto;
+    }
+
+    .resume-container {
+    
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        padding: 20px 0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .file-name-container {
+        margin-left: 0;
+        align-self: baseline;
+    }
+    .formInput2-1fs input{
+        width: 240px !important;
+    }
+
+    .project-container {
+        flex-direction: column;
+    }
+    
+    .project-text {
+        align-self: baseline;
+    }
+
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    #button-container-pe {
+        flex-direction: row !important;
+    }
+    
+   
+    .past-experience-form input[type="date"] {
+        width: 220px !important;
+    }
+
+    .formInput2-1fs#country {
+        margin-left: 1rem;
+    }
+}
+    
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) { 
+    /* Styles */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) { 
+    /* Styles */
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) { 
+    /* Styles */
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    /* Styles */
+}

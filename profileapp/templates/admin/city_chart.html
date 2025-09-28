@@ -1,0 +1,117 @@
+{% extends "admin/profile_chart.html" %}
+{% load static %}
+{% block chart_content %}
+  <div class="col-md-11">
+    <hr>
+    <div id="filters">
+      <form id="filtersForm" method="GET" class="filter-form">
+        <h5 class="text-bold">City Filter:</h5>
+        <div id="cityFilters" class="form-group">
+          <label for="cityFilter">City:</label>
+          <select id="cityFilter" name="city" class="form-control">
+            <option value="">All</option>
+            {% for city in unique_cities %}
+            <option value="{{ city }}" {% if request.GET.city == city %}selected{% endif %}>{{ city }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <hr>
+        <div class="form-group full-width d-flex align-items-end">
+          <button type="submit" id="submitFilters" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+    <div id="cityChartDiv" class="chart-container">
+      <h3 class="text-bold" >Freelancer City Distribution Chart <i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h3>
+      <canvas id="cityChart"></canvas>
+    </div>
+    <hr>
+    <div class="container analysis-section">
+      <h2 class="text-bold">Analysis of City Distribution Chart</h2>
+      <p>This section provides insights into the trends and patterns observed in the City Distribution Chart.</p>
+      <ul>
+        {% for insight in insights %}
+          <li>{{ insight|safe }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="form-group d-flex flex-row justify-content-end align-items-center gap-2" style="width: 70vw;">
+
+      <!-- Export to PDF -->
+      <button type="button" id="exportButton" class="btn btn-secondary w-50 mx-2" style="height: 50px;">Export to PDF</button>
+    
+      <!-- Export to Excel -->
+      <button type="button" class="btn btn-primary w-50 mx-2" style="height: 50px;" onclick="exportCityChartToExcel()">Export to Excel</button>
+    
+    </div>
+    
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="{% static "js/generatePDF.js" %}"></script>
+  <script>
+    tippy('#chartInfoIcon', {
+        content: 'This chart shows the distribution of users per city. Use the city filters above to adjust data to specific city.',
+        placement: 'top',
+    });
+    function exportCityChartToExcel() {
+      const city = document.getElementById('cityFilter').value;
+      const params = new URLSearchParams();
+      if (city) params.append('city', city);
+  
+      window.location.href = `/export-city-chart-excel/?${params.toString()}`;
+  }
+  
+    // City data for chart
+    var cityData = {{ city_data|safe }};
+    var cityLabels = cityData.map(function(e) { return e['city__city']; });
+    var cityCounts = cityData.map(function(e) { return e.count; });
+
+    // Create the chart
+    var cityCtx = document.getElementById('cityChart').getContext('2d');
+    var cityChart = new Chart(cityCtx, {
+        type: 'bar',
+        data: {
+            labels: cityLabels,
+            datasets: [{
+                label: 'City Distribution',
+                data: cityCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Export to PDF Button
+    document.getElementById('exportButton').addEventListener('click', function() {
+        const chartImageData = cityChart.toBase64Image();
+
+        const cityFilter = "{{ request.GET.city|default:'ALL' }}";
+        const filters = `City: ${cityFilter}`;
+
+        const tableHeaders = ['City', '# of Users'];
+        const tableData = cityLabels.map((city, index) => [city, cityCounts[index]]);
+
+        generatePDF({
+            title: 'Freelancer City Distribution Report',
+            chartImageData: chartImageData,
+            filters: filters,
+            tableHeaders: tableHeaders,
+            tableData: tableData,
+            fileName: 'freelancer_city_distribution_summary.pdf',
+        });
+    });
+</script>
+
+
+{% endblock %}

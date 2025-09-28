@@ -1,0 +1,1998 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@font-face {
+  font-family: "Garet";
+  src: url("/static/font/Garet-Book.woff") format("woff");
+}
+
+body {
+  font-family: "Garet";
+}
+
+:root {
+  --primary-color: #00072d;
+  --secondary-color: #051650;
+  --accent-color: #0a2472;
+  --text-color: white;
+  --background-color: #fafafa;
+  --border-color: #1a43bf;
+  --hover-background-color: white;
+  --focus-background-color: #fafafa;
+  --error-color: #f44336;
+
+}
+
+
+/* For valid states */
+input:user-valid,
+select:user-valid,
+textarea:user-valid {
+  border: 2px solid var(--accent-color) !important;
+  background-color: #e0f7fa !important; /* Optional: Light tint for valid inputs */
+  color: var(--accent-color) !important;
+}
+
+/* For invalid states */
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+  border: 2px solid var(--error-color) !important;
+  background-color: #ffebee !important; /* Optional: Light tint for invalid inputs */
+  color: var(--error-color) !important;
+}
+
+/* Autofill styles */
+input:-webkit-autofill {
+  background-color: white !important;
+  -webkit-text-fill-color: var(--primary-color) !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  border: 2px solid var(--secondary-color);
+}
+
+/* Autofill hover state */
+input:-webkit-autofill:hover,
+input:hover {
+  background-color: var(--hover-background-color) !important;
+  border: 2px solid var(--secondary-color) !important;
+}
+
+/* Autofill focus (selected) state */
+input:-webkit-autofill:focus,
+input:focus {
+  background-color: var(--focus-background-color) !important;
+  border: 2px solid var(--secondary-color) !important;
+}
+
+/* Input typing state (focus and active) */
+input:focus,
+input:active {
+  background-color: var(--focus-background-color) !important;
+  border: 2px solid var(--secondary-color) !important;
+  color: var(--primary-color) !important; /* Text color for typing */
+}
+
+input:focus {
+  background-color: var(--focus-background-color) !important;
+  color: var(--primary-color) !important; /* Text color for focus */
+  outline: 0.5px solid var(--secondary-color); /* Remove default browser focus outline */
+}
+
+/* General input text color for consistency */
+input {
+  color: var(
+    --primary-color
+  ) !important; /* Ensure this applies to all input states */
+}
+
+.center-box {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.registration-container {
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+  display: grid;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+h1#reg-title-page {
+  color: var(--primary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+}
+
+.container-join {
+  width: 882px;
+  height: relative;
+  flex-shrink: 0;
+  background-color: #f2f9fc;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))
+    drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  grid-column: 2;
+  padding: 10px;
+  border-radius: 20px;
+  animation: fadeIn 1s ease; /* Apply the fadeIn animation */
+}
+
+.container-join h1 {
+  color: var(--Sky-Blue, #50b8e7);
+  font-family: "Garet";
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.select-type {
+  display: grid;
+  grid-template-columns: 1fr 300px 300px 1fr;
+  grid-column-gap: 50px; /* Adjust the gap value as needed */
+  align-items: center;
+}
+
+.container-join p {
+  color: var(--50b8e7, #000);
+  font-family: "Garet";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.container-join a {
+  color: #005a82;
+  font-family: "Garet";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.select-container {
+  width: 300px; /* Adjust the width as needed */
+  height: 203px;
+  border-radius: 35px;
+  border: 5px solid #005a82;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  background-color: transparent;
+}
+
+.select-container svg {
+  height: 112px;
+  width: 112px;
+  margin: 0;
+  flex-shrink: 0;
+  transform: translate(20px, 30px);
+}
+
+label#sc1 svg {
+  margin-right: 30px;
+}
+
+.select-container h1 {
+  color: #005a82;
+  font-family: "Garet";
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+  margin-top: 20px;
+}
+
+.select-container p {
+  color: #005a82;
+  font-family: "Garet";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.select-container input {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  float: right;
+  margin: 10px;
+}
+
+.select-container#sc1 {
+  grid-column: 2;
+}
+
+.select-container#sc2 {
+  grid-column: 3;
+}
+
+.submit-button {
+  width: 328px;
+  height: 55px;
+  flex-shrink: 0;
+  background-color: #dcf0fa;
+  color: #002232;
+  font-family: "Garet";
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 20px;
+  border: none;
+  margin: 20px;
+}
+
+.select-container:hover {
+  background-color: #dcf0fa; /* Change to your desired background color */
+  border-color: #50b8e7; /* Change to your desired border color */
+}
+
+.select-container input[name="usertype"]:checked {
+  background-color: #dcf0fa; /* Change to your desired background color */
+  border-color: #50b8e7; /* Change to your desired border color */
+}
+
+/* Additional styling for the label (optional) */
+.select-container label {
+  display: block;
+  cursor: pointer;
+}
+/* breadcrumbs css */
+.breadcrumbs {
+  margin-top: 2rem;
+  display: flex;
+  width: 15rem;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.breadcrumbs div {
+  width: auto;
+  height: relative;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+/* Active step */
+.br_active {
+  background-color: green;
+  color: green;
+  display: flex;
+  flex-direction: row;
+}
+.br_active p {
+  color: green;
+}
+.br_active small {
+  color: #777;
+}
+
+/* Current step (dark color like black) */
+.current {
+  background-color: #777;
+  color: #777;
+}
+.current p {
+  color: #777;
+}
+.current small {
+  color: #777;
+}
+
+/* Previous step (greyish) */
+.previous {
+  background-color: lightgray;
+  color: #777;
+  display: flex;
+  flex-direction: row;
+}
+.previous small {
+  color: #777;
+}
+
+/* Active SVG icon */
+.svgactive path,
+.svgactive circle {
+  stroke: green;
+}
+
+/* Current step SVG icon */
+.svgcurrent path,
+.svgcurrent circle {
+  stroke: #777;
+}
+
+/* Previous step SVG icon */
+.svgprevious path,
+.svgprevious circle {
+  stroke: #777;
+}
+
+hr {
+  width: 2px;
+  height: 50px;
+  display: inline-block;
+  color: inherit;
+  border: none;
+  margin: 10px;
+}
+
+.active p {
+  width: 80px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 5px; /* Adjust as needed */
+}
+
+.input-container label {
+  margin-bottom: 5px; /* Adjust as needed */
+}
+
+.input-container.checkbox-container {
+  margin-top: -10px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.input-container.checkbox-container label {
+  margin-bottom: 0;
+  margin-right: 10px; /* Adjust as needed for spacing between label and checkbox */
+}
+
+.registration-step {
+  display: grid;
+  grid-template-columns: 1fr 5rem 1fr;
+  width: fit-content;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background-color: var(--background-color);
+  border: 1px solid var(--secondary-color);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))
+    drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 1rem;
+  padding-right: auto;
+  padding-left: auto;
+  margin: 10px;
+}
+
+
+.registration-step-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 70vw;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background-color: var(--background-color);
+  border: 1px solid var(--secondary-color);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))
+    drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 1rem;
+  padding-right: auto;
+  padding-left: auto;
+  margin: 10px;
+}
+
+.registration-step-2 {
+  width: 70vw;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background-color: var(--background-color);
+  border: 1px solid var(--secondary-color);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))
+    drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 1rem;
+  padding-right: auto;
+  padding-left: auto;
+  margin: 10px;
+}
+
+.step-3-container-grid {
+  /* display: grid; */
+  /* grid-template-columns: 32rem 1fr; */
+  width: fit-content;
+  column-gap: 2rem;
+  padding: 1rem;
+  padding-bottom: 0;
+}
+
+.signup-input-field-2 {
+  /* display: flex; */ /* flex-direction: row; */
+  gap: 2rem;
+}
+
+.registration-step#step3 {
+  display: flex !important;
+  width: fit-content;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background-color: var(--background-color);
+  border: 1px solid var(--secondary-color);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))
+    drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding-left: auto;
+  padding-right: auto;
+  margin: 10px;
+}
+
+.registration-step h2 {
+  color: var(--primary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.registration-step-2 h2 {
+  color: #005a82;
+  font-family: "Garet", sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.third-party-login-reg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.third-party-login-container-reg {
+  width: 401px;
+  height: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid var(--secondary-color);
+  background: rgba(217, 217, 217, 0);
+  align-items: center;
+  flex-direction: row;
+  margin-bottom: 2rem;
+}
+
+input {
+  padding: 8px !important;
+  font-size: 12px !important;
+  height: 2rem !important;
+  font-family: "Garet", sans-serif !important;
+  border: 1px solid #ccc !important;
+}
+
+select {
+  font-family: "Garet", sans-serif !important;
+  border: 1px solid #ccc !important;
+  font-size: 12px !important;
+}
+.third-party-login-container-reg a {
+  color: var(--secondary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+}
+
+.third-party-login-container-reg img {
+  margin-bottom: -2px;
+}
+
+.sign-up-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+}
+.sign-up-divider hr {
+  width: 2px;
+  height: 10rem;
+  display: inline-block;
+  border: none;
+  margin: 10px;
+  background-color: var(--secondary-color);
+  color: #002232;
+}
+
+.sign-up-divider p {
+  color: var(--secondary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.sign-up-row-1 {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: space-evenly;
+}
+.sign-up-row-1 input {
+  width: 222px;
+  height: 49px;
+  flex-shrink: 0;
+  background-color: #dcf0fa;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  color: #005a82;
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+  border: none;
+}
+.sign-up-col-1 {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  height: relative;
+  gap: 20px;
+}
+
+.sign-up-col-1 input {
+  width: 467px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  color: var(--secondary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.sign-up-col-1 input#terms_checkbox {
+  width: 15px;
+  height: 14px;
+  flex-shrink: 0;
+  stroke-width: 1px;
+  background-color: unset !important;
+  box-shadow: unset;
+  stroke: var(--50b8e7, #000);
+}
+
+.sign-up-col-1 label {
+  color: var(--50b8e7, #000);
+  font-family: "Garet";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-items: center;
+}
+
+.sign-up-buttons {
+  display: flex;
+  flex-direction: row;
+  column-gap: 20px;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.button-signup {
+  background-color: var(--secondary-color);
+  color: #ebecff;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 5px;
+}
+
+.button-signup:hover {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.user-signup p {
+  color: var(--50b8e7, #000);
+  font-family: "Garet";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.user-signup a#loginurl {
+  color: #0078ae;
+  font-family: "Garet";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.sign-up-2 {
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-input-field {
+  padding: 0 1rem;
+}
+
+.sign-up-2 label#formlabel {
+  display: flex;
+  align-self: start;
+  color: var(--primary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.sign-up-row-2 {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  text-align: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  vertical-align: middle;
+}
+.sign-up-row-2 input {
+  width: 34%;
+  height: 36px;
+  flex-shrink: 0;
+  flex-shrink: 0;
+  background-color: var(--background-color);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25) inset;
+  color: var(--secondary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.sign-up-row-2 > :nth-child(1) {
+  width: 18vw;
+  flex-shrink: 0;
+}
+
+.sign-up-row-2 > :nth-child(2) {
+  width: 18vw;
+  flex-shrink: 0;
+}
+
+.sign-up-row-2 > :nth-child(3) {
+  width: 15vw;
+  flex-shrink: 0;
+}
+
+.sign-up-row-2 > :nth-child(4) {
+  width: 5vw;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.sign-up-row-2-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 30vw);
+  gap: 0;
+  row-gap: 5px;
+  column-gap: 40px;
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.sign-up-row-2-2 label {
+  display: flex;
+  align-self: start;
+  color: var(--primary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.sign-up-row-2-2 select {
+  width: 100%;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  font-family: "Garet", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+}
+
+/* Style for the individual options */
+.sign-up-row-2-2 select option {
+  /* Your option styles go here */
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--secondary-color);
+  background-color: var(--background-color);
+  /* Add any other styles you want for the options */
+}
+
+.sign-up-row-2-2-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr; /* Two rows, automatically sized */
+  gap: 20px;
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+  margin-top: 20px;
+  padding-right: 20px;
+}
+
+.sign-up-row-2-2-1 > :nth-child(1) {
+  /* Position in the first row */
+  width: 98%;
+  grid-column: span 2;
+  height: 36px;
+}
+
+.sign-up-row-2-2-1 > :nth-child(2) {
+
+  margin: 0;
+  grid-column: span 1;
+  height: 36px;
+}
+
+.sign-up-row-2-2-1 > :nth-child(3) {
+  grid-area: 2 / 2 / 3 / 3; /* Position in the second row */
+  width: 10vw;
+  height: 36px;
+}
+
+.sign-up-row-2-3 {
+  flex-shrink: 0;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color);
+
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+}
+
+.sign-up-row-2-2-1 input {
+  flex-shrink: 0;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  font-family: "Garet", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+}
+
+.sign-up-row-2-2-1 input#zip {
+  width: 100px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.sign-up-row-2-2-1 input#house_no {
+  width: 321px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.sign-up-row-2-2-3 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Three equal-width columns */
+  column-gap: 1rem; /* Adjust the gap between items as needed */
+}
+
+.sign-up-row-2-2-3 input,
+select {
+  flex-shrink: 0;
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  font-family: "Garet", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+  padding: 8px; /* Adjust the padding as needed */
+}
+
+.sign-up-row-2-2-3 > :nth-child(1) {
+  width: 30vw;
+}
+.sign-up-row-2-2-3 > :nth-child(2) {
+  width: 30vw;
+
+}
+
+.sign-up-row-2-2-3 > :nth-child(3) {
+  width: 30vw;
+  height: 48px;
+}
+
+.hidden {
+  display: none;
+}
+
+.sign-up-3 {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.sign-up-row-3 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-left: 30px;
+}
+
+.sign-up-row-3 input {
+  width: 428px;
+  height: 36px;
+  flex-shrink: 0;
+
+  background-color: #dcf0fa;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  color: #005a82;
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+  border: none;
+}
+
+/* Add this CSS code to your existing stylesheet or in a new <style> tag */
+.eye-icon {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sign-up-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Two items per row */
+  gap: 20px; /* Adjust the gap between grid items as needed */
+}
+.hidden {
+  display: none;
+}
+
+.formSection {
+  max-height: 100px; /* Set a fixed height for the section */
+  overflow-y: auto; /* Make it scrollable when content exceeds the height */
+  border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+  padding: 10px; /* Optional: Add padding for better spacing */
+}
+
+.past-experience-form {
+  display: flex;
+  flex-direction: column; /* gap: 10px; */
+  display: grid;
+  grid-template-columns: 1fr; /* grid-gap: 10px; */
+  width: auto; /* Adjust the maximum width as needed */
+  margin: 0 auto;
+}
+
+.input-group {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr 1fr 1fr 20px 30px);
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.input-group input,
+.input-group select,
+.input-group span {
+  width: 100%;
+}
+
+.input-group input {
+  background-color: #dcf0fa;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  border: none;
+  border-radius: 8px;
+  color: #005a82;
+  font-family: "Garet";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.input-group input > :nth-child(0) {
+  width: 116px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.delete-button,
+.add-button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #333; /* Adjust color as needed */
+}
+
+.icon {
+  fill: #005a82;
+  width: 20px; /* Adjust icon size as needed */
+  height: 20px;
+}
+
+.formSection label {
+  display: flex;
+  color: #005a82;
+  font-family: "'Garet'";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.formInput2-1 {
+  display: grid;
+  align-items: center;
+}
+
+.formInput2-1 select {
+  width: 67vw; /* min-width: 15.5rem; */
+}
+
+.formInput2-1 .input-group {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: center;
+}
+
+.input-group {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr 1fr 1fr 20px 30px);
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.input-group input,
+.input-group select,
+.input-group span {
+  width: 100%;
+}
+
+.input-group input {
+  background-color: #dcf0fa;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  border: none;
+  border-radius: 8px;
+  color: #005a82;
+  font-family: "Garet";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.input-group input > :nth-child(0) {
+  width: 116px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.submit-project-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(1);
+  gap: 20px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.drop-area {
+  border: 2px solid var(--secondary-color);
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--background-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  height: 100px;
+}
+
+.file-input {
+  display: none;
+}
+
+.drop-text {
+  font-size: 16px;
+  font-family: "Garet", sans-serif;
+  color: #005a82;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.drop-area.drag-over {
+  border-color: #007bff;
+}
+
+.drop-area.drag-over .drop-text {
+  color: #007bff;
+}
+
+/* Add this to your existing CSS */
+.file-name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #005a82;
+  font-weight: bold;
+}
+
+.registration-step#step4 h1 {
+  color: #005a82;
+  font-family: "Garet", sans-serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.resume-form label {
+  text-align: left;
+  color: var(--secondary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 20px;
+}
+
+/* Container for resume text and upload button */
+.resume-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Resume text section */
+.resume-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-text h4, .resume-text p{
+  text-align: left;
+  margin: 0;
+}
+
+/* Styling the upload button */
+.resume-container .upload-btn-container {
+  text-align: right;
+
+}
+
+.resume-container .upload-btn {
+  background-color: var(--secondary-color); /* Custom color */
+  color: white !important;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.upload-btn:hover {
+  background-color: #fafafa;
+  color: var(--secondary-color )!important;
+  border: 1px solid var(--secondary-color);
+}
+
+/* Hidden file input */
+.file-input {
+  display: none;
+}
+
+/* Display uploaded file name */
+.file-name-container {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--secondary-color);
+  margin-left: auto;
+  margin-right: 15px;
+}
+
+/* Optional: Styling the file name display to match your UI */
+.file-name-container span {
+  display: inline-block;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.file-name-container i {
+  font-size: 16px;
+  margin-right: 5px;
+  color: var(--secondary-color); /* Adjust to your theme color */
+}
+
+/* Container for project text and upload button */
+.project-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+/* Project text section */
+.project-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-text h4, .project-text p{
+  text-align: left;
+  margin: 0;
+}
+
+/* Styling the upload button */
+.project-container .upload-btn-container {
+  text-align: right;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
+
+/* .project-container .upload-btn-container input {
+  display: none;
+} */
+
+.file-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  gap: 16px;
+  
+}
+
+.file-input-wrapper input[type="text"] {
+  padding-right: 30px; /* Spacing for the icon */
+  display: inline-block;
+  padding: 0 !important;
+  box-shadow: unset !important;
+  border: unset !important;
+  font-size: 14px;
+  font-weight: normal;
+  width: fit-content !important;
+  background-color: #f1f1f1 !important;
+  color: var(--secondary-color) !important;
+
+}
+
+.file-input-wrapper input[type="text"]::placeholder {
+  color: var(--secondary-color) !important;
+
+}
+
+
+.project-file-name {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px !important;
+  align-items: center;
+  background-color: #f1f1f1 !important;
+}
+
+.file-input-wrapper i {
+  font-size: 18px;
+  padding-left: 8px;
+  place-self: baseline !important;
+  margin-top: 8px;
+  margin-right: 8px;
+}
+
+.project-container .upload-btn {
+  background-color: var(--secondary-color); /* Custom color */
+  color: white !important;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.project-container .upload-btn:hover {
+  background-color: #fafafa;
+  color: var(--secondary-color )!important;
+  border: 1px solid var(--secondary-color);
+}
+/* Hidden file input */
+.file-input {
+  display: none;
+}
+
+/* Display uploaded file name */
+.file-name-container {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Optional: Styling the file name display */
+.file-name-container span {
+  display: inline-block;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-right: 5px;
+  padding: 11px;
+  padding-right: 50px;
+}
+
+.file-name-container i {
+  font-size: 16px;
+  margin-right: 5px;
+  color: var(--secondary-color); /* Adjust to your theme color */
+}
+
+
+.project-form label {
+  text-align: left;
+  color: var(--secondary-color);
+  font-family: "Garet", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  background-color: none !important;
+}
+
+.project-form label#id_title {
+  /* Change this to your desired color */
+  background-color: none !important  ; /* Remove background color */
+}
+
+label.active {
+  background-color: none;
+}
+
+.submit-project-form input,
+textarea {
+  height: 48px;
+  padding: 8px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background-color: var(--background-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  color: var(--secondary-color);
+  font-family: "Garet", sans-serif;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  font-style: normal;
+  line-height: normal;
+  margin-bottom: 8px;
+}
+
+.submit-project-form input[type="text"] {
+  font-size: 14px;
+  height: 30px;
+  margin-bottom: 12px;
+  padding: 5px;
+}
+
+.submit-project-form textarea {
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+.button-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  border-radius: 29px;
+  border: 2px solid #0078ae;
+  background: #0078ae;
+  color: var(--Color, #fff);
+  font-family: "Garet", sans-serif;
+  font-size: 16 px;
+  height: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Adjust as needed */
+}
+
+#review-summary {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: auto;
+  background-color: #f2f9fc;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))
+    drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 10px;
+  margin: 10px;
+  border-radius: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.review-item {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Styling the key and value */
+.review-item .key {
+  font-weight: bold;
+  color: #333;
+}
+
+.review-item .value {
+  color: #666;
+}
+
+#review-summary button {
+  display: inline-block;
+  margin: 10px 5px 0 0;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#review-summary button:hover {
+  background-color: #0056b3;
+}
+
+/* Close button specific styling */
+#review-summary button:nth-child(1) {
+  background-color: #6c757d;
+}
+
+#review-summary button:nth-child(1):hover {
+  background-color: #5a6268;
+}
+
+.form-row {
+  display: flex;
+}
+
+.formInput2-1fs {
+  display: grid;
+  grid-template-columns: repeat(auto);
+  align-items: center;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style for the form container */
+
+.col-2-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: baseline;
+}
+/* Style for the form fields */
+.past-experience-form input[type="text"],
+.past-experience-form input[type="number"],
+.past-experience-form input[type="date"] {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  color: #005a82;
+  font-family: "Garet", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+  padding: 8px;
+  width: 100%;
+}
+
+.past-experience-form input[type="text"] {
+  font-size: 12px !important;
+
+  box-sizing: border-box;
+
+  padding: 10px !important;
+
+  line-height: normal;
+
+  flex-shrink: 0;
+
+  background-color: var(--background-color);
+
+  color: var(--secondary-color);
+
+  border: 1px solid var(--secondary-color);
+
+  height: 48px !important;
+}
+
+.past-experience-form select {
+  width: 100%;
+  height: 48px;
+}
+.past-experience-form input[type="date"] {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  font-size: 14px;
+  width: 95%;
+}
+/* Style for the delete button */
+.past-experience-form .delete-btn {
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  color: #ebecff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Style for the add button */
+#addPastExperience {
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  color: #ebecff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#addPastExperience:hover {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+/* Style for the container */
+/* Style for the container */
+#pastExperienceFormset {
+  max-height: 40rem; /* Set the maximum height for the container */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds container height */ /* padding: 1rem; */
+  padding-top: 0;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: none;
+}
+
+.circle-icon button {
+  border-radius: 50% !important;
+  width: 30px; /* Reduced size */
+  height: 30px; /* Reduced size */
+  color: white !important;
+  background-color: var(--secondary-color) !important;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important; /* Remove extra padding */
+  margin: 0 !important;
+}
+
+.circle-icon button:hover {
+  color: var(--secondary-color) !important;
+  background-color: #fafafa !important;
+  border: 1px solid var(--secondary-color);
+}
+
+.circle-icon button i {
+  font-size: 14px; /* Reduced icon size */
+}
+
+#pastExperienceFormset h3 {
+  text-align: left;
+}
+
+#pastExperienceFormset .form-row {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 16px;
+    margin-bottom: 10px;
+}
+
+.h3-past-exp {
+  text-align: left;
+  margin: 0; /* margin-left: 1rem; */
+}
+
+.h3-other-afil {
+  text-align: left;
+  margin: 0;
+}
+
+/* Style for the form rows */
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Style for the form fields */
+.formInput2-1fs {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.formInput2-1fs:last-child {
+  margin-right: 0;
+}
+
+/* Style for the button container */
+.formInput2-1fs-button {
+  display: flex;
+  align-items: center;
+}
+
+/* Style for the buttons */
+.formInput2-1fs-button button {
+  flex: 1; /* Match the size of both buttons */
+  margin-right: 5px; /* Add some spacing between the buttons */
+  margin-top: 13px;
+}
+
+/* Style for the remove button */
+.remove-form {
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  color: #ebecff;
+  border: none;
+  padding: 10px 10px;
+  cursor: pointer;
+}
+
+.remove-form:hover {
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.formInput2-1 label {
+  font-weight: 700;
+  text-align: left;
+  color: #002232;
+}
+
+.formInput2-1fs label {
+  font-weight: 700;
+  text-align: left;
+  color: #002232;
+}
+
+.formInput2-1 select {
+  height: 48px;
+}
+
+.project-form label {
+  margin-bottom: 8px;
+}
+
+.project-form input {
+  width: auto;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 8px;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px; /* Adjust the gap between the forms */
+}
+
+.form-column {
+  flex: 1; /* Each form takes up equal width */
+}
+
+/* Additional styling for the forms */
+.resume-form,
+.project-form {
+  padding: 0 20px;
+  border-radius: 5px;
+  background-color: var(--background-color);
+}
+
+.drop-area {
+  border: 1px dashed var(--secondary-color);
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.drop-area:hover {
+  border-color: var(--border-color);
+}
+
+.file-input {
+  display: none;
+}
+
+/* Rest of your styling goes here */
+.button-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Adjust the gap between the buttons */
+  margin: 20px;
+}
+
+.select2-container--default .select2-selection--multiple {
+  background-color: #dcf0fa;
+  border: none;
+  border-radius: 8px;
+  color: #005a82;
+  font-family: "Garet", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice {
+  background-color: #005a82;
+  color: #dcf0fa;
+  font-weight: 700;
+}
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove {
+  color: #dcf0fa;
+}
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__rendered {
+  color: #005a82;
+}
+.select2-container .select2-search--inline .select2-search__field {
+  background-color: #dcf0fa;
+  color: #005a82;
+}
+
+/* Custom Tippy.js theme */
+.tippy-box[data-theme~="custom"] {
+  background-color: #005a82;
+  color: #dcf0fa;
+  font-family: "Garet", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 300px; /* Adjust max width to your preference */
+  white-space: normal; /* Allow text to wrap */
+}
+.tippy-box[data-theme~="custom"] .tippy-arrow {
+  color: #005a82;
+}
+.tippy-box[data-theme~="custom"] .tippy-content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* Show up to 3 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2; /* Adjust line height to your preference */
+  max-height: 3.6em; /* 3 lines of text */
+}
+.tippy-box[data-theme~="custom"][data-placement^="top"] > .tippy-arrow::before {
+  border-top-color: #005a82;
+}
+.tippy-box[data-theme~="custom"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  border-bottom-color: #005a82;
+}
+.tippy-box[data-theme~="custom"][data-placement^="left"]
+  > .tippy-arrow::before {
+  border-left-color: #005a82;
+}
+.tippy-box[data-theme~="custom"][data-placement^="right"]
+  > .tippy-arrow::before {
+  border-right-color: #005a82;
+}
+
+.sign-up-row-2-2-3-1 {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Space between form fields */
+  align-items: center;
+  margin-top: 2vw;
+}
+.sign-up-row-2-2-3-1 input[type="checkbox"] {
+  transform: scale(1.5); /* Scale the checkbox to 1.5 times its original size */
+  -webkit-transform: scale(1.5); /* For Safari */
+  -moz-transform: scale(1.5); /* For Firefox */
+  -ms-transform: scale(1.5); /* For IE */
+  -o-transform: scale(1.5); /* For Opera */
+  box-shadow: unset !important;
+  border: 1px solid var(--secondary-color);
+}
+
+/* Hide the default checkbox */
+input[type="checkbox"] {
+  position: relative;
+  width: 10px !important;
+  height: 10px !important;
+  appearance: none;
+  margin: auto !important;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border: 1px solid var(--secondary-color);
+  border-radius: 3px; /* Optional: to make the checkbox slightly rounded */
+  cursor: pointer;
+}
+
+
+.form-check input[type="checkbox"] {
+  position: relative;
+  width: 10px !important;
+  height: 10px !important;
+  appearance: none;
+  margin: 0 !important;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border: 1px solid var(--secondary-color);
+  border-radius: 3px; /* Optional: to make the checkbox slightly rounded */
+  cursor: pointer;
+}
+/* Create a checkmark when the checkbox is checked */
+input[type="checkbox"]:checked {
+  background-color: var(
+    --secondary-color
+  ); /* Change background on checked state */
+  border-color: var(--secondary-color); /* Maintain the border color */
+}
+
+input[type="checkbox"]:checked:before {
+  color: #fff; /* Checkmark color */
+  font-size: 12px;
+  display: block;
+
+  text-align: center;
+  line-height: 20px; /* Same as the checkbox height */
+}
+.sign-up-row-2-2-3-1 label {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between the checkbox and label */
+}
+
+.sign-up-row-2-2-3-1 p {
+  margin: 0;
+  font-size: 12px !important; /* Optional: Adjust the font size for description */
+  color: var(--primary-color) !important;
+  text-align: left !important;
+  margin-bottom: 0 !important;
+}
+
+input::placeholder,
+select::placeholder {
+  color: #333; /* Use your custom variable color */
+  opacity: 1; /* Optional: Ensure the color is fully opaque */
+}
+
+/* For browser compatibility, include the following vendor prefixes */
+input::-webkit-input-placeholder {
+  color: #333; /* For WebKit browsers (Chrome, Safari, Edge) */
+}
+
+input::-moz-placeholder {
+  color: #333; /* For Firefox 19+ */
+}
+
+input:-ms-input-placeholder {
+  color: #333; /* For IE 10+ */
+}
+
+input:-moz-placeholder {
+  color: #333; /* For old Firefox versions */
+}
+
+/* Style specifically for form groups inside .sign-up-row-2-2-3 */
+.sign-up-row-2-2-3 .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px; /* Add spacing between fields */
+}
+
+.sign-up-row-2-2-3-1 .form-group {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.sign-up-row-2-2-3 .form-group label,
+.sign-up-row-2-2-3-1 .form-group label {
+  margin-bottom: 0.5rem; /* Add space between label and input */
+  font-weight: bold; /* Make the label text bold */
+  text-align: left;
+  font-size: 14px; /* Adjust the font size */
+}
+
+.sign-up-row-2-2-3 .form-group input,
+.sign-up-row-2-2-3 .form-group select,
+.sign-up-row-2-2-3-1 .form-group input,
+.sign-up-row-2-2-3-1 .form-group select {
+  padding: 0.5rem;
+  height: 46px;
+  font-size: 1rem; /* Make input text size consistent */
+  border: 1px solid #ccc; /* Add a border to the inputs */
+  border-radius: 4px; /* Rounded corners */
+  outline: none;
+}
+
+.sign-up-row-2-2-3 .form-group input:focus,
+.sign-up-row-2-2-3 .form-group select:focus,
+.sign-up-row-2-2-3-1 .form-group input:focus,
+.sign-up-row-2-2-3-1 .form-group select:focus {
+  border-color: #84cdee; /* Highlight border on focus */
+  box-shadow: 0 0 5px rgba(132, 205, 238, 0.5); /* Add a light shadow on focus */
+}
+
+/* Focus state for select elements */
+select:focus {
+  border: 2px solid var(--secondary-color) !important; /* Highlight border on focus */
+}
+
+/* Hover state for select elements */
+select:hover {
+  border: 2px solid var(--secondary-color) !important; /* Change border color on hover */
+}
+
+
+#projectFormset{
+  display: flex;
+  flex-direction: column;
+  max-height: 40rem; /* Set the maximum height for the container */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds container height */ /* padding: 1rem; */
+  padding-top: 0;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: none;
+}

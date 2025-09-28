@@ -1,0 +1,166 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .conversation {
+        padding: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .message-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .message {
+        padding: 10px 15px;
+        border-radius: 10px;
+        max-width: 70%;
+        position: relative;
+    }
+
+    .user-message {
+        align-self: flex-end;
+        background-color: #dcf8c6; /* Light green for user messages */
+        text-align: right;
+        border-bottom-right-radius: 0;
+    }
+
+    .admin-message {
+        align-self: flex-start;
+        background-color: #ffffff; /* White for admin messages */
+        border-bottom-left-radius: 0;
+        text-align: left;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-content {
+        margin: 0;
+    }
+
+    .message-timestamp {
+        font-size: 0.85em;
+        color: #888;
+        display: block;
+        margin-top: 5px;
+    }
+
+    .read-status {
+        font-size: 0.75em;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+    .read-status.read {
+        color: green;
+    }
+
+    .read-status.unread {
+        color: red;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">{{ title }}</h1>
+    <div class="card">
+        <div class="card-header">
+            <strong>Ticket:</strong> {{ ticket.subject }}
+        </div>
+        <div class="card-body">
+            <div class="conversation">
+                <div class="message-container">
+                    {% for message in messages %}
+                    <div class="message {% if message.sender == request.user %}user-message{% else %}admin-message{% endif %}">
+                        <p class="message-content">
+                            <strong>{{ message.sender.username }}:</strong>
+                            <br>{{ message.message }}
+                        </p>
+                        <small class="message-timestamp">{{ message.created_at|date:"F d, Y H:i" }}</small>
+                        {% if message.sender != request.user %}
+                        <span class="read-status {% if message.is_read %}read{% else %}unread{% endif %}">
+                            {% if message.is_read %}✔ Read{% else %}● Unread{% endif %}
+                        </span>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <p>No messages in this conversation.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="input-container mt-3 row">
+                <div class="col-md-12 col-lg-11">
+                    <input type="text" id="new-message-input" class="form-control" placeholder="Type your message...">
+                </div>
+                <div class="col-md-4 col-lg-1">
+                    <button id="send-message-button" class="btn btn-primary mt-2">Send</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'admin:support_supportticket_changelist' %}" class="btn btn-secondary mt-3">Back to Messages</a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ticketId = '{{ ticket.id }}'; // Ticket ID from the context
+
+        // Automatically mark all unread messages as read when the page loads
+        fetch(`/api/mark-messages-read/${ticketId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                console.log('All unread messages marked as read.');
+            } else {
+                console.error(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+        // Add new message functionality
+        const sendMessageButton = document.getElementById('send-message-button');
+        const newMessageInput = document.getElementById('new-message-input');
+
+        sendMessageButton.addEventListener('click', function () {
+            const messageContent = newMessageInput.value.trim();
+            if (messageContent) {
+                fetch(`/api/add-message/${ticketId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({ message: messageContent }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        location.reload(); // Reload the page to show the new message
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

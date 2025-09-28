@@ -1,0 +1,249 @@
+{% extends "home.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .certificate-form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        padding-top: 0;
+    }
+
+    .add-cert-page {
+        padding: 1rem;
+    }
+
+    form {
+        width: 95%;
+        padding: 1rem;
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr 1fr; /* Two-column grid */
+    }
+
+    form .full-width {
+        grid-column: span 2; /* Make certain elements span across both columns */
+    }
+
+    form input, form select, form textarea {
+        width: 95%;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+        font-family: 'Garet', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    form textarea {
+        width: 98%;
+    }
+
+    .back-button {
+        background-color: var(--secondary-color);
+        color: #ebecff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-family: 'Garet', sans-serif;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 5px;
+    }
+
+    .back-button:hover {
+        background-color: var(--background-color);
+        color: var(--secondary-color);
+        border: 1px solid var(--secondary-color);
+    }
+
+    .drop-area {
+        grid-column: span 2; /* Full width in grid */
+        border: 2px dashed #ccc;
+        padding: 30px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .drop-area.drag-over {
+        border-color: #66afe9;
+        background-color: #e6f7ff;
+    }
+
+    .drop-text {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .pdf-preview-container {
+        display: none;
+        margin-top: 10px;
+        text-align: center;
+        grid-column: span 2;
+    }
+
+    .pdf-preview-container img {
+        max-width: 100px;
+    }
+
+    .btn-submit {
+        grid-column: span 2; /* Full width in grid */
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 8px;
+        margin-top: 20px;
+        text-align: center;
+        width: fit-content;
+        margin-left: auto;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--background-color);
+        color: var(--secondary-color);
+        border: 1px solid var(--secondary-color);
+    }
+
+    .file-name {
+        font-size: 14px;
+        color: #333;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="add-cert-page">
+    <div class="header-container">
+        <a href="{% url 'profile_page' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <h3>{% if certificate %}Edit Certificate{% else %}Add New Certificate{% endif %}</h3>
+    </div>
+    <hr class="freelancer">
+
+    <div class="certificate-form-container">
+        <form method="post" enctype="multipart/form-data" id="addCertificateForm">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ certificate_form.certificate_title.label_tag }}
+                {{ certificate_form.certificate_title }}
+            </div>
+            <div class="form-group">
+                {{ certificate_form.issued_by.label_tag }}
+                {{ certificate_form.issued_by }}
+            </div>
+            <div class="form-group">
+                {{ certificate_form.date_issued.label_tag }}
+                {{ certificate_form.date_issued }}
+            </div>
+            <div class="form-group">
+                {{ certificate_form.category.label_tag }}
+                {{ certificate_form.category }}
+            </div>
+            <div class="form-group full-width">
+                {{ certificate_form.description.label_tag }}
+                {{ certificate_form.description }}
+            </div>
+
+            <!-- Drop Area for File Upload -->
+            <div class="drop-area" id="drop-area">
+                <span class="drop-text">
+                    {% if certificate and certificate.image_file %}
+                        File: {{ certificate.image_file.name }}
+                    {% else %}
+                        Drag & drop the certificate file here or click to upload
+                    {% endif %}
+                </span>
+                <input type="file" id="fileInput" name="image_file" accept="image/*,application/pdf" style="display:none;">
+            </div>
+            <div class="pdf-preview-container" id="pdfPreviewContainer" style="{% if certificate and certificate.image_file %}display: block;{% endif %}">
+                {% if certificate and certificate.image_file %}
+                    {% if is_pdf %}
+                        <img src="{% static 'img/pdf-icon.png' %}" alt="PDF Preview">
+                    {% else %}
+                        <img src="{{ certificate.image_file.url }}" alt="Image Preview">
+                    {% endif %}
+                {% endif %}
+            </div>
+            <p class="help-text">
+                <small>
+                    Can't find the category of your certificate? 
+                    <a href="{% url 'help' %}" class="help-link">Send us a ticket</a>.
+                </small>
+            </p>
+            <button type="submit" class="btn-submit" name='certificate_submit'>Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Setup drag-and-drop functionality
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('fileInput');
+    const pdfPreviewContainer = document.getElementById('pdfPreviewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const dropText = document.querySelector('.drop-text');
+
+    // Highlight the drop area when dragging over
+    dropArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropArea.classList.add('drag-over');
+    });
+
+    // Remove highlight when dragging leaves
+    dropArea.addEventListener('dragleave', () => {
+        dropArea.classList.remove('drag-over');
+    });
+
+    // Handle drop
+    dropArea.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropArea.classList.remove('drag-over');
+        const files = event.dataTransfer.files;
+        handleFileSelect(files);
+    });
+
+    // Handle file input click
+    dropArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Handle file input change
+    fileInput.addEventListener('change', (event) => {
+        const files = event.target.files;
+        handleFileSelect(files);
+    });
+
+    // Function to handle file selection and preview
+    function handleFileSelect(files) {
+        if (files.length > 0) {
+            const file = files[0];
+            dropText.textContent = `File: ${file.name}`;  // Display the selected file name in the drop area
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    pdfPreviewContainer.style.display = 'block';
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type === "application/pdf") {
+                previewImage.src = "{% static 'img/pdf-icon.png' %}"; // Use a placeholder for PDF
+                pdfPreviewContainer.style.display = 'block';
+            } else {
+                alert('Please upload an image or PDF file.');
+            }
+        }
+    }
+</script>
+{% endblock content %}

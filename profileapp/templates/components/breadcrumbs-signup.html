@@ -1,0 +1,87 @@
+{% load static %}
+
+<!-- components/breadcrumbs-signup.html -->
+<div class="breadcrumbs">
+    <!-- Step 1: Account Information -->
+    <div class="{% if step_number > 1 %}br_active{% elif step_number == 1 %}current{% else %}previous{% endif %}">
+        <svg class="{% if step_number > 1 %}svgactive{% elif step_number == 1 %}svgcurrent{% else %}svgprevious{% endif %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            {% if step_number > 1 %}
+                <!-- Check Circle SVG for active step -->
+                <circle cx="12" cy="12" r="10" stroke="green" stroke-width="2"/>
+                <path d="M8 12.5L10.5 15L16 9" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            {% elif step_number == 1 %}
+                <!-- Dark circle for current step -->
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2"/>
+            {% else %}
+                <!-- Original circle SVG for inactive/previous steps -->
+                <circle cx="12" cy="7" r="4" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5.33788 18.3206C5.99897 15.5269 8.77173 14 11.6426 14H12.3574C15.2283 14 18.001 15.5269 18.6621 18.3206C18.79 18.8611 18.8917 19.4268 18.9489 20.0016C19.0036 20.5512 18.5523 21 18 21H6C5.44772 21 4.99642 20.5512 5.0511 20.0016C5.1083 19.4268 5.20997 18.8611 5.33788 18.3206Z" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+            {% endif %}
+        </svg>
+        <p>Account Information</p>
+        <small>Enter your login details, including your email and password.</small>
+    </div>
+    <hr class="{% if step_number >= 2 %}br_active{% elif step_number == 1 %}current{% else %}previous{% endif %}">
+
+    <!-- Step 2: Personal Information -->
+    <div class="{% if step_number > 2 %}br_active{% elif step_number == 2 %}current{% else %}previous{% endif %}">
+        <svg class="{% if step_number > 2 %}svgactive{% elif step_number == 2 %}svgcurrent{% else %}svgprevious{% endif %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            {% if step_number > 2 %}
+                <!-- Check Circle SVG for active step -->
+                <circle cx="12" cy="12" r="10" stroke="green" stroke-width="2"/>
+                <path d="M8 12.5L10.5 15L16 9" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            {% elif step_number == 2 %}
+                <!-- Dark circle for current step -->
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2"/>
+            {% else %}
+                <!-- Original circle SVG for inactive/previous steps -->
+                <circle cx="12" cy="7" r="4" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5.33788 18.3206C5.99897 15.5269 8.77173 14 11.6426 14H12.3574C15.2283 14 18.001 15.5269 18.6621 18.3206C18.79 18.8611 18.8917 19.4268 18.9489 20.0016C19.0036 20.5512 18.5523 21 18 21H6C5.44772 21 4.99642 20.5512 5.0511 20.0016C5.1083 19.4268 5.20997 18.8611 5.33788 18.3206Z" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+            {% endif %}
+        </svg>
+        <p>Personal Information</p>
+        <small>Fill in personal details such as your address and contact information.</small>
+    </div>
+    <hr class="{% if step_number >= 3 %}br_active{% elif step_number == 2 %}current{% else %}previous{% endif %}">
+
+    <!-- Step 3: Freelancer Information -->
+    <div class="{% if step_number > 3 %}br_active{% elif step_number == 3 %}current{% else %}previous{% endif %}">
+        <svg class="{% if step_number > 3 %}svgactive{% elif step_number == 3 %}svgcurrent{% else %}svgprevious{% endif %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            {% if step_number > 3 %}
+                <!-- Check Circle SVG for active step -->
+                <circle cx="12" cy="12" r="10" stroke="green" stroke-width="2"/>
+                <path d="M8 12.5L10.5 15L16 9" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            {% elif step_number == 3 %}
+                <!-- Dark circle for current step -->
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2"/>
+            {% else %}
+                <!-- Original circle SVG for inactive/previous steps -->
+                <circle cx="12" cy="7" r="4" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5.33788 18.3206C5.99897 15.5269 8.77173 14 11.6426 14H12.3574C15.2283 14 18.001 15.5269 18.6621 18.3206C18.79 18.8611 18.8917 19.4268 18.9489 20.0016C19.0036 20.5512 18.5523 21 18 21H6C5.44772 21 4.99642 20.5512 5.0511 20.0016C5.1083 19.4268 5.20997 18.8611 5.33788 18.3206Z" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+            {% endif %}
+        </svg>
+        <p>Freelancer Information</p>
+        <small>Provide your freelancer profile, skills, and areas of expertise.</small>
+    </div>
+    <hr class="{% if step_number >= 4 %}br_active{% elif step_number == 3 %}current{% else %}previous{% endif %}">
+
+    <!-- Step 4: Finishing Up -->
+    <div class="{% if step_number > 4 %}br_active{% elif step_number == 4 %}current{% else %}previous{% endif %}">
+        <svg class="{% if step_number > 4 %}svgactive{% elif step_number == 4 %}svgcurrent{% else %}svgprevious{% endif %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            {% if step_number > 4 %}
+                <!-- Check Circle SVG for active step -->
+                <circle cx="12" cy="12" r="10" stroke="green" stroke-width="2"/>
+                <path d="M8 12.5L10.5 15L16 9" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            {% elif step_number == 4 %}
+                <!-- Dark circle for current step -->
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2"/>
+            {% else %}
+                <!-- Original circle SVG for inactive/previous steps -->
+                <circle cx="12" cy="7" r="4" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5.33788 18.3206C5.99897 15.5269 8.77173 14 11.6426 14H12.3574C15.2283 14 18.001 15.5269 18.6621 18.3206C18.79 18.8611 18.8917 19.4268 18.9489 20.0016C19.0036 20.5512 18.5523 21 18 21H6C5.44772 21 4.99642 20.5512 5.0511 20.0016C5.1083 19.4268 5.20997 18.8611 5.33788 18.3206Z" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+            {% endif %}
+        </svg>
+        <p>Finishing Up</p>
+        <small>Complete the final steps and submit your information to finish.</small>
+    </div>
+</div>

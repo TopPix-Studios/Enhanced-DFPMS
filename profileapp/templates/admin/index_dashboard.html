@@ -1,0 +1,271 @@
+{% load static %}
+<!-- Include necessary JS and CSS files as before -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<style>
+    /* Custom CSS for list items */
+    .list-group-item {
+        color: #555; /* Slightly darker text for readability */
+    }
+
+    .card-counter:hover {
+        box-shadow: 4px 4px 20px #DADADA;
+        transition: 0.3s linear all;
+    }
+
+    
+    .card-counter i {
+        font-size: 4em;
+        opacity: 1;
+    }
+
+    .card-counter .count-numbers {
+        position: absolute;
+        right: 35px;
+        top: 15px;
+        font-size: 28px;
+        display: block;
+    }
+
+    .card-counter .count-name {
+        position: absolute;
+        right: 35px;
+        top: 65px;
+        font-style: italic;
+        text-align: right;
+        text-transform: capitalize;
+        opacity: 0.5;
+        display: block;
+        font-size: 18px;
+    }
+    .card-counter .count-name#freelancer {
+        position: absolute;
+        right: 35px;
+        top: 65px;
+        font-style: italic;
+        text-transform: capitalize;
+        opacity: 0.5;
+        display: block;
+        font-size: 18px;
+    }
+    /* Style for card-counters to make them longer */
+    .card-counter {
+        cursor: pointer;
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1em;
+        position: relative;
+        transition: all 0.2s ease;
+        margin: 0 !important;
+        background-color: #f9f9f9; /* Light white background */
+        color: #333; /* Darker text for contrast */
+        border: 1px solid #ddd; /* Subtle border for separation */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    }
+
+    /* Container for card and dropdown */
+    .card-container {
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    /* Highlight styling when dropdown is open */
+    .highlight {
+        background-color: #ffffff; /* Pure white for highlight */
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 5px;
+    }
+
+    /* Dropdown style within the container */
+    .card-container .collapse {
+        width: 100%;
+        border: 1px solid #ddd;
+        background-color: #ffffff; /* Light white background for dropdown */
+        border-top: none;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-counter .list-group-item {
+        padding: 8px 12px;
+        font-size: 0.9em;
+        background-color: #f9f9f9; /* Matches the card background */
+        color: #555; /* Darker text for readability */
+    }
+</style>
+
+
+<div class="container-fluid mt-2 pl-0">
+    <div class="row mb-3">
+        <div class="col-md-3 pl-0">
+            <div class="card-container">
+                <div class="card-counter primary" data-target="#freelancerBreakdown">
+                    <i class="fas fa-users"></i>
+                    <span id="freelancer_count" class="count-numbers">0</span>
+                    <span id="freelancer" class="count-name">Freelancers</span>
+                </div>
+                <div id="freelancerBreakdown" class="collapse mt-2">
+                    <ul id="freelancer_distribution" class="list-group">
+                        <!-- Data will be populated here dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-container">
+                <div class="card-counter success" data-target="#skillsBreakdown">
+                    <i class="fas fa-tools"></i>
+                    <span id="skills_count" class="count-numbers">0</span>
+                    <span class="count-name">Skills</span>
+                </div>
+                <div id="skillsBreakdown" class="collapse mt-2">
+                    <ul id="skills_distribution" class="list-group">
+                        <!-- Data will be populated here dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-container">
+                <div class="card-counter warning" data-target="#languagesBreakdown">
+                    <i class="fas fa-language"></i>
+                    <span id="languages_count" class="count-numbers">0</span>
+                    <span class="count-name">Languages</span>
+                </div>
+                <div id="languagesBreakdown" class="collapse mt-2">
+                    <ul id="languages_distribution" class="list-group">
+                        <!-- Data will be populated here dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-container">
+                <div class="card-counter danger" data-target="#specializationsBreakdown">
+                    <i class="fas fa-briefcase"></i>
+                    <span id="specializations_count" class="count-numbers">0</span>
+                    <span class="count-name">Specializations</span>
+                </div>
+                <div id="specializationsBreakdown" class="collapse mt-2">
+                    <ul id="specializations_distribution" class="list-group">
+                        <!-- Data will be populated here dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <br>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter primary">
+                <i class="fas fa-calendar"></i>
+                <span id="total-events" class="count-numbers">0</span>
+                <span id="total-events-count" class="count-name">Events</span>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <a href="/admin/support/supportticket/" style="text-decoration: none;">
+                <div class="card-counter primary">
+                    <i class="fas fa-bell"></i>
+                    <span id="unread-count" class="count-numbers">0</span>
+                    <span class="count-name">Support Tickets</span>
+                </div>
+            </a>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                fetch('/api/events/count/')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('total-events').textContent = data.total_events;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching event count:', error);
+                    });
+            });
+        </script>
+            
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Fetch unread messages count from the API
+                fetch('/api/unread-messages/')
+                    .then(response => response.json())
+                    .then(data => {
+                        const unreadCountElement = document.getElementById('unread-count');
+                        unreadCountElement.textContent = data.unread_count; // Update the card with the count
+                    })
+                    .catch(error => {
+                        console.error('Error fetching unread messages count:', error);
+                    });
+            });
+        </script>
+        <div class="col-md-3">
+            <br>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.card-counter').on('click', function() {
+            const target = $(this).data('target');
+            $(target).collapse('toggle');
+        });
+
+        // Add highlight class when dropdown is shown, and remove when hidden
+        $('.collapse').on('show.bs.collapse', function() {
+            $(this).closest('.card-container').addClass('highlight');
+        }).on('hide.bs.collapse', function() {
+            $(this).closest('.card-container').removeClass('highlight');
+        });
+
+        // Fetch data from the API endpoint
+        $.ajax({
+            url: "{% url 'barangay_breakdown' %}",
+            method: "GET",
+            success: function(data) {
+                $('#freelancer_count').text(data.freelancer_count || 0);
+                $('#skills_count').text((data.skills && data.skills.length) || 0);
+                $('#languages_count').text((data.languages && data.languages.length) || 0);
+                $('#specializations_count').text((data.specializations && data.specializations.length) || 0);
+
+                if (data.barangays) {
+                    populateListWithPercentage('#freelancer_distribution', data.barangays, 'barangay__barangay');
+                }
+
+                if (data.skills) {
+                    populateListWithPercentage('#skills_distribution', data.skills, 'bg_id__skills__skill');
+                }
+
+                if (data.languages) {
+                    populateListWithPercentage('#languages_distribution', data.languages, 'bg_id__language__language');
+                }
+
+                if (data.specializations) {
+                    populateListWithPercentage('#specializations_distribution', data.specializations, 'bg_id__specialization__specialization');
+                }
+            },
+            error: function(error) {
+                console.log("Error fetching data:", error);
+            }
+        });
+
+        function populateListWithPercentage(elementId, items, field) {
+            $(elementId).empty();
+            items.slice(0, 5).forEach(function(item) {
+                let value = item[field] || 'N/A';
+                let count = item.count || 0;
+                let percentage = item.percentage ? item.percentage.toFixed(2) : "0.00";
+                $(elementId).append(`<li class="list-group-item">${value} - ${count} (${percentage}%)</li>`);
+            });
+        }
+    });
+</script>

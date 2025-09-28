@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+       
+        <ul class="sidebar-menu">
+            <li><a href="{% url 'profile_page' %}"><i class="fas fa-user"></i><span class="menu-text">Profile</span></a></li>
+            <li><a href="{% url 'profile_detail' %}"><i class="fas fa-home"></i><span class="menu-text">Dashboard</span></a></li>
+            {% comment %} <li><a href="{% url 'portfolio_view' account_id=profile.account_id.account_id %}"><i class="fas fa-users"></i><span class="menu-text">Portfolio</span></a></li> {% endcomment %}
+            <li><a href="{% url 'announcement' %}"><i class="fas fa-bullhorn"></i><span class="menu-text">Announcement and Events</span></a></li>
+            {% comment %} <li><a href="{% url 'event' account_id=profile.account_id.account_id %}"><i class="fas fa-calendar"></i><span class="menu-text">Events</span></a></li> {% endcomment %}
+        </ul>
+        <div class="sidebar-footer">
+            <div class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+    <script>
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function checkSidebarVisibility() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('main-content');
+            const mediaQuery = window.matchMedia('(max-width: 575.98px)');
+
+            if (mediaQuery.matches) {
+                if (!sidebar.classList.contains('collapsed')) {
+                    content.classList.add('hidden');
+                } else {
+                    content.classList.remove('hidden');
+                }
+            } else {
+                content.classList.remove('hidden');
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('main-content');
+            const mediaQuery = window.matchMedia('(max-width: 575.98px)');
+        
+            sidebar.classList.toggle('collapsed');
+        
+            if (mediaQuery.matches && !sidebar.classList.contains('collapsed')) {
+                content.classList.add('hidden');
+            } else {
+                content.classList.remove('hidden');
+            }
+        
+            // Change width of #main-content based on sidebar state
+            if (sidebar.classList.contains('collapsed')) {
+                content.style.width = '100%';
+            } else {
+                content.style.width = '100%';
+            }
+        }
+        
+        function handleTouchStart(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        }
+
+        function handleTouchEnd(event) {
+            touchEndX = event.changedTouches[0].screenX;
+            handleGesture();
+        }
+
+        function handleGesture() {
+            const mediaQuery = window.matchMedia('(max-width: 575.98px)');
+            if (mediaQuery.matches) {
+                if (touchEndX > touchStartX + 50) { // Swipe right
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar.classList.contains('collapsed')) {
+                        toggleSidebar();
+                    }
+                } else if (touchEndX < touchStartX - 50) { // Swipe left
+                    const sidebar = document.getElementById('sidebar');
+                    if (!sidebar.classList.contains('collapsed')) {
+                        toggleSidebar();
+                    }
+                }
+            }
+        }
+
+        // Collapse the sidebar on load
+        function collapseSidebarOnLoad() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.add('collapsed');
+            checkSidebarVisibility();
+        }
+
+        window.addEventListener('resize', checkSidebarVisibility);
+        window.addEventListener('load', () => {
+            collapseSidebarOnLoad();
+            checkSidebarVisibility();
+        });
+
+        document.addEventListener('touchstart', handleTouchStart, false);
+        document.addEventListener('touchend', handleTouchEnd, false);
+
+    </script>
+</body>
+</html>

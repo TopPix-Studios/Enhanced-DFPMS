@@ -1,0 +1,290 @@
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+    --button-bg-color: #0a2472; /* Added for buttons */
+    --button-hover-bg-color: #1a43bf; /* Hover color for buttons */
+    --button-danger-bg-color: #0a2472; /* Background color for delete button */
+    --button-danger-hover-bg-color: #1a43bf; /* Hover color for delete button */
+    --modal-bg-color: rgba(0, 0, 0, 0.5); /* Background color for modal */
+    --modal-content-bg-color: #fefefe; /* Background color for modal content */
+}
+
+
+
+.calendar-day {
+    position: relative;
+    padding: 0.5rem;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin: 1px;
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effect */
+
+}
+
+
+/* Hover effect */
+.calendar-day:hover {
+    background-color: #f0f0f0; /* Light background color on hover */
+    border-color: var(--secondary-color); /* Change border color to a blue shade */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Add a subtle shadow for depth */
+    transform: translateY(-2px); /* Slightly lift the calendar day on hover */
+}
+
+.event-circle {
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+.event-physical {
+    background-color: #005A82; /* Blue for physical events */
+}
+.event-virtual {
+    background-color: #E91E63; /* Pink for virtual events */
+}
+.event-both {
+    background-color: #FF9800; /* Orange for both */
+}
+.swal2-title {
+    text-shadow: unset !important;
+}
+.swal2-popup {
+    font-family: 'Garet', sans-serif;
+    background: linear-gradient(135deg, #f0f0f0, #ffffff);
+    padding: 1rem;
+    text-align: left; /* Ensure left alignment for all text */
+    width: 70vw !important; /* Adjust the width of the modal */
+    font-size: 1rem; /* Adjust the font size */
+}
+
+.swal2-html-container {
+    font-size: 1.1rem; /* Adjust font size for the event content */
+    color: #444;
+    margin-bottom: 1rem;
+}
+.swal2-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}
+.legend {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+.legend-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+.legend-physical {
+    background-color: #005A82;
+}
+.legend-virtual {
+    background-color: #E91E63;
+}
+.legend-both {
+    background-color: #FF9800;
+}
+.event-details {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+.event-details p {
+    margin: 0.3rem 0;
+}
+
+
+.event-list-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    margin-bottom: 20px;
+}
+
+.event-details-grid {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 8px; /* Reduced gap for a tighter layout */
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: #ffffff;
+    width: 60vw; /* Restrict the overall width of each event card */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, width 0.3s ease; 
+}
+
+.event-details-grid:hover {
+    background-color: #f1f1f1; /* Slightly darker background on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+    border-color: #ccc; /* Optional: Change border color on hover */
+    padding: 1rem;
+    width: 60vw;
+}
+.event-date-status {
+    grid-row: 1 / 2;
+    text-align: left;
+    font-size: 16px; /* Smaller font size for the date and status */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-content-wrapper {
+    display: flex;
+    grid-row: 2 / 3;
+    align-items: center;
+}
+
+.event-image-container {
+    flex: 1;
+    max-width: 150px;
+    margin: 0 20px; /* Restrict the image container to a smaller width */
+}
+
+.event-image {
+    width: 100%; /* Ensure the image fits within its container */
+    height: auto;
+   
+    border-radius: 5px; /* Optional: rounded corners for the image */
+}
+
+.event-info-container {
+    flex: 2;
+    padding-left: 10px;
+    font-size: 14px; /* Smaller font size for event details */
+    text-align: left; /* Align text to the left */
+    max-width: 450px; /* Limit the width of the event information */
+    word-wrap: break-word; /* Ensure long words break and wrap to the next line */
+}
+
+.event-buttons {
+    grid-row: 3 / 4;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem; /* Space buttons apart */
+    align-items: center;
+}
+
+.rsvp-button, .redirect-button {
+    background-color: var(--secondary-color) ;
+    color: white;
+    border: none ;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif; /* Use the custom font for buttons */
+    font-size: 14px; /* Adjust font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem !important; /* Circular button */
+    width: auto !important; /* Fixed size for buttons */
+    height: 40px !important;
+    margin: 0 !important;
+}
+
+
+.rsvp-button:hover, .redirect-button:hover, .swal2-confirm:hover {
+    background-color: white !important;
+    border: 1px solid var(--secondary-color) !important;
+    color: var(--secondary-color) !important;
+}
+
+
+#swal2-content {
+    padding: 0;
+}
+
+/* For tablets and smaller screens (up to 1024px wide) */
+@media (max-width: 1024px) {
+    .event-details-grid {
+        width: 100%; /* Expand the width for smaller screens */
+    }
+
+    .event-content-wrapper {
+        flex-direction: column; /* Stack image and content vertically */
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .event-image-container {
+        max-width: 100%; /* Allow the image to take up full width */
+        margin: 0 0 10px 0; /* Remove side margins and add bottom margin */
+    }
+
+    .event-info-container {
+        max-width: 100%;
+    }
+}
+
+/* For mobile devices (up to 480px wide) */
+@media (max-width: 480px) {
+    .swal2-popup {
+        font-family: 'Garet', sans-serif;
+        background: linear-gradient(135deg, #f0f0f0, #ffffff);
+        padding: 1rem;
+        text-align: left;
+        width: 100vw !important;
+        height: 100vh !important;
+        font-size: 1rem;
+    }
+    .event-details-grid {
+        width: 60vw; /* Increase width on smaller screens */
+        padding: 0.75rem; /* Reduce padding for a more compact layout */
+    }
+
+    .event-details-grid:hover{
+        width: 65vw; /* Increase width on smaller screens */
+        padding: 0.75rem; /* Reduce padding for a more compact layout */
+    }
+
+
+    .event-date-status {
+        font-size: 14px; /* Reduce font size for date/status */
+    }
+
+    .event-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .event-image-container {
+        width: 50%; /* Full width image on mobile */
+        max-width: 50%; /* Ensure no restriction on width */
+    }
+
+    .event-info-container {
+        padding-left: 0;
+        text-align: center; /* Center-align text on small screens */
+        max-width: 100%;
+        font-size: 12px; /* Reduce font size for readability */
+    }
+
+    .rsvp-button, .redirect-button {
+        width: 100%; /* Buttons take full width on mobile */
+        height: 35px; /* Reduce button height */
+        font-size: 12px; /* Reduce button font size */
+    }
+
+    div.legend {
+        justify-content: unset !important;
+        margin: 0 auto;
+        width: 90vw;
+    };
+}

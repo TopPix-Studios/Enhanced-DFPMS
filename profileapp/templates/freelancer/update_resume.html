@@ -1,0 +1,57 @@
+{% extends "home.html" %}
+{% load static %}
+{% block content %}
+{% block title %}DFPS Profiling: Update Resume {% endblock title %}
+
+<div class="content">
+        
+
+
+    <div class="project-details">
+        <h1>Update Selected Resume</h1>
+        <div class="proj-details-header">
+            <h3>Resume Title:</h3><p>{{ resume.resume_file }}</p>
+        </div>
+        
+        <form id="edit_form_{{ resume.id }}" class="edit-form" action="{% url 'update_resume' resume.id profile.account_id.account_id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="button-container">
+                <button type="submit" class="update-button">Update</button>
+                <button type="submit" name="delete" class="delete-button" onclick="return confirm('Are you sure you want to delete this resume?')">Delete</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    {% comment %} <div class="portfolio-block-view">
+        <h1>All Resumes</h1>
+        <div class="project-row-update">
+            {% for resume in resumes %}
+            <div class="project-container">
+                <a href="{% url 'update_resume' resume.id profile.account_id.account_id %}">
+                    <img src="{% static 'img/files1.png' %}" alt="Placeholder Image">
+                    <p>{{ resume.resume_file }}</p>
+                </a>
+    
+            </div>
+            {% endfor %}
+        </div>
+    </div> {% endcomment %}
+
+</div>
+<script>
+    document.querySelectorAll('.edit-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const resumeId = button.getAttribute('data-resume-id');
+            document.querySelectorAll('.edit-form').forEach(form => {
+                if (form.id === `edit_form_${resumeId}`) {
+                    form.style.display = 'block';
+                } else {
+                    form.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock content %}

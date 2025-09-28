@@ -1,0 +1,873 @@
+.home-container {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.content {
+    flex: 1; /* Allow the content to grow to fill the remaining space */
+    padding: 20px; /* Add padding to the content */
+    height: 90vh;
+    overflow-y: scroll;
+}
+
+.content h1, h2, h3, p{
+    margin: 0;
+    color: #005A82;
+}
+
+.dashboard-box{
+    margin-top: 5px;
+    border: none;
+    background-color: #87BFD9;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.dashboard-text{
+    text-align: center;
+}
+
+.portfolio-block h1, h2, p{
+    margin: 0;
+    color: #005A82;
+}
+
+.project-row{
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.project-container{
+    border: none;
+    border-radius: 18.7px;
+    width: 224px;
+    height: 207px;
+    background-color: #DCF0FA;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.project-container p{
+    font-weight: bold;
+}
+
+
+.project-container img{
+    width: 142px;
+    height: 138px;
+    margin-top: 20px;
+    border-radius: 14.1px;
+}
+
+.dashboard-2{
+    display: grid;
+    grid-template-columns: 3fr 1fr ;
+    align-items: first baseline;
+}
+
+.announcement-container{
+    flex-direction: column;
+    border:none;
+    border-radius: 14.1px;
+    width: 690px;
+    height: 165px;
+    background-color: #DCF0FA;
+    padding: 15px;
+    overflow-wrap: break-word; /* This property allows long words to be broken and wrap onto the next line */
+    margin-bottom: 20px;
+    margin-right: 20px;
+    margin-left: 1rem;
+}
+
+
+.announcement-container-dashboard{
+    flex-direction: column;
+    border:none;
+    border-radius: 14.1px;
+    width: 690px;
+    height: 165px;
+    background-color: #DCF0FA;
+    padding: 15px;
+    overflow-wrap: break-word; /* This property allows long words to be broken and wrap onto the next line */
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.ann-con-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.announcement-container p{
+    margin-bottom: 8px;
+}
+
+.ann-location{
+    font-weight: bold;
+}
+
+
+
+.calendar {
+    font-family: Inter;
+    width: 300px;
+    padding: 10px;
+    background-color: #DCF0FA;
+    color: #005A82;
+    border-radius: 14.5px;
+}
+
+.calendar h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
+
+.calendar-header div {
+    padding: 5px;
+    text-align: center;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-day {
+    padding: 5px;
+    text-align: center;
+}
+
+.calendar-day:last-child {
+    border-right: none;
+}
+
+.current-month {
+    background-color: #f0f0f0;
+}
+
+.today {
+    background-color:#7ED7C1 ;
+    border-radius: 50%;
+    width: auto;
+    height: auto;
+}
+
+
+.event-header-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 260px;
+    height: 39px;
+    background-color: #87BFD9;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.sign-up-row-2-3 {
+    padding: 8px;
+    width: 450px;
+}
+
+.plus-sign {
+    font-size: 36px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #005A82;
+}
+
+.event-container{
+    background-color: #DCF0FA;
+    border-radius: 15px;
+    padding: 20px;
+    width: max-content;
+}
+
+.event{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.event-container hr{
+    border: none;
+    border-top: 2px solid #005A82;
+    margin: 20px 0; /* Add some space above and below the line */
+    width: 250px;
+}
+
+.tomorrow-con{
+    text-align: center;
+}
+
+.event-divider {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 0 8px; /* Adjust the spacing between the dot and text */
+}
+
+.event:nth-child(1) .event-divider {
+    background-color: #7ED7C1;
+}
+
+.event:nth-child(2) .event-divider {
+    background-color: #F0DBAF;
+}
+
+.event:nth-child(3) .event-divider {
+    background-color: #DC8686;
+}
+
+.ann-page{
+    padding: 20px;
+    width: 100%;
+    height: 90vh;
+    overflow-y: scroll;
+}
+
+ h1#ann-page, p#ann-page, h2#ann-page{
+    color: #005A82;
+    margin: 0;
+    text-align: left;
+}
+
+p#ann-message{
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+h2#ann-page{
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+.ann-page hr{
+    margin: 0;
+    border: none;
+    border-top: 2px solid #005A82;
+    width: 60%; /* Set the width to 100% */
+    text-align: left ;
+    display: flex;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+
+.ann-title{
+    display: flex;
+    text-align: left;
+    align-items: left;
+    justify-content: left;
+
+}
+
+.portfolio-page{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+
+
+.skills {
+    width: 280px;
+    background-color: #DCF0FA;
+    border-radius: 14px 14px 8px 8px;
+    height: auto;
+    margin: 12px;
+    padding: 15px;
+}
+
+.languages {
+    width: 280px;
+    background-color: #DCF0FA;
+    border-radius: 14px 14px 8px 8px;
+    height: auto;
+    margin: 12px;
+    padding: 15px;
+}
+
+
+.portfolio-block-view{
+    background-color: #DCF0FA;
+    border-radius: 14px 14px 8px 8px;
+    margin: 12px;
+    padding: 15px;
+}
+
+.portfolio-block-view h1{
+    margin: 0;
+    text-align: center;
+    color: #005A82;
+}
+
+.portfolio-block-view hr{
+    border: none;
+    border-top: 2px solid #005A82;
+    margin: 20px 0; /* Add some space above and below the line */
+    width: 100%; /* Set the width to 100% */
+    text-align: center ;
+}
+
+.skills hr{
+    border: none;
+    border-top: 2px solid #005A82;
+    margin: 20px 0; /* Add some space above and below the line */
+    width: 100%; /* Set the width to 100% */
+    text-align: center ;
+}
+
+
+.skills h1{
+    margin: 0;
+    text-align: center;
+    color: #005A82;
+}
+
+.resume-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+}
+
+.resume-container{
+    border: none;
+    border-radius: 18.7px;
+    width: 224px;
+    height: 207px;
+    background-color: #DCF0FA;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.resume-container p{
+    font-weight: bold;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+
+
+.resume-container img{
+    width: 142px;
+    height: 138px;
+    margin-top: 20px;
+    border-radius: 14.1px;
+}
+
+
+.languages hr{
+    border: none;
+    border-top: 2px solid #005A82;
+    margin: 20px 0; /* Add some space above and below the line */
+    width: 100%; /* Set the width to 100% */
+    text-align: center ;
+}
+
+
+.languages h1{
+    margin: 0;
+    text-align: center;
+    color: #005A82;
+}
+
+.project-modal{
+    display: none;
+    width: 200px;
+}
+
+.project-modal {
+    display: none;
+    width: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Ensure the modal appears on top of other elements */
+    border-radius: 8px;
+}
+
+
+.resume-modal {
+    display: none;
+    width: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Ensure the modal appears on top of other elements */
+    border-radius: 8px;
+}
+
+.skill-modal {
+    display: none;
+    width: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Ensure the modal appears on top of other elements */
+    border-radius: 8px;
+}
+
+.language-modal {
+    display: none;
+    width: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Ensure the modal appears on top of other elements */
+    border-radius: 8px;
+}
+
+
+.modal-body form{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: left;
+}
+
+.modal-body form label{
+    font-weight: bold;
+}
+
+.modal-body form input{
+    margin: 20px;
+    width: 222px;
+    height: auto;
+    flex-shrink: 0;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    color: #005A82;
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    font-style: normal; 
+    font-weight: 700;
+    line-height: normal;
+    border-radius: 8px;
+    border: none;
+    background-color: whitesmoke  ;
+}
+
+.modal-body form textarea{
+   background-color: whitesmoke  ;
+   margin: 0;
+   padding: 0;
+}
+
+.btn-close {
+    background-color: #005A82; /* Red background color */
+    color: white; /* White text color */
+    border: none; /* No border */
+    padding: 4px; /* Padding around the text */
+    font-size: 16px; /* Font size of the text */
+    cursor: pointer; /* Cursor style on hover */
+    border-radius: 14.1px; /* Rounded corners */
+    float: right;
+    text-align: center;
+    margin: 0;
+}
+
+.btn-close span {
+    font-size: 20px; /* Font size of the close icon */
+    text-align: center;
+    padding: 4px;
+}
+
+/* Hover effect for the button */
+.btn-close:hover {
+    background-color: #d32f2f; /* Darker red background color on hover */
+}
+
+.btn-submit {
+    background-color: #005A82; /* Red background color */
+    color: white; /* White text color */
+    border: none; /* No border */
+    padding: 8px; /* Padding around the text */
+    font-size: 16px; /* Font size of the text */
+    cursor: pointer; /* Cursor style on hover */
+    border-radius: 14.1px; /* Rounded corners */
+    float: right;
+    text-align: center;
+    margin: 0;
+    display: flex;
+
+}
+
+.modal-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center ;
+}
+
+
+.btn-add {
+    background-color: #005A82; /* Red background color */
+    color: white; /* White text color */
+    border: none; /* No border */
+    font-size: 32px; /* Font size of the text */
+    cursor: pointer; /* Cursor style on hover */
+    border-radius: 100%; /* Rounded corners */
+    float: right;
+    text-align: center;
+    margin: 0;
+    height: 35px;
+    width: 35px;
+    padding: 0;
+    justify-self: end; /* Align button to the end of its grid cell */
+
+}
+
+
+.content {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.project-details {
+    background-color: #DCF0FA;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 14.1px;
+    width: 500px;
+    margin: 12px;
+}
+
+.update-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.project-row-update{
+    display: grid;
+    width: auto;
+    padding: 20px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.project-details form .button-container{
+    margin-top: 15px;
+}
+
+.project-details input {
+    margin: 8px;
+}
+
+.project-details label{
+    font-weight: bold;
+}
+
+.proj-details-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.proj-details-header p{
+    margin-left: 5px;
+}
+
+.proj-details-header i{
+    margin-right: 5px;
+    color: #005A82;
+    font-weight: bold;
+}
+
+.past-exp-row{
+    display: flex;
+
+}
+
+
+.resume-container {
+    text-align: center; /* Center align the content */
+}
+
+.resume-table {
+    margin: 0 auto; /* Center the table */
+    border-collapse: collapse; /* Collapse table borders */
+    width: 690px; /* Set table width to 100% */
+}
+
+.resume-table th,
+.resume-table td {
+    padding: 8px; /* Add padding to table cells */
+    padding-left: 30px;
+    padding-right: 20px;
+}
+
+.resume-table th {
+    background-color: none; /* Light gray background for table headers */
+    color: #005A82;
+    text-align: left;
+}
+
+.resume-table td {
+    text-align: left; /* Left align table cell content */
+}
+
+.resume-table th.client-column,
+.resume-table td.client-cell {
+    width: 30%; /* Set width for client column */
+    font-weight: bold;
+}
+
+.resume-table th.country-column,
+.resume-table td.country-cell {
+    width: 30%; /* Set width for country column */
+}
+
+.resume-table th.year-column,
+.resume-table td.year-cell {
+    width: 40%; /* Set width for year column */
+}
+
+
+
+.remove-button {
+    background-color: transparent;
+    border: none;
+    color: #005A82;
+    font-weight: bold;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.remove-button:hover {
+    background-color: #87BFD9;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+.language-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+.skills ul{
+    margin: 0
+    ;
+}
+
+.languages ul{
+    margin: 0
+    ;
+}
+
+.skills span{
+    color: #005A82;
+}
+
+.languages span{
+    color: #005A82;
+}
+
+
+.portfolio-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    text-align: center;
+}
+
+/* Empty grid cell */
+.empty-cell {
+    grid-column: 1; /* Place in the first column */
+}
+
+.past-exp-modal{
+    display: none;
+    width: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Ensure the modal appears on top of other elements */
+    border-radius: 8px;
+}
+
+button#edit-prof{
+    margin: 12px;
+}
+
+.edit-prof-container{
+    overflow-y: scroll;
+    height: 90vh;
+    width: 100%;
+    padding: 20px;
+   
+}
+
+.form-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+.form-1{
+    grid-column: 1;
+}
+
+.form-2{
+    grid-column: 2;
+
+}
+
+.form-2 select{
+    margin: 10px;
+}
+
+.form-2 h2{
+    margin-bottom: 10px;
+}
+
+.settings-account{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+/* Width */
+html {
+    scrollbar-width: thin;
+  }
+  
+  /* Track */
+  html {
+    scrollbar-color: #87BFD9 transparent;
+  }
+  
+  /* Handle */
+  html::-webkit-scrollbar-thumb {
+    background-color: #888;
+  }
+  
+  /* Handle on hover */
+  html::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+
+  
+
+  /* Style for the tags container */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    align-items: baseline;
+}
+
+
+.tag-p {
+    color: #005A82;
+    font-weight: bold;
+    margin-right: 5px; /* Adjust as needed */
+}
+
+
+/* Style for each tag box */
+.tag-box {
+    background-color: #87BFD9;
+    border:none;
+    color: #005A82;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+/* Optional: Add hover effect */
+.tag-box:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}

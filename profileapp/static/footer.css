@@ -1,0 +1,155 @@
+/* footer.css */
+footer {
+    background-color: #ccc;
+    padding: 40px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+    padding: 0 50px;
+}
+
+.footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-logo-img {
+    width: 50px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.footer-logo p {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: #333;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    color: #007bff;
+}
+
+.footer-links {
+    display: flex;
+    gap: 50px;
+}
+
+.link-section {
+    text-align: left;
+}
+
+.link-section h4 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.link-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.link-section ul li {
+    margin-bottom: 8px;
+}
+
+.link-section ul li a {
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.link-section ul li a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+
+.logo-wrapper {
+    display: flex;
+    gap: 20px; /* Add some space between the logos */
+}
+
+.footer-logo-img {
+    height: 50px; /* Adjust the height of the logos */
+    width: auto;
+}
+
+
+/* For tablets and smaller screens (up to 768px wide) */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 20px;
+    }
+
+    .footer-logo,
+    .social-icons,
+    .footer-links {
+        margin-bottom: 20px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .link-section {
+        text-align: left;
+    }
+}
+
+/* For mobile devices (up to 480px wide) */
+@media (max-width: 480px) {
+    footer {
+        padding: 20px 0;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 10px;
+    }
+
+    .footer-logo-img {
+        width: 40px; /* Reduce logo size for smaller screens */
+    }
+
+    .footer-logo p,
+    .link-section h4,
+    .link-section ul li a {
+        font-size: 12px; /* Adjust font size for readability on smaller screens */
+    }
+
+    .social-icons {
+        gap: 10px; /* Reduce gap between icons */
+    }
+
+    .footer-links {
+        gap: 10px;
+    }
+
+    .link-section ul li {
+        margin-bottom: 5px;
+    }
+}

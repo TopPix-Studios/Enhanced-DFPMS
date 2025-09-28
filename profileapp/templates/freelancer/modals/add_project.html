@@ -1,0 +1,266 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "project.css" %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+<div class="add-project-container">
+    <div class="header-container">
+        <a href="{% url 'profile_page' %}" class="back-button" style="height: 18px; padding: 10px 20px; "> 
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        
+        <h3>Add New Project</h3>
+    </div>
+    <hr class="freelancer">
+    <!-- Flexbox applied to the entire form container -->
+    <form method="post" enctype="multipart/form-data" id="addProjectForm" class="form-upload-container">
+        {% csrf_token %}
+        
+        <div class="form-fields">
+            <div class="form-group">
+                {{ project_form.title.label_tag }}
+                {{ project_form.title }}
+            </div>
+        
+            <div class="form-group">
+                {{ project_form.description.label_tag }}
+                {{ project_form.description }}
+            </div>
+        </div>
+
+        <!-- Drop Area for PDF Upload -->
+        <div class="drop-area-container">
+            <label for="id_pdf_file" class="project-pdf-label">Upload PDF File:</label>
+            <div id="projectDropArea" class="drop-area">
+                <span class="material-symbols-outlined">cloud</span>
+                <div class="drop-text">Drag and drop your project file here or click to upload</div>
+                <input type="file" name="pdf_file" id="id_pdf_file" class="file-input" accept=".pdf" style="display:none;">
+                
+                <!-- PDF Preview Container will appear inside the drop area -->
+                <div id="pdfPreviewContainer" class="pdf-preview-container" style="display: none;">
+                    <canvas id="pdfPreviewCanvas"></canvas>
+                </div>
+                <div id="projectDropLabel" class="drop-label" style="display:none;"></div>
+                <p class="help-text">We accept only PDF files.</p>
+
+            </div>
+            <!-- Help Text Below File Input -->
+
+            <!-- Submit Button Positioned at the Bottom Right of the Second Column -->
+            <button type="submit" class="btn-submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+<!-- Add styling here -->
+<style>
+    /* Flexbox container to display the form and file upload side-by-side */
+    .form-upload-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .form-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        flex: 1;
+        width: 40vw;
+    }
+
+    #id_title {
+        border: 1px solid var(--secondary-color);
+        border-radius: 8px;
+        color: var(--secondary-color);
+        }
+
+    .drop-area-container {
+        flex: 1; /* Ensure the drop area takes equal space as the form */
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 30vw;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .drop-area {
+        border: 2px dashed #ccc;
+        padding: 30px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+        position: relative;
+        height: 300px; /* Increased height to accommodate preview */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: border-color 0.3s ease;
+        overflow: hidden; /* Ensure content does not overflow the drop area */
+    }
+
+    .drop-area.drag-over {
+        border-color: #66afe9;
+        background-color: #e6f7ff;
+    }
+
+    .material-symbols-outlined {
+        font-size: 50px;
+        color: #aaa;
+    }
+
+    .drop-text {
+        font-size: 16px;
+        color: #666;
+        margin-top: 10px;
+    }
+
+    .help-text {
+        text-align: center;
+        justify-self: center;
+        margin: 10px auto;  
+        font-size: 14px;
+        color: #888;
+    }
+
+    .pdf-preview-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px; /* Adjusted to appear properly inside the box */
+        width: 100%;
+        height: 100%; /* Ensure the canvas takes the available height */
+        overflow: hidden; /* Prevent any overflow of the preview */
+    }
+
+    #pdfPreviewCanvas {
+        max-width: 100%;
+        max-height: 100%; /* Ensure the canvas scales correctly */
+    }
+
+    .btn-submit {
+        align-self: flex-end; /* Align the submit button to the bottom right */
+        margin-top: 20px;
+    }
+</style>
+
+<script>
+    // Add placeholders to title and description fields
+    const titleField = document.getElementById('id_title');
+    const descriptionField = document.getElementById('id_description');
+
+    if (titleField) {
+        titleField.setAttribute('placeholder', 'Enter project title here');
+    }
+
+    if (descriptionField) {
+        descriptionField.setAttribute('placeholder', 'Enter project description here');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        function setupDropArea(dropAreaId, dropLabelId, fileInputId, allowedTypes) {
+            const dropArea = document.getElementById(dropAreaId);
+            const dropLabel = document.getElementById(dropLabelId);
+            const fileInput = document.getElementById(fileInputId);
+            const dropText = dropArea.querySelector('.drop-text');
+            const dropIcon = dropArea.querySelector('.material-symbols-outlined');
+
+            // When the user drags over the drop area
+            dropArea.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                dropArea.classList.add('drag-over');
+            });
+
+            // When the user leaves the drop area
+            dropArea.addEventListener('dragleave', () => {
+                dropArea.classList.remove('drag-over');
+            });
+
+            // When the user drops the file into the drop area
+            dropArea.addEventListener('drop', (event) => {
+                event.preventDefault();
+                dropArea.classList.remove('drag-over');
+                handleFileSelect(event.dataTransfer.files);
+            });
+
+            // When the user clicks the drop area to open the file dialog
+            dropArea.addEventListener('click', () => {
+                fileInput.click(); // Trigger file input on click
+            });
+
+            // When the file input changes (a file is selected via the dialog)
+            fileInput.addEventListener('change', () => {
+                handleFileSelect(fileInput.files);
+            });
+
+            function handleFileSelect(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (allowedTypes.includes(file.type)) {
+                        fileInput.files = files; // Update the file input with the selected files
+                        dropLabel.style.display = 'block';
+                        dropLabel.innerText = `File: ${file.name}`;
+                        displayPreview(file);
+                    } else {
+                        alert(`Please select a file of type: ${allowedTypes.join(', ')}`);
+                    }
+                }
+            }
+
+            function displayPreview(file) {
+                // Hide the default text and icon in the drop area
+                dropText.style.display = 'none';
+                dropIcon.style.display = 'none';
+
+                // Set up the PDF preview area
+                const previewContainer = document.getElementById('pdfPreviewContainer');
+                const canvas = document.getElementById('pdfPreviewCanvas');
+                const context = canvas.getContext('2d');
+
+                previewContainer.style.display = 'flex'; // Show the preview container
+
+                // Use FileReader to read the PDF file
+                const fileReader = new FileReader();
+                fileReader.onload = function() {
+                    const typedArray = new Uint8Array(this.result);
+                    pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
+                        // Get the first page
+                        pdf.getPage(1).then(function(page) {
+                            const scale = 1.0; // Scale for fitting the preview box
+                            const viewport = page.getViewport({ scale: scale });
+
+                            // Set canvas dimensions
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+
+                            const renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+
+                            // Render the first page of the PDF into the canvas
+                            page.render(renderContext);
+                        });
+                    });
+                };
+                fileReader.readAsArrayBuffer(file); // Read the PDF file as an ArrayBuffer
+            }
+        }
+
+        // Set up the drop area with allowed file types as PDFs
+        setupDropArea('projectDropArea', 'projectDropLabel', 'id_pdf_file', ['application/pdf']);
+    });
+</script>
+
+{% endblock %}

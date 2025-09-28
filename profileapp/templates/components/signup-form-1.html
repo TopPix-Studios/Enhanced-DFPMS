@@ -1,0 +1,134 @@
+{% extends 'sign-up.html' %}
+{% load static %}
+{% load socialaccount %}
+
+{% block title %}Step 1: Account Information{% endblock %}
+
+{% block content %}
+<style>
+    .input-container {
+        position: relative;
+    }
+    
+    .input-container .form-control {
+        padding-right: 30px; /* Adjust padding to make space for the icon */
+    }
+    
+    .input-container .field-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #aaa;
+    }
+    
+    .field-icon.fa-eye-slash {
+        color: #333;
+    }
+</style>
+<div class="account-reg-container">
+
+</div>
+<h1 id="reg-title-page">Sign Up</h1>
+<div id="step1" class="registration-step">
+   
+    <!-- Form for Step 1 -->
+    <div class="third-party-login-reg">
+        <div class="third-party-login-container-reg">
+            <img src="{% static 'img/image Google.png' %}" alt="Google Logo">
+            <a href="{% provider_login_url "google" %}" >Sign Up with Google</a> 
+        </div>
+    
+    </div>
+
+    <div class="sign-up-divider">
+        <hr>
+        <p>Or</p>
+        <hr>
+    </div>
+    
+    <form method="POST" action="{% url 'create_account' %}" class="user-signup">
+        {% csrf_token %}
+
+        <div>
+            {% if messages %}
+                <script>
+                    $(document).ready(function() {
+                        {% for message in messages %}
+                            Swal.fire({
+                                icon: '{{ message.tags }}',
+                                title: '{{ message.tags|title }}',
+                                text: '{{ message|safe }}',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                        {% endfor %}
+                    });
+                </script>
+            {% endif %}
+            
+            <div class="sign-up-col-1">
+              {% for field in form %}
+                  <div class="form-group">
+                      {% if field.name != 'terms_checkbox' and field.name != 'password1' and field.name != 'password2' %}
+                          <div class="input-container">
+                              {{ field }}
+                          </div>
+                      {% elif field.name == 'password1' or field.name == 'password2' %}
+                          <div class="input-container">
+                              {{ field }}
+                              <span toggle="#{{ field.id_for_label }}" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                          </div>
+                      {% endif %}
+                  </div>
+              {% endfor %}
+         
+            
+          </div>
+            <br>
+            <div class="sign-up-buttons">
+                <button class="button-signup" type="submit">Register</button>
+            </div>
+            
+            <p>Already have an account? <a id="loginurl" href="{% url 'index' %}">Login</a></p>
+        </div>
+    </form>
+  
+
+</div>
+  <!-- Custom Modal Structure -->
+<div id="custom-modal" class="modal" style="height: 100vh; overflow: hidden;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="terms-content">
+            {% include 'components/privacy_policy_modal.html' %}
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  function togglePasswordVisibility() {
+      var passwordInput = document.querySelectorAll('.toggle-password');
+      
+      passwordInput.forEach(function(element) {
+          element.addEventListener('click', function() {
+              var input = document.querySelector(this.getAttribute('toggle'));
+              if (input.type === "password") {
+                  input.type = "text";
+                  this.classList.remove("fa-eye");
+                  this.classList.add("fa-eye-slash");
+              } else {
+                  input.type = "password";
+                  this.classList.remove("fa-eye-slash");
+                  this.classList.add("fa-eye");
+              }
+          });
+      });
+  }
+
+  togglePasswordVisibility();
+</script>
+
+{% endblock %}

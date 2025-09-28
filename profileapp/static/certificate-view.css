@@ -1,0 +1,361 @@
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+}
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+    --button-bg-color: #0a2472;
+    --button-hover-bg-color: #1a43bf;
+    --button-danger-bg-color: #0a2472;
+    --button-danger-hover-bg-color: #1a43bf;
+    --modal-bg-color: rgba(0, 0, 0, 0.5);
+    --modal-content-bg-color: #fefefe;
+}
+
+
+body {
+    font-family: 'Garet', sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+.certificate-page {
+    padding: 1rem;
+    width: auto;
+    overflow-x: hidden;
+
+}
+
+.certificate-container {
+    display: grid;
+    grid-template-columns: repeat(3, 350px); /* Create 3 columns of equal width */
+    gap: 20px; /* Space between the containers */
+    
+    height: 90vh;
+    overflow-y: scroll;
+    padding: 0.5rem;
+    align-items: flex-start;
+}
+
+
+.certificate-details {
+    width: fit-content;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #bbb;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    position: relative;
+    height: fit-content !important;
+}
+
+
+
+.certificate-image img {
+    width: 300px;
+    height: 12rem;
+    border-radius: 5px;
+    border: 0.25px solid #ccc;
+}
+
+.certificate-header  {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;           /* Enable wrapping */
+    align-items: flex-start;   /* Align items to the top (optional) */
+    width: 300px;              /* Container width */
+    gap: 10px;                 /* Optional spacing between items */
+}
+.certificate-header > :nth-child(2) {
+    border-top: 1px solid #ccc; /* or any color/style you want */
+    padding-top: 8px;           /* optional spacing */
+    margin-top: 8px;            /* optional spacing */
+    width: 100%;         
+    flex-basis: 100%;       /* ensures it spans full width */
+}
+
+
+.certificate-title{
+    margin-right: auto;
+    font-size: 16px;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+.certificate-info {
+    text-align: left;
+    margin-right: auto;
+}
+
+.certificate-info h3 {
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.certificate-info p {
+    margin: 0;
+    color: var(--secondary-color);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    /* position: absolute;
+    bottom: 10px;
+    right: 20px; */
+}
+
+.update-button,
+.delete-button,
+.download-button {
+    background-color: #ebecff !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+    padding: 10px !important;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+}
+
+.update-button:hover {
+    background-color: var(--button-hover-bg-color);
+}
+
+.delete-button {
+    background-color: var(--button-danger-bg-color);
+}
+
+.delete-button:hover {
+    background-color: var(--button-danger-hover-bg-color);
+}
+
+.close-button {
+    color: var(--text-color);
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #ff0000;
+    text-decoration: none;
+    transform: scale(1.2);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-bg-color);
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.modal-content {
+    background-color: var(--modal-content-bg-color);
+    margin: auto;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    font-family: 'Garet', sans-serif;
+    color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-content.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+}
+
+.modal-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 0.5rem;
+}
+
+.modal-form-group label {
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.modal-form-group input,
+.modal-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: 'Garet', sans-serif;
+    font-size: 1rem;
+    color: var(--primary-color);
+    background-color: #f9f9f9;
+}
+
+.modal-form-group textarea {
+    resize: vertical;
+}
+
+.modal-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.modal-update-button {
+    background-color: var(--button-bg-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.modal-update-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.modal-update-button:hover {
+    background-color: var(--button-hover-bg-color);
+    transform: scale(1.05);
+}
+
+.modal-close-button {
+    color: var(--primary-color);
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.modal-close-button:hover,
+.modal-close-button:focus {
+    color: #ff0000;
+    text-decoration: none;
+    transform: scale(1.2);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Back Button Styles */
+.back-button {
+    background-color: var(--secondary-color);
+    color: #ebecff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);}
+
+.button-container button {
+    width: fit-content !important;
+}
+
+.certificate-details-button-add{
+    width: 77vw;
+    height: inherit !important;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #bbb;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    position: relative;
+    min-height: 50px;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.btn-add {
+    width: 50px;
+    height: 50px;
+    background-color: unset !important;
+    font-size: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+}

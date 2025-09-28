@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Three-Step Registration{% endblock %}</title>
+    {% include 'links/links.html' %}
+ 
+</head>
+<nav>
+    {% include 'header.html' %}
+</nav>
+<body>
+    <main>
+      
+        <div class="registration-container">
+            <div class="center-box">
+                <div class="breadcrumbs">
+                    {% include  'components/breadcrumbs-signup.html' %}
+                 
+                </div>
+               
+                <div class="content">
+                    {% extends 'sign-up.html' %}
+                    
+                    {% endblock %}
+
+                </div>
+            
+            </div>
+           
+        </div>        
+    </main>
+</body>
+
+</html>

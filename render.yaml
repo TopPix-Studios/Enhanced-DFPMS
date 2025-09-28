@@ -1,0 +1,59 @@
+databases:
+  - name: profiling
+    plan: free
+    databaseName: profiling
+    user: profiling
+    region: singapore
+
+services:
+  - type: web
+    plan: free
+    name: profileapp
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn profileapp.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: profiling
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_ENGINE
+        value: django.db.backends.postgresql
+      - key: DB_NAME
+        fromDatabase:
+          name: profiling
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: profiling
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: profiling
+          property: password
+      - key: DB_HOST
+        fromDatabase:
+          name: profiling
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: profiling
+          property: port
+      # Provide SMTP credentials through the Render dashboard or an environment group.
+      # These keys are required by Django's email configuration.
+      # - key: EMAIL_BACKEND
+      #   value: django.core.mail.backends.smtp.EmailBackend
+      # - key: EMAIL_HOST
+      #   value: smtp.yourprovider.com
+      # - key: EMAIL_PORT
+      #   value: "587"
+      # - key: EMAIL_USE_TLS
+      #   value: "True"
+      # - key: EMAIL_HOST_USER
+      #   value: your_smtp_username
+      # - key: EMAIL_HOST_PASSWORD
+      #   sync: false
+      - key: WEB_CONCURRENCY
+        value: "4"

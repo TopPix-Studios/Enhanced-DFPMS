@@ -1,0 +1,141 @@
+
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+  }
+  
+  
+  :root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+}
+
+  
+  
+
+
+
+.g-content {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 200px auto 1fr;
+    margin-top: 50px;
+}
+
+/* ... (rest of your styles) */
+
+.dots-design svg{
+    float: left;
+}
+
+.tagline{
+    width: 650px;
+    text-align: left;
+    margin-top: 50px;
+    
+}
+.tagline h1{
+    color: var(--primary-color);
+    font-family: 'Garet';
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 64px; /* 100% */
+}
+
+span#special-h1{
+    color: var(--accent-color);
+    font-family: 'Garet';
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 64px;
+}
+
+.tagline h2{
+    color: #252525;
+    font-family: 'Garet';
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px; /* 136.364% */
+}
+
+.tagline li{
+    color: #384356;
+    font-family: 'Garet';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+.tagline p{
+    color: #384356;
+    font-family: 'Garet';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px; /* 155.556% */
+}
+
+.lp-btn-container{
+    display: flex;
+    flex-direction: row;
+    gap: 30px ;
+    align-items: center;
+}
+
+.register-btn{
+    width: 249px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 60px;
+    background: linear-gradient(264deg, var(--secondary-color) -45.37%, var(--border-color) 88.97%);
+    box-shadow: 0px 5px 22.579px 0px rgba(50, 174, 137, 0.25);
+    color: var(--Color, #FFF);
+    font-family: 'Garet';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 53px;
+
+}
+
+.learn-btn{
+    align-items: center;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    
+}
+
+.learn-btn svg{
+    margin-top: 5px
+}
+
+.learn-btn a{
+    color: var(--secondary-color);
+    font-family: 'Garet';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+/* Rest of your CSS styles */
+
+.image-showcase {
+    width: 400px; /* Adjust width as needed */
+    height: 500px; /* Adjust height as needed */
+    background-image: url('img/DarkBlue/dark blue.png');
+    background-size: cover;
+    background-position: center;
+    margin-left: 40px; /* Adjust margin as needed */
+    border-radius: 100px 40px 100px 80px ; /* Optional: Add border-radius for rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a subtle effect */
+}

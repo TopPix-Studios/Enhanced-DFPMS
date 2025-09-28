@@ -1,0 +1,306 @@
+{% extends "home.html" %}
+{% load static %}
+{% block title %}DFPS Profiling: {{event.title}} {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'announcement.css' %}">
+<link rel="stylesheet" href="{% static 'event.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<div class="announcement-detail-page">
+    <a href="{% url 'event' %}" class="back-link" style="width: fit-content; margin-bottom: 8px">   
+        <i class="fas fa-arrow-left"></i>
+        Back
+    </a>
+    <div class="ann-content-image {% if event.is_cancelled %}image-cancelled{% endif %}">
+        {% if event.image %}            
+            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+        {% else %}
+            <img src="{% static 'img/event.png' %}" alt="{{ event.title }}">
+        {% endif %}
+        <div class="ann-image-text" style="width: 50rem; left: 27vw">
+            <div class="header-align" style="display:flex; gap: 1rem; align-content: center;">
+                <h2>{{ event.title }}</h2>
+                {% if event.is_cancelled %}
+                    <span class="cancelled-tag">Cancelled</span>
+                {% endif %}
+                {% if event.is_moved %}
+                    <span class="tag-box moved-tag" >Moved</span>
+                {% endif %} 
+
+            </div>
+            <p>{{ event.start_datetime }} to {{ event.end_datetime}}</p>
+        </div>
+    </div>
+
+    <div class="announcement-content">
+        <div class="announcement-detail-box">
+            <p>{{ event.start_datetime }} to<br>{{ event.end_datetime}} </p>
+            <p>{{ event.organizer.username }}</p>
+            <div class="tags-container">
+                <div class="tag-p">
+                    <p>Tags:</p>
+                </div>
+                {% for tag in event.tags.all %}
+                    <a href="#" class="tag-box">{{ tag }}</a>
+                {% endfor %}
+            </div>
+            {% if event.qr_code %}
+                <div class="qr-code-container">
+                    <h3>Event QR Code</h3>
+                    <img src="{{ event.qr_code.url }}" alt="Event QR Code" class="qr-code-image">
+                </div>
+            
+            {% endif %}
+    
+            <div class="share-buttons">
+                <h3>Share Event</h3>
+                <div class="share-button-row">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="share-button facebook">
+                        <i class="fab fa-facebook-f"></i> 
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ event.title }}" target="_blank" class="share-button twitter">
+                        <img src="{% static 'svg/x.svg' %}" alt="X Icon" width="32" height="32">
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ event.title }}" target="_blank" class="share-button linkedin" style="margin-right: 0">
+                        <i class="fab fa-linkedin-in"></i> 
+                    </a>
+                </div>
+    
+            </div>
+            <br>    
+            <div class="attendance-container">
+         
+                {% if event.is_cancelled %}
+                    <h3>Event Status</h3>
+                    <p>This event has been cancelled. Attendance is disabled.</p>
+                    <p><strong>Remarks:</strong> {{ event.remarks}}</p>
+                {% elif timezone_now < event.start_datetime %}
+                    <h3>RSVP</h3>
+                    <!-- Show RSVP form since the event hasn't started yet -->
+                    <div class="rsvp-container">
+                        {% if user_rsvp %}
+                            <p style="white-space: nowrap !important;">Your RSVP Status: <strong>{{ user_rsvp.get_status_display }}</strong>
+                            </p> 
+                        {% else %}
+                            <p>You have not RSVP'd yet.</p>
+                        {% endif %}
+                           <!-- Display RSVP counts -->
+                        <div class="rsvp-counts">
+                            <p><strong>Interested:</strong> {{ rsvp_counts.interested }}</p>
+                            <p><strong>Attending:</strong> {{ rsvp_counts.attending }}</p>
+                            <p><strong>Not Attending:</strong> {{ rsvp_counts.not_attending }}</p>
+                        </div>
+                        <form method="post" action="{% url 'event_detail_view' event_id=event.id %}">
+                            {% csrf_token %}
+                            <select name="rsvp_status" required>
+                                <option value="interested" {% if user_rsvp and user_rsvp.status == 'interested' %}selected{% endif %}>Interested</option>
+                                <option value="attending" {% if user_rsvp and user_rsvp.status == 'attending' %}selected{% endif %}>Attending</option>
+                                <option value="not_attending" {% if user_rsvp and user_rsvp.status == 'not_attending' %}selected{% endif %}>Not Attending</option>
+                            </select>
+                            <button type="submit" name="rsvp" class="present-link">Submit RSVP</button>
+                        </form>
+                    
+                     
+                    </div>
+                    
+                {% elif user_attendance %}
+                    <h3>Event Attendance</h3>
+                    <!-- Show attendance information if the event is ongoing and the user has attended -->
+                    <p>You are signed in to this event for today ({{ user_attendance.date }}).</p>
+                    <p><strong>Attendees Count:</strong> {{ attendance_count }}</p>
+                {% else %}
+                    <h3>Event Attendance</h3>
+
+                    <!-- Show attendance button if the event is ongoing but the user has not yet attended -->
+                    <p>You have yet to confirm your attendance for this event today.</p>
+                    <button class="present-link" type="button" onclick="confirmAttendance()">Register</button>
+                {% endif %}
+            </div>
+            
+            
+            
+
+            <!-- Map Container -->
+            <div id="map" style="width: 100%; height: 400px; margin-top: 20px;"></div>
+            {% if not event.is_cancelled %}
+                <button id="directions-button" style="margin-top: 10px;">Get Directions in Google Maps</button>
+            {% endif %}
+
+        </div>
+        <div class="content-box">
+            {% if event.is_moved %}
+                <small  style="color: #333"><i>This event was moved, check the date and address again.</i></small>
+            {% endif %}
+            <div class="header-align" style="display:Flex; gap: 1rem; align-content: center;">
+                <h1>{{ event.title }}</h1>{% if event.is_cancelled %}<span class="tag-box cancelled-tag white-bg">Cancelled</span>{% endif %}
+
+            </div>
+            {% if event.location %}
+                <p class="ann-location" style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #EF4444;"></i>
+                    <span style="font-weight: 600; margin-right: 4px;">Location:</span>
+                    <span>{{ event.location }}</span>
+                </p>
+            {% endif %}
+            
+            {% if event.virtual_details %}
+                <p class="ann-virtual" id="virtual-link" style="display: flex; align-items: center;">
+                    <i class="fas fa-globe" id="platform-icon" style="margin-right: 8px;"></i>
+                    <span style="font-weight: 600; margin-right: 4px;">Virtual Platform:</span>
+                    <span id="platform-label" style="margin-right: 8px;">—</span>
+                    <a href="{{ event.virtual_details.url }}" target="_blank" id="virtual-url">
+                        {{ event.virtual_details.platform }}
+                    </a>
+                </p>
+            
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const icon = document.getElementById("platform-icon");
+                        const link = document.getElementById("virtual-url");
+            
+                        if (icon && link) {
+                            const url = link.href;
+            
+                            if (url.includes("zoom.us")) {
+                                icon.style.color = "#2D8CFF"; // Zoom blue
+                            } else if (url.includes("meet.google.com")) {
+                                icon.style.color = "#34A853"; // Google green
+                            } else {
+                                icon.style.color = "#6B7280"; // Neutral gray
+                            }
+                        }
+                    });
+                </script>
+            {% endif %}
+            
+        
+           
+            <br>
+            <p>{{ event.description }}</p>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function showTermsAndConditions() {
+    Swal.fire({
+        title: 'Privacy Policy',
+        html: '<p>Your Privacy Policy go here. Make sure to detail everything the user should know before confirming their attendance.</p>',
+        showCloseButton: true,
+        focusConfirm: false,
+        confirmButtonText: 'Close'
+    });
+}
+
+function confirmAttendance() {
+    Swal.fire({
+        title: 'Confirm Attendance',
+        html:
+            '<form id="attendance-form" method="post" action="{% url "event_detail_view" event_id=event.id %}">' +
+            '{% csrf_token %}' +
+            '<label for="terms"><input type="checkbox" id="terms" name="terms"> I agree to the <a href="#" class="highlight-link" onclick="showTermsAndConditions(); return false;">Privacy Policy</a>.</label>' +
+            '</form>',
+        showCancelButton: true,
+        confirmButtonText: 'Confirm',
+        reverseButtons: true, // Ensures Yes is on the right
+        confirmButtonText: '<b>Yes</b>',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#007bff',
+        cancelButtonColor: '#6c757d',
+
+
+        preConfirm: () => {
+            if (!document.getElementById('terms').checked) {
+                Swal.showValidationMessage('You must agree to the Privacy Policy');
+                return false;
+            }
+            document.getElementById('attendance-form').submit();
+        }
+    });
+}
+
+// Google Maps Redirection
+function redirectToGoogleMaps(userLat, userLng) {
+    const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination={{ event.latitude }},{{ event.longitude }}&travelmode=driving`;
+    window.open(directionsUrl, '_blank');
+}
+
+// Initialize Leaflet Map and Handle Geolocation
+document.addEventListener("DOMContentLoaded", function() {
+    // Coordinates for General Santos City as fallback
+    const defaultLocation = [6.1164, 125.1716];
+
+    // Coordinates for the event location
+    const eventLocation = [
+        {{ event.latitude|default:"6.1164" }},
+        {{ event.longitude|default:"125.1716" }}
+    ];
+
+
+    // Initialize the map centered on the event location
+    const map = L.map('map').setView(eventLocation, 13);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Add a marker for the event location
+    const eventMarker = L.marker(eventLocation).addTo(map)
+        .bindPopup("{{ event.title }}")
+        .openPopup();
+
+    // Try to get the user's location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // User's location
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                // Add a marker for the user's location
+                L.marker([userLat, userLng]).addTo(map)
+                    .bindPopup("Your Location")
+                    .openPopup();
+
+                // Adjust the map to fit both locations
+                map.fitBounds([[userLat, userLng], eventLocation], { padding: [50, 50] });
+
+                // Set up the button click event for Google Maps redirection
+                const directionsButton = document.getElementById('directions-button');
+                directionsButton.addEventListener('click', () => {
+                    redirectToGoogleMaps(userLat, userLng);
+                });
+            },
+            (error) => {
+                // If location access is denied, use General Santos City
+                console.warn(`ERROR(${error.code}): ${error.message}`);
+                map.setView(defaultLocation, 13);
+
+                // Fallback to default directions from General Santos City
+                const directionsButton = document.getElementById('directions-button');
+                directionsButton.addEventListener('click', () => {
+                    redirectToGoogleMaps(defaultLocation[0], defaultLocation[1]);
+                });
+            }
+        );
+    } else {
+        // Browser doesn't support Geolocation
+        console.warn("Geolocation is not supported by this browser.");
+        map.setView(defaultLocation, 13);
+
+        // Fallback to default directions from General Santos City
+        const directionsButton = document.getElementById('directions-button');
+        directionsButton.addEventListener('click', () => {
+            redirectToGoogleMaps(defaultLocation[0], defaultLocation[1]);
+        });
+    }
+});
+</script>
+{% endblock content %}

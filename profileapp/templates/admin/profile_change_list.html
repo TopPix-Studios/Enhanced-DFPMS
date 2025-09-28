@@ -1,0 +1,7 @@
+<!-- templates/admin/skills_change_list.html -->
+{% extends 'admin/change_list.html' %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    <a href="{{ profile_chart_url }}" class="btn btn-primary">View Profile Chart</a>
+{% endblock %}

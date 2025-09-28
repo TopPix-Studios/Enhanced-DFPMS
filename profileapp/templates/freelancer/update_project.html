@@ -1,0 +1,124 @@
+{% extends "home.html" %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}DFPS Profiling: Update Project {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<link rel="stylesheet" href="{% static 'project.css' %}">
+<style>
+    #addProjectModal input, textarea{
+        width: 500px !important;
+    }
+
+    #addProjectModal form{
+        padding: 0;
+    }
+</style>
+<div class="project-page">
+    <!-- Add the back button beside the Portfolio heading -->
+    <div class="header-container">
+        <button class="back-button" onclick="window.history.back();">
+            <!-- FontAwesome Back Icon -->
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h1>Portfolio</h1>
+        <div class="project-card-btn-add" style="margin-left: auto;">
+            <button type="button" class="btn-add" onclick="window.location.href='{% url 'add_project' %}'">
+                &#43;
+            </button>
+        </div>
+    </div>
+    <hr class="freelancer">
+
+    <div class="project-container">
+        {% if projects %}
+            {% for project in projects %}
+            <div class="project-details">
+                <div class="details-container">
+                    <div class="project-image">
+                        <!-- Placeholder Image for PDF -->
+                        <img src="{% static 'img/files1.png' %}" alt="PDF Placeholder" class="pdf-placeholder">
+                    </div>
+                    <div class="project-info">
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.description }}</p>
+                    </div>
+                    <div class="button-container">
+                    <button class="update-button"  onclick="window.location.href='{% url 'update_project'  project.id %}'">
+                            <!-- FontAwesome Update Icon -->
+                            <i class="fas fa-edit"></i>
+                    </button>
+                        <button class="download-button" onclick="downloadPDF('{{ project.pdf_file.url }}')">
+                            <!-- FontAwesome Download Icon -->
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <form id="delete_form_{{ project.id }}" action="{% url 'update_projects' %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_{{ project.id }}" value="1">
+                            <button type="button" class="delete-button" onclick="confirmDelete({{ project.id }})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+      
+        
+
+       
+       
+    </div>
+    {% else %}
+   
+</div>
+     <!-- No Projects Message -->
+     <div style="text-align: center; justify-self: center;">
+        <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+        <p>No projects found. Please add a project to get started! 
+            <a href="{% url 'add_project' %}" style="text-decoration: underline; color: var(--border-color)">Add here</a>
+        </p>
+    </div>
+    {% endif %}
+<script>
+    function downloadPDF(url) {
+        window.location.href = url;
+        }
+
+
+        function confirmDelete(projectId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Please note: this action cannot be undone.!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: '<b>Yes</b>',
+                cancelButtonText: 'No',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                reverseButtons: true // Ensures Yes is on the right
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`delete_form_${projectId}`).submit();
+                }
+            });
+        }
+        
+
+      $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Click to select options",
+            templateResult: formatOptionWithTooltip,
+            templateSelection: formatOptionWithTooltip
+        });
+        $('.select2.skills').select2({
+            placeholder: "Select Main Skill first",  // Custom placeholder for skills
+            allowClear: true  // Allow clearing the selection
+        });
+    });
+</script>
+
+{% endblock content %}

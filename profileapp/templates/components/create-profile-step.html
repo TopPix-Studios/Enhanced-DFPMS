@@ -1,0 +1,728 @@
+{% extends 'sign-up.html' %}
+{% load static %}
+{% block title %}Step 3: Freelancer Information{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="{% static "select2.css" %}">
+<link rel="stylesheet" href="{% static "experience-pagination.css" %}">
+<link rel="stylesheet" href="{% static "resume-project-form.css" %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+<h1 id="reg-title-page">Freelancer Information</h1>
+<div id="step3" class="registration-step">
+    
+    <form method="post" action="{% url 'create_profile_step' %}" id="profileForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if messages %}
+            <script>
+                $(document).ready(function() {
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '{{ message }}'
+                            });
+                        {% elif message.tags == 'success' %}
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '{{ message }}'
+                            });
+                        {% endif %}
+                    {% endfor %}
+                });
+            </script>
+        {% endif %}
+
+        <div class="step-3-container">
+            <div class="step-3-container-grid">
+                <div class="column-1">
+                    <h3 class="h3-other-afil">Freelancer Detail</h3>
+                    <div class="signup-input-field-2">
+                        <div class="formInput2-1">
+                            {{ background_form.affiliation.label_tag }}
+                            {{ background_form.affiliation }}
+                        </div>
+                        <div class="formInput2-1">
+                            {{ background_form.specialization.label_tag }}
+                            {{ background_form.specialization }}
+                        </div>
+                    </div>
+                    <div class="formInput2-1">
+                        {{ background_form.sub_specialization.label_tag }}
+                        {{ background_form.sub_specialization }}
+                    </div>
+                    <div class="formInput2-1">
+                        <label for="languageSelect">Language:</label>
+                        {{ background_form.languages }}
+                    </div>
+                    
+                    <div class="formInput2-1">
+                        <label for="tagSelect">Main Skills:</label>
+                        <select id="tagSelect" class="select2" multiple="multiple">
+                            <option value="" disabled>Select tags</option>
+                        </select>
+                        <label for="skillSelect">Sub Skills:</label>
+                        {{ background_form.skills }}
+                    </div>
+                </div><br>
+                <div class="column-2">
+                  
+                    
+                    <div class="form-row" id="button-container-pe" style="justify-content: flex-start; gap: 16px">
+                        <h3 class="h3-past-exp">Work Experience</h3>
+                        <small>(Optional) If none, please leave it blank</small>
+                        <div class="formInput2-1fs-button circle-icon">
+                            <button type="button" id="addPastExperience">
+                                <i class="fa fa-plus"></i> <!-- Plus icon -->
+                            </button>
+                            
+                        </div>
+                    </div>
+                    <div class="signup-input-field-00">
+                        <!-- Add Button Moved to the Top -->
+                     
+                        {{ past_experience_formset.management_form }}
+                        <div id="pastExperienceFormset">
+                            {% for form in past_experience_formset %}
+                                <div class="col-2-header-row past-experience-form">
+                                   
+                                    <div class="form-row">
+                                        <div class="formInput2-1fs">
+                                            {{ form.client.label_tag }}
+                                            {{ form.client }}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="formInput2-1fs" id="country">
+                                            {{ form.country.label_tag }}
+                                            {{ form.country }}
+                                        </div>
+                                        <div class="formInput2-1fs">
+                                            {{ form.year.label_tag }}
+                                            {{ form.year }}
+                                        </div>
+                                    </div>
+                                    <div class="formInput2-1fs-button circle-icon">
+                                        <button type="button" class="remove-form">
+                                            <i class="fa fa-trash"></i> <!-- Trash icon -->
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                            {% endfor %}
+                        </div>
+                   
+        
+                    </div>   
+                </div>
+                
+            </div>
+            <div class="grid-container">
+                <div class="resume-form form-column">
+                    <h3 class="h3-other-afil">File Uploads</h3>                    
+                    <div class="resume-container">
+                        <div class="resume-text">
+                            <h4>Resume</h4>
+                            <p>We accept PDF, DOC, and DOCX files.</p>
+                        </div>
+                        <div id="fileNameContainer" class="file-name-container"> <span><i class="fa fa-file"></i> No file selected</span></div> <!-- Container for the file name or icon -->
+                        <div class="upload-btn-container">
+                            <label for="id_resume_file" class="upload-btn">Upload File</label>
+                            <input type="file" name="resume_file" id="id_resume_file" class="file-input" accept=".pdf, .doc, .docx" style="display: none;">
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const fileInput = document.getElementById('id_resume_file');
+                            const fileNameContainer = document.getElementById('fileNameContainer');
+                        
+                            // Listen for file upload event
+                            fileInput.addEventListener('change', function () {
+                                if (fileInput.files.length > 0) {
+                                    const file = fileInput.files[0];
+                                    const fileName = file.name;
+                        
+                                    // Clear previous file name display (if any)
+                                    fileNameContainer.innerHTML = '';
+                        
+                                    // Add the file name and an icon
+                                    fileNameContainer.innerHTML = `
+                                        <span><i class="fa fa-file"></i> ${fileName}</span>
+                                    `;
+                                }
+                            });
+                        });
+                       
+                        
+                    </script>
+                </div>
+                
+            
+                <div class="project-form form-column">
+                     <!-- Add button -->
+                   
+                     <div class="form-row" id="button-container-pe" style="justify-content: flex-start; gap: 16px">
+                        <h3 class="h3-other-afil">Project Uploads</h3>
+
+                        <div class="formInput2-1fs-button circle-icon">
+                            <button type="button" id="addProjectForm">
+                                <i class="fa fa-plus"></i> <!-- Plus icon -->
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Formset management form -->
+                    {{ project_formset.management_form }}  <!-- Important for formset management -->
+                
+                    <div id="projectFormset">
+                        <!-- Iterate through each form in the project formset -->
+                        {% for form in project_formset %}
+                        <div class="form-column project-form" style="padding: 0 !important">
+                            <!-- Design for project title and description -->
+                            <input type="text" name="title" id="id_title" placeholder="Title">
+                            <textarea name="description" id="id_description" placeholder="Description"></textarea>
+                    
+                            <div class="project-container">
+                                <div class="project-text">
+                                    <h4>Project File</h4>
+                                    <p>We accept only PDF files.</p>
+                                </div>
+                    
+                                <div class="upload-btn-container">
+                                    <!-- Hidden file input that will trigger the file selection -->
+                                    <input type="file" id="id_projects-{{ forloop.counter0 }}-pdf_file" name="projects-{{ forloop.counter0 }}-pdf_file" class="file-input" style="display: none;">
+                                    <!-- Text input where the selected file name will appear -->
+                                    <div class="file-input-wrapper">
+                                        <div class="project-file-name">
+                                            <i class="fa fa-file" style="color: var(--secondary-color);"></i>
+                                            <input type="text" id="fileDisplayInput-{{ forloop.counter0 }}" placeholder="No file selected" readonly>
+                                        </div>
+                                        <button type="button" class="upload-btn" onclick="document.getElementById('id_projects-{{ forloop.counter0 }}-pdf_file').click();">Upload PDF</button>
+
+                                    </div>
+                                    
+                                    <!-- Upload button that triggers the hidden file input -->
+                                </div>
+                    
+                                <div class="formInput2-1fs-button circle-icon">
+                                    <button type="button" class="remove-form">
+                                        <i class="fa fa-trash"></i> <!-- Trash icon -->
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const formsetDiv = document.getElementById('projectFormset');
+                            const addBtn = document.getElementById('addProjectForm');
+                            const totalFormsInput = document.getElementById('id_projects-TOTAL_FORMS');
+                            let totalForms = parseInt(totalFormsInput.value);
+                        
+                            // Function to add a new project form
+                            addBtn.addEventListener('click', function () {
+                                const formCount = totalForms;
+                                const newFormHtml = formsetDiv.querySelector('.project-form').outerHTML
+                                    .replace(/projects-\d+/g, `projects-${formCount}`)
+                                    .replace(/id_projects-\d+-pdf_file/g, `id_projects-${formCount}-pdf_file`)  // Correct ID pattern for file input
+                                    .replace(/fileDisplayInput-\d+/g, `fileDisplayInput-${formCount}`);  // Unique ID for file display input
+                        
+                                formsetDiv.insertAdjacentHTML('beforeend', newFormHtml);
+                                totalForms++;
+                                totalFormsInput.value = totalForms;  // Update total forms
+                        
+                                // Show SweetAlert message when form is added
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Form Added',
+                                    text: 'A new project form has been added.',
+                                    timer: 1500,  // Auto-close after 1.5 seconds
+                                    showConfirmButton: false
+                                });
+                        
+                                // Attach event to the newly added form's remove button and file display
+                                attachRemoveButtons();
+                                attachFileDisplay(`#id_projects-${formCount}-pdf_file`, `#fileDisplayInput-${formCount}`);
+                            });
+                        
+                            // Function to remove forms
+                            function attachRemoveButtons() {
+                                const removeButtons = document.querySelectorAll('.remove-form');
+                                removeButtons.forEach(button => {
+                                    button.addEventListener('click', function () {
+                                        const formToRemove = this.closest('.project-form');
+                                        if (totalForms > 1) {
+                                            formToRemove.remove();
+                                            totalForms--;
+                                            totalFormsInput.value = totalForms;  // Update total forms
+                        
+                                            // Show SweetAlert message when form is deleted
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Form Deleted',
+                                                text: 'The project form has been deleted.',
+                                                timer: 1500,  // Auto-close after 1.5 seconds
+                                                showConfirmButton: false
+                                            });
+                                        } else {
+                                            // Prevent deletion if there's only one form left
+                                            Swal.fire({
+                                                icon: 'warning',
+                                                title: 'Action Restricted',
+                                                text: 'You must have at least one project.',
+                                                confirmButtonText: 'OK'
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                        
+                            // Attach file display functionality to a specific file input and display field
+                            function attachFileDisplay(fileInputSelector, fileDisplayInputSelector) {
+                                const fileInput = document.querySelector(fileInputSelector);
+                                const fileDisplayInput = document.querySelector(fileDisplayInputSelector);
+                        
+                                if (fileInput && fileDisplayInput) {
+                                    fileInput.addEventListener('change', function () {
+                                        const file = fileInput.files[0];
+                                        if (file) {
+                                            fileDisplayInput.value = `${file.name}`;
+                                        } else {
+                                            fileDisplayInput.value = '';
+                                        }
+                                    });
+                                }
+                            }
+                        
+                            // Attach initial file display functionality to existing forms on page load
+                            function initializeFileDisplays() {
+                                for (let i = 0; i < totalForms; i++) {
+                                    attachFileDisplay(`#id_projects-${i}-pdf_file`, `#fileDisplayInput-${i}`);
+                                }
+                            }
+                        
+                            // Attach remove button event handlers and file display functionality on page load
+                            attachRemoveButtons();
+                            initializeFileDisplays();
+                        });
+                        
+                        
+                    </script>
+                    
+                  
+                   
+                </div>
+
+                
+                
+            
+            
+        </div>
+         
+        <br>
+
+        <!-- Include your form fields here -->
+        <div class="sign-up-buttons">
+            <button class="button-signup" type="button" onclick="window.history.back()">Previous</button>
+            <button class="button-signup" type="submit">Next</button>
+        </div>
+    </form>
+</div>
+<!-- Custom Modal Structure -->
+<div id="custom-modal" class="modal" style="height: 100vh; overflow: hidden;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="terms-content">
+            {% include 'components/privacy_policy_modal.html' %}
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!--  Placeholder Script-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add placeholder to the affiliation select field
+        var affiliationField = document.getElementById('id_affiliation');
+        var specializationField = document.getElementById('id_specialization');
+        var countryField = document.getElementById('id_past_experience-0-country');
+        // Add "Please select an affiliation" as the first option if it doesn't already exist
+        if (affiliationField) {
+            var placeholderOption = document.createElement('option');
+            placeholderOption.text = 'Select an affiliation';
+            placeholderOption.value = '';  // Empty value for the placeholder
+            placeholderOption.disabled = true;  // Prevent selection of this option
+            placeholderOption.selected = true;  // Set as the default selected option
+            affiliationField.insertBefore(placeholderOption, affiliationField.firstChild);
+        }
+
+        // Add "Please select a specialization" as the first option if it doesn't already exist
+        if (specializationField) {
+            var placeholderOptionSpecialization = document.createElement('option');
+            placeholderOptionSpecialization.text = 'Select a specialization';
+            placeholderOptionSpecialization.value = '';  // Empty value for the placeholder
+            placeholderOptionSpecialization.disabled = true;  // Prevent selection of this option
+            placeholderOptionSpecialization.selected = true;  // Set as the default selected option
+            specializationField.insertBefore(placeholderOptionSpecialization, specializationField.firstChild);
+        }
+
+
+    // Do something with each field
+        if (countryField) {
+            var placeholderOptionCountry = document.createElement('option');
+            placeholderOptionCountry.text = 'Select a country';
+            placeholderOptionCountry.value = '';  // Empty value for the placeholder
+            placeholderOptionCountry.disabled = true;  // Prevent selection of this option
+            placeholderOptionCountry.selected = true;  // Set as the default selected option
+            countryField.insertBefore(placeholderOptionCountry, countryField.firstChild);
+        }
+
+    });
+</script>
+
+<!-- Work Experience -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const formsetDiv = document.getElementById('pastExperienceFormset');
+        const addBtn = document.getElementById('addPastExperience');
+        const totalFormsInput = document.getElementById('id_past_experience-TOTAL_FORMS');
+        let totalForms = parseInt(totalFormsInput.value);
+    
+        // Add form
+        addBtn.addEventListener('click', function() {
+            const formCount = totalForms;
+            const newFormHtml = formsetDiv.querySelector('.past-experience-form').outerHTML.replace(/past_experience-\d+/g, `past_experience-${formCount}`);
+            formsetDiv.insertAdjacentHTML('beforeend', newFormHtml);
+            totalForms++;
+            totalFormsInput.value = totalForms;
+    
+            // Attach event to newly added form's remove button
+            attachRemoveButtons();
+
+            // SweetAlert for adding a form
+            Swal.fire({
+                icon: 'success',
+                title: 'Form Added',
+                text: 'A new work experience form has been added.',
+                timer: 1500,  // Auto-close after 1.5 seconds
+                showConfirmButton: false
+            });
+        });
+    
+        // Attach remove buttons to each form
+        function attachRemoveButtons() {
+            const removeButtons = document.querySelectorAll('.remove-form');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (totalForms > 1) { // Prevent deletion if only 1 form is left
+                        const formToRemove = this.closest('.past-experience-form');
+                        formToRemove.remove();
+                        totalForms--;
+                        totalFormsInput.value = totalForms;
+
+                        // SweetAlert for deleting a form
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Form Deleted',
+                            text: 'A work experience form has been deleted.',
+                            timer: 1500,  // Auto-close after 1.5 seconds
+                            showConfirmButton: false
+                        });
+                    } else {
+                        // Use SweetAlert to show alert when only one form is left
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Action Restricted',
+                            text: 'You can not delete the first form, if you do not have any work experience please leave it blank.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+        }
+    
+        // Attach initial remove button events
+        attachRemoveButtons();
+    });
+</script>
+
+
+
+
+
+
+
+
+
+<!-- Document submission -->
+{% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function setupDropArea(dropAreaId, dropLabelId, fileInputId, allowedTypes) {
+            const dropArea = document.getElementById(dropAreaId);
+            const dropLabel = document.getElementById(dropLabelId);
+            const fileInput = document.getElementById(fileInputId);
+            const dropText = dropArea.querySelector('.drop-text');
+            const dropIcon = dropArea.querySelector('.material-symbols-outlined');
+    
+            dropArea.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                dropArea.classList.add('drag-over');
+            });
+    
+            dropArea.addEventListener('dragleave', () => {
+                dropArea.classList.remove('drag-over');
+            });
+    
+            dropArea.addEventListener('drop', (event) => {
+                event.preventDefault();
+                dropArea.classList.remove('drag-over');
+                handleFileSelect(event.dataTransfer.files);
+            });
+    
+            dropArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+    
+            fileInput.addEventListener('change', () => {
+                handleFileSelect(fileInput.files);
+            });
+    
+            function handleFileSelect(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (allowedTypes.includes(file.type)) {
+                        fileInput.files = files;
+                        dropLabel.innerText = `File: ${file.name}`;
+                        displayPreview(file);
+                    } else {
+                        alert(`Please select a file of type: ${allowedTypes.join(', ')}`);
+                    }
+                }
+            }
+    
+            function displayPreview(file) {
+                // Hide the default text and icon
+                dropText.style.display = 'none';
+                dropIcon.style.display = 'none';
+    
+                // Clear previous preview if any
+                // dropArea.innerHTML = '';
+    
+                // Create new file preview elements
+                if (file.type.startsWith('image/')) {
+                    const imgPreview = document.createElement('img');
+                    imgPreview.src = URL.createObjectURL(file);
+                    imgPreview.onload = () => URL.revokeObjectURL(imgPreview.src); // Clean up the object URL after loading
+                    dropArea.appendChild(imgPreview);
+                } else if (file.type === 'application/pdf') {
+                    // If the file is a PDF, render the first page using pdf.js
+                    const pdfPreview = document.createElement('canvas');
+                    dropArea.appendChild(pdfPreview);
+                    renderPDFPreview(file, pdfPreview);
+                }
+    
+                // File info (name only)
+                const fileInfo = document.createElement('div');
+                fileInfo.classList.add('file-info');
+                fileInfo.innerText = `File: ${file.name}`; // Only show file name
+                dropArea.appendChild(fileInfo);
+            }
+    
+            // Function to render the first page of a PDF using pdf.js
+            function renderPDFPreview(file, canvas) {
+                const fileReader = new FileReader();
+                fileReader.onload = function() {
+                    const typedarray = new Uint8Array(this.result);
+    
+                    pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
+                        pdf.getPage(1).then(function(page) {
+                            const scale = 1.5;
+                            const viewport = page.getViewport({ scale: scale });
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+    
+                            const renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+                            page.render(renderContext);
+                        });
+                    });
+                };
+                fileReader.readAsArrayBuffer(file);
+            }
+        }
+    
+        setupDropArea('resumeDropArea', 'resumeDropLabel', 'id_resume_file', ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/png', 'image/jpeg']);
+        setupDropArea('projectDropArea', 'projectDropLabel', 'id_pdf_file', ['application/pdf']);
+    });
+    
+    
+    
+    
+</script> {% endcomment %}
+
+<!-- Select2 Initialization -->
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: 'Select options',
+            width: 'resolve'
+        });
+    
+        // Fetch tags, languages, and skills from the server
+        $.ajax({
+            url: '/get_languages_and_skills/',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Populate tags
+                data.tags.forEach(function(tag) {
+                    var newOption = new Option(tag.name, tag.name, false, false);
+                    $('#tagSelect').append(newOption).trigger('change');
+                });
+    
+                // Populate languages
+                data.languages.forEach(function(language) {
+                    var newOption = new Option(language.language, language.language_id, false, false);
+                    $('#id_languages').append(newOption).trigger('change');
+                });
+    
+                // Populate skills
+                data.skills.forEach(function(skill) {
+                  
+                    var newOption = new Option(skill.skill, skill.skill_id, false, false);
+                    $('#id_skills').append(newOption).trigger('change');
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching languages and skills:', error);
+            }
+        });
+    
+        // Filter skills based on selected tags
+        $('#tagSelect').on('change', function() {
+            var selectedTags = $(this).val();
+    
+            // Store currently selected skills
+            var selectedSkills = $('#id_skills').val();
+    
+            $.ajax({
+                url: '/filter_skills_by_tags/',
+                type: 'GET',
+                data: {
+                    tags: selectedTags
+                },
+                traditional: true, // Ensures proper serialization of array parameters
+                dataType: 'json',
+                success: function(data) {
+                    var selectedSkills = $('#id_skills').val();
+                    var selectedSkillsText = [];
+    
+                    $('#id_skills option:selected').each(function() {
+                        selectedSkillsText.push($(this).text());
+                    });
+    
+                    $('#id_skills').empty(); // Clear existing options
+    
+                    data.skills.forEach(function(skill) {
+                        var newOption = new Option(skill.skill, skill.skill_id, false, false);
+                        $('#id_skills').append(newOption).trigger('change');
+                    });
+    
+                    // Reapply the selected options
+                    $('#id_skills option').each(function() {
+                        if (selectedSkillsText.includes($(this).text())) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+    
+                    $('#id_skills').trigger('change'); // Trigger change to update select2 display
+                },
+                error: function(error) {
+                    console.error('Error filtering skills by tags:', error);
+                }
+            });
+        });
+    });
+    
+</script>
+
+<script>
+    function formatOptionWithTooltip(option) {
+        if (!option.id) {
+            return option.text;
+        }
+        const selectElement = $(option.element).closest('select');
+        const attribute = `data-toggle-skills-${option.id}`;
+
+        const description = selectElement.attr(attribute);
+
+        const $option = $('<span></span>');
+        $option.text(option.text);
+    
+        // Initialize Tippy for the span element
+        tippy($option.get(0), {
+            content: description,
+        });
+    
+        return $option;
+    }
+    
+    
+    
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Click to select options",
+            templateResult: formatOptionWithTooltip,
+            templateSelection: formatOptionWithTooltip
+        });
+        $('.select2.skills').select2({
+            placeholder: "Select Main Skill first",  // Custom placeholder for skills
+            allowClear: true  // Allow clearing the selection
+        });
+    });
+</script>
+
+{% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const termsCheckbox = document.getElementById('confirmApproval');
+        const modal = document.getElementById('custom-modal');
+        const closeButton = document.querySelector('.close');
+    
+        // When the checkbox is checked, open the modal
+        termsCheckbox.addEventListener('change', function() {
+            if (termsCheckbox.checked) {
+                modal.style.display = "block";
+                // Uncheck the checkbox to prevent automatic closure of the modal
+                termsCheckbox.checked = false;
+            }
+        });
+    
+        // When the user clicks on <span> (x), close the modal and check the checkbox
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+            termsCheckbox.checked = true; // Check the checkbox after closing the modal
+        };
+    
+        // When the user clicks anywhere outside of the modal, close it and check the checkbox
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                termsCheckbox.checked = true; // Check the checkbox after closing the modal
+            }
+        };
+    });
+    
+</script> {% endcomment %}
+
+{% endblock %}

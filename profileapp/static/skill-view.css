@@ -1,0 +1,155 @@
+
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+}
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+    --button-bg-color: #0a2472;
+    --button-hover-bg-color: #1a43bf;
+    --button-danger-bg-color: #0a2472;
+    --button-danger-hover-bg-color: #1a43bf;
+}
+
+.skills-page {
+    width: 98%;
+    margin: auto;
+    padding: 1rem;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.back-button {
+    background-color: var(--secondary-color);
+    color: #ebecff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.skill-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    overflow-x: hidden;
+    align-content: space-evenly;
+}
+
+.skill-card {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    height: fit-content;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.skill-card-btn-add {
+    background-color: var(--background-color);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 50px;
+    justify-content: center;
+    margin-left: auto;
+    margin-bottom: 1rem;
+    margin-top: auto;
+
+}
+
+
+.skill-card-btn-add button{
+    width: 50px;
+    height: 50px;
+    background-color: unset !important;
+    font-size: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.skill-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: 'Garet', sans-serif;
+    color: var(--primary-color);
+}
+
+.skill-icon {
+    margin-right: 10px;
+    font-size: 24px;
+    color: var(--border-color) ;
+}
+
+.skill-description {
+    font-family: 'Garet', sans-serif;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    text-align: justify;
+    text-indent: 20px;
+}
+
+.skill-remove-form {
+    align-self: flex-end;
+}
+
+.remove-button {
+    background-color: #ebecff !important;
+    color: var(--secondary-color) !important;
+    border: none !important;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Garet', sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem !important;
+    width: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+}
+
+.remove-button:hover {
+    color: var(--button-danger-hover-bg-color);
+}
+
+.header-container-col {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-right: auto;
+
+}

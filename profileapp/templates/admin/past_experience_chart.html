@@ -1,0 +1,141 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="stylesheet" href="{% static 'graphs.css' %}">
+<script src="{% static 'js/generatePDF.js' %}"></script>
+
+<div class="content">
+    <h1>Past Experience Chart <i class="fas fa-info-circle" id="chartInfoIcon" style="font-size: 16px;"></i></h1>
+    
+    <form method="get" class="filter-form">
+        <h5 class="text-bold">Country Filter:</h5>
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <select id="country" name="country" class="form-control">
+                <option value="">All Countries</option>
+                {% for country in all_countries %}
+                    <option value="{{ country.country }}" {% if request.GET.country == country.country %}selected{% endif %}>{{ country.country }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <hr>
+        <div class="form-group full-width d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
+    <canvas id="pastExperienceChart" width="960" height="540"></canvas>
+    <hr>
+    <div class="analysis-section">
+        <h2 class="text-bold">Analysis of Past Experience Distribution Chart</h2>
+        <p>This section provides insights into the trends and patterns observed in the Past Experience Distribution Chart.</p>
+        <ul>
+            {% for insight in insights %}
+                <li>{{ insight|safe }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <form method="post" action="{% url 'export_past_experiences_to_pdf' %}" class="export-form" id="exportForm">
+        {% csrf_token %}
+        <input type="hidden" id="chartImage" name="chartImage">
+        <input type="hidden" name="start_date" value="{{ request.GET.start_date|default:'ALL'}}">
+        <input type="hidden" name="end_date" value="{{ request.GET.end_date|default:today}}">
+        <input type="hidden" name="country" value="{{ request.GET.country|default:"ALL"}}">
+        <div class="form-group full-width d-flex align-items-end">
+            <button type="button" class="btn btn-secondary" onclick="exportToPDF()">Export to PDF</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script>
+    tippy('#chartInfoIcon', {
+        content: 'This chart shows the number of past experiences of freelancers in specific countries. Use the country filter above for specific countries.',
+        placement: 'top',
+    });
+
+    const countries = {{ countries|safe }};
+    const counts = {{ counts|safe }};
+
+    // Create the chart
+    const ctx = document.getElementById('pastExperienceChart').getContext('2d');
+    const pastExperienceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: countries,
+            datasets: [{
+                label: '# of Past Experiences',
+                data: counts,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Consistent blue color
+                borderColor: 'rgba(54, 162, 235, 1)', // Consistent blue border
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true },
+            },
+        },
+    });
+
+    // Function to temporarily filter the chart to show top 10 countries
+    function filterChartForTop10() {
+        const sortedData = countries.map((country, index) => ({
+            country,
+            count: counts[index],
+        })).sort((a, b) => b.count - a.count);
+
+        const top10Countries = sortedData.slice(0, 10).map(item => item.country);
+        const top10Counts = sortedData.slice(0, 10).map(item => item.count);
+
+        pastExperienceChart.data.labels = top10Countries;
+        pastExperienceChart.data.datasets[0].data = top10Counts;
+        pastExperienceChart.update();
+    }
+
+    // Function to restore the full chart after export
+    function restoreFullChart() {
+        pastExperienceChart.data.labels = countries;
+        pastExperienceChart.data.datasets[0].data = counts;
+        pastExperienceChart.update();
+    }
+
+    // Function to export chart and data to PDF
+    function exportToPDF() {
+        filterChartForTop10(); // Temporarily filter the chart to show only the top 10
+
+        setTimeout(() => {
+            const chartImageData = document.getElementById('pastExperienceChart').toDataURL('image/png');
+
+            const countryFilter = "{{ request.GET.country|default:'ALL' }}";
+            const filters = `Country: ${countryFilter}`;
+
+            const tableHeaders = ['Country', '# of Past Experiences'];
+            const tableData = countries.map((country, index) => [country, counts[index]]);
+
+            // Generate PDF using generatePDF.js
+            generatePDF({
+                title: 'Past Experience Distribution Report',
+                chartImageData: chartImageData,
+                filters: filters,
+                tableHeaders: tableHeaders,
+                tableData: tableData,
+                fileName: 'past_experience_distribution_summary.pdf',
+              
+            });
+
+            restoreFullChart(); // Restore the full chart after export
+        }, 3000); // 3-second delay to allow the chart to update
+    }
+
+    // Attach event listener to export button
+    document.getElementById('exportButton').addEventListener('click', exportToPDF);
+</script>
+
+{% endblock %}

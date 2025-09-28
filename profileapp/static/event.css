@@ -1,0 +1,670 @@
+@font-face {
+    font-family: 'Garet';
+    src: url('/static/font/Garet-Book.woff') format('woff');
+  }
+  
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+}
+
+
+
+
+.event-container {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    background-color: var(--background-color);
+    border: var(--border-color) 1px solid;
+    border-radius: 20px;
+    padding: 15px;
+    overflow-wrap: break-word;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    margin-left: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Hover effect */
+.event-container:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow on hover */
+   
+}
+
+
+.event-con-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.event-date-header {
+    margin-bottom: 8px;
+    max-height: 20rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    text-align: justify;
+    margin: 0;
+    color: #888;
+    margin-top: 5px;
+}
+
+.event-container p {
+    margin-bottom: 8px;
+}
+
+.event-location {
+    font-weight: bold;
+}
+
+.event-virtual {
+    font-weight: bold;
+}
+
+.event-page{
+    padding: 20px;
+    height: auto;
+    overflow-y: hidden;
+}
+
+h1#event-page, p#event-page, h2#event-page, .event-title h2{
+    color: var(--primary-color);
+    margin: 0;
+    text-align: left;
+}
+
+p#event-page1{
+    margin-bottom: 1rem;
+
+}
+
+p#event-page{
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+
+
+}
+
+
+.event-page hr{
+    height: 0 !important;
+    border: none;
+    border-top: 2px solid #005A82;
+    margin: 20px 0; /* Add some space above and below the line */
+    width: 60%; /* Set the width to 100% */
+    text-align: center ;
+    display: flex;
+    margin-left: 1rem;
+}
+
+
+
+
+.event-title{
+    display: flex;
+    text-align: left;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination .step-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pagination .pagination-link, .pagination .current {
+    padding: 5px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--secondary-color);
+    background: var(--background-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination .pagination-link:hover {
+    background-color: var(--border-color);
+    color: #fff;
+}
+
+.pagination .current {
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* event.css */
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.tag-p {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+
+
+.event-page {
+    display: grid;
+    grid-template-columns: 1fr 20vw; /* Main content takes remaining space, filter takes 20vw */
+    gap: 20px;
+}
+
+
+.event-block-view {
+    grid-column: 1 / 2; /* This spans the first column */
+}
+
+/* Add any other necessary styles for event-container, tags, etc. */
+
+.tag-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 5px;
+    margin-bottom: 1rem;
+}
+
+.tag-card {
+    background: #87BFD9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 5px;
+    text-align: center;
+    font-size: 0.85em;
+}
+
+.tag-link {
+    text-decoration: none;
+    color: #005A82;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.tag-link:hover {
+    color: #0056b3;
+}
+
+/* Add this CSS to your stylesheet */
+.date-input {
+    width: 100% !important;
+    padding: 1rem !important;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    height: 1rem !important;
+    color: #555 !important;
+}
+
+.styled-input {
+    background-color: #f9f9f9;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.styled-input:focus {
+    background-color: #fff;
+    border-color: #007bff;
+    outline: none;
+}
+
+.styled-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.styled-button:hover {
+    background-color: #0056b3;
+}
+
+.filters {
+    padding: 15px;
+    background: var(--background-color);
+    border: var(--border-color) 1px solid;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+.filters form {
+    display: flex;
+    flex-direction: column;
+}
+
+.filters form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filters form input,
+.filters form select {
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 1rem !important;
+
+}
+.filters form  input#search{
+    margin-bottom: 10px !important;
+    color: #555 !important;
+    padding: 0 !important;
+    padding-left: 1rem !important;
+    width: 98% !important; 
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 2rem !important;
+}
+
+.filters form button {
+    width: fit-content;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+    color: #ebecff;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.filters form button:hover {
+    background: var(--border-color);
+
+}
+
+
+
+.filters h2 {
+    margin-bottom: 1rem;
+}
+
+.filter-button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.radio-container input{
+    padding: 0 !important;
+    width: auto !important;
+}
+
+.radio-container label{
+    align-items: unset !important;
+    margin: 0;
+}
+
+.attended-events-container {
+    width: 95%;
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--background-color);
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr; /* One card per row */
+    gap: 20px;
+}
+
+
+.card {
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover transition */
+    a#redirectButton {
+        display: none;
+    }
+    
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+    a#redirectButton {
+        display: inline;
+    }
+}
+
+.card-header {
+    position: relative;
+}
+
+.card-header img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.date-box {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dcf0faa9;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    width: 70px;
+}
+
+.date-day-name {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.date-day {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.date-month-year {
+    font-size: 12px;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-body h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.card-body p {
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+    margin-bottom: 5px;
+}
+
+
+
+.btn-explode {
+    color: var(--accent-color);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.event-cluster {
+    display: none;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.event-cluster .card {
+    width: 150px;
+    background-color: var(--cluster-card-color);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination .step-links {
+    display: inline-block;
+}
+
+.pagination .step-links a {
+    margin: 0 5px;
+    padding: 4px 9px;
+    background-color: white ;
+    color: var(--primary-color);
+    border: 1px var(--border-color) solid;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.pagination .step-links a:hover {
+    background-color: var(--button-hover-color);
+}
+
+.pagination .current {
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+
+.share-buttons {
+    margin-top: 20px;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.share-button-row {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.share-button {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 0.75rem;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.share-button.facebook {
+    background-color: #3b5998;
+}
+
+.share-button.twitter {
+    background-color: black;
+    padding: 4px;
+
+}
+
+.share-button.linkedin {
+    background-color: #0077b5;
+}
+
+.share-button i {
+    margin-right: 0;
+}
+.event-image-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.image-cancelled .event-image img {
+    opacity: 0.5;
+}
+
+.cancelled-overlay {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.cancelled-tag {
+    background-color: #d0050f59;
+    color: #d0050f;
+    border: none;
+    border-radius: 1rem;
+    font-weight: bold;
+    text-shadow: 1px 0;
+    font-size: 16px;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding: 0.5rem;
+}
+
+.cancelled-tag:hover{
+    background-color: #d7282f;
+    color: white;
+}
+
+.moved-tag {
+    background-color: #ffdb58ad;
+    color: #f18512;
+    border: none !important;
+    border-radius: 1rem;
+    font-weight: bold;
+    text-shadow: 1px 0;
+    font-size: 16px;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding: 0.5rem;
+}
+
+.moved-tag:hover{
+    background-color: #FFDB58;
+    color: white;
+}
+
+.white-bg{
+    background-color: white;
+    color: #d7282f;
+    border: 2px solid #d7282f;
+}
+
+.cancelled-message {
+    position: absolute;
+    font-size: 32px;
+    color: rgb(198, 39, 39);
+    text-shadow: 2px 0 rgb(198, 39, 39);
+    font-weight: bold;
+    bottom: 8rem;
+}
+.event-location {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.event-virtual {
+    margin-top: 5px;
+    display: flex;
+    align-items: left;
+    white-space: unset !important;
+}
+.event-location i, .event-virtual i {
+    margin-right: 8px;
+    
+}
+
+.event-location a, .event-virtual a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.event-location a:hover, .event-virtual a:hover {
+    text-decoration: underline;
+}
+
+.tags-container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag-badge {
+    background-color: #d0050fb6;
+    color: white;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 14px;
+}
+
+.ann-image-text-all {
+    position: absolute;
+    bottom: 5px;
+    left: 32vw;
+    transform: translateX(-50%);
+    color: var(--border-color);
+    padding: 0 10px;
+    border-radius: 5px;
+    text-align: left;
+    width: 100%;
+}
+
+
+@media (min-width: 576px) {
+    .ann-image-text h2 {
+      color: var(--text-color) !important;
+      font-size: 32px;
+    }
+    .ann-image-text-all h2{
+        color: var(--text-color) !important;
+        font-size: 32px;
+    }
+  }
+.ann-image-text-all p{
+    text-align: left;
+    color: var(--text-color);
+}

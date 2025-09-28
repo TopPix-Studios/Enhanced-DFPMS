@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Rejected - {{ site_title }}</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #f8f9fa; padding: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+  <div class="container bg-white p-4 shadow-sm rounded" style="max-width: 600px; margin: auto;">
+
+    <!-- Logo and Site Title -->
+    <div class="d-flex align-items-center mb-4">
+      <img src="{% static 'img/General_Santos_City_seal.jpg' %}" alt="Site Logo" style="height: 60px; margin-right: 15px;">
+      <div>
+        <h3 class="mb-0 text-danger">{{ site_title }}</h3>
+        <small class="text-muted">Digital Freelancer Profiling System</small>
+      </div>
+    </div>
+
+    <h4 class="mb-3 text-danger">Hello {{ user.first_name }},</h4>
+
+    <p>Thank you for your interest in <strong>{{ site_name }}</strong>.</p>
+
+    <p>After careful review, we regret to inform you that your registration has been <strong>rejected</strong> at this time. This may be due to incomplete information, missing documentation, or unmet requirements for the platform.</p>
+
+    <p>If you believe this decision was made in error or would like to inquire further, please don’t hesitate to reach out to our support team.</p>
+
+    <div class="text-center my-4">
+      <a href="mailto:support@example.com" class="btn btn-outline-secondary px-4 py-2" style="text-decoration: none;">
+        Contact Support
+      </a>
+    </div>
+
+    <div class="alert alert-danger" role="alert">
+      ❌ <strong>This registration has been marked as rejected and removed from our system.</strong>
+    </div>
+
+    <p class="text-muted mt-4">We appreciate your time and effort. Wishing you the best in your future endeavors.<br>— The {{ site_name }} Team</p>
+  </div>
+
+</body>
+</html>

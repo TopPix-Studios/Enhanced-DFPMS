@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Widget</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .swal2-weather-popup {
+            max-width: 700px; /* Increase the width of the popup */
+        }
+        .weather-widget {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .weather-icon {
+            font-size: 64px;
+            margin-bottom: 10px;
+        }
+        .weather-details {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 700px;
+        }
+        .weather-column {
+            width: 50%;
+            padding: 10px;
+        }
+        .weather-column p {
+            margin: 5px 0;
+        }
+        .hourly-forecast {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 20px;
+        }
+        .hourly-forecast-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .hourly-forecast-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .hourly-forecast .hour {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1; /* Evenly distribute the space */
+            margin-right: 5px;
+        }
+        .hourly-forecast .hour:last-child {
+            margin-right: 0; /* Remove margin from the last item */
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="location">Enter Location:</label>
+        <input type="text" id="location" name="location" value="Seoul">
+        <br><br>
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date">
+        <br><br>
+        <label for="weatherDescription">Weather Description:</label>
+        <input type="text" id="weatherDescription" name="weatherDescription" readonly>
+        <br><br>
+        <button type="button" onclick="showWeatherPopup()">Show Weather</button>
+    </form>
+
+    <script>
+        function getWeatherDescription(weatherCode) {
+            const weatherDescriptions = {
+                0: 'Clear sky',
+                1: 'Mainly clear',
+                2: 'Partly cloudy',
+                3: 'Overcast',
+                45: 'Fog',
+                48: 'Depositing rime fog',
+                51: 'Drizzle: Light',
+                53: 'Drizzle: Moderate',
+                55: 'Drizzle: Dense intensity',
+                56: 'Freezing Drizzle: Light',
+                57: 'Freezing Drizzle: Dense intensity',
+                61: 'Rain: Slight',
+                63: 'Rain: Moderate',
+                65: 'Rain: Heavy intensity',
+                66: 'Freezing Rain: Light',
+                67: 'Freezing Rain: Heavy intensity',
+                71: 'Snow fall: Slight',
+                73: 'Snow fall: Moderate',
+                75: 'Snow fall: Heavy intensity',
+                77: 'Snow grains',
+                80: 'Rain showers: Slight',
+                81: 'Rain showers: Moderate',
+                82: 'Rain showers: Violent',
+                85: 'Snow showers: Slight',
+                86: 'Snow showers: Heavy',
+                95: 'Thunderstorm: Slight or moderate',
+                96: 'Thunderstorm with slight hail',
+                99: 'Thunderstorm with heavy hail'
+            };
+            return weatherDescriptions[weatherCode] || 'Unknown weather condition';
+        }
+
+        function getWeatherIcon(weatherCode) {
+            const weatherIcons = {
+                0: 'wi-day-sunny',
+                1: 'wi-day-sunny-overcast',
+                2: 'wi-day-cloudy',
+                3: 'wi-cloudy',
+                45: 'wi-fog',
+                48: 'wi-fog',
+                51: 'wi-sprinkle',
+                53: 'wi-showers',
+                55: 'wi-rain',
+                56: 'wi-rain-mix',
+                57: 'wi-rain-mix',
+                61: 'wi-rain',
+                63: 'wi-rain',
+                65: 'wi-rain',
+                66: 'wi-rain-mix',
+                67: 'wi-rain-mix',
+                71: 'wi-snow',
+                73: 'wi-snow',
+                75: 'wi-snow',
+                77: 'wi-snowflake-cold',
+                80: 'wi-showers',
+                81: 'wi-rain',
+                82: 'wi-thunderstorm',
+                85: 'wi-snow',
+                86: 'wi-snow',
+                95: 'wi-thunderstorm',
+                96: 'wi-thunderstorm',
+                99: 'wi-thunderstorm'
+            };
+            return weatherIcons[weatherCode] || 'wi-na';
+        }
+
+        function formatDate(date) {
+            const d = new Date(date);
+            let month = '' + (d.getMonth() + 1);
+            let day = '' + d.getDate();
+            const year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [month, day, year].join('/');
+        }
+
+        function showWeatherPopup() {
+            const location = document.getElementById('location').value;
+            const date = document.getElementById('date').value;
+            const formattedDate = formatDate(date);
+
+            // Coordinates for Seoul (as an example, you may need to implement a way to get coordinates for the entered location)
+            const latitude = 37.5665;
+            const longitude = 126.9780;
+
+            // Fetch weather data from Open-Meteo API
+            $.getJSON(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m,pressure_msl`, function(data) {
+                const weatherCode = data.current_weather.weathercode;
+                const weatherDescription = getWeatherDescription(weatherCode);
+                const weatherIcon = getWeatherIcon(weatherCode);
+                const temperature = data.current_weather.temperature;
+                const windSpeed = data.current_weather.windspeed;
+                const humidity = data.current_weather.humidity || 'N/A';  // Assuming humidity is available
+                const pressure = data.current_weather.pressure || 'N/A';  // Assuming pressure is available
+
+                // Set the value of the input text field with the weather description
+                document.getElementById('weatherDescription').value = weatherDescription;
+
+                let hourlyForecast = '';
+                const hourlyData = data.hourly;
+                for (let i = 0; i < 8; i++) {
+                    const hour = new Date(hourlyData.time[i]).getHours();
+                    const hourTemperature = hourlyData.temperature_2m[i];
+                    const hourWeatherCode = hourlyData.weathercode[i];
+                    const hourWeatherIcon = getWeatherIcon(hourWeatherCode);
+                    hourlyForecast += `
+                        <div class="hour">
+                            <span>${hour}:00</span>
+                            <i class="wi ${hourWeatherIcon}"></i>
+                            <span>${hourTemperature}°C</span>
+                        </div>
+                    `;
+                }
+
+                const weatherText = `
+                    <div class="weather-widget">
+                        <i class="wi ${weatherIcon} weather-icon"></i>
+                        <div class="weather-details">
+                            <div class="weather-column">
+                                <p><strong>Location:</strong> ${location}</p>
+                                <p><strong>Date:</strong> ${formattedDate}</p>
+                                <p><strong>Weather:</strong> ${weatherDescription}</p>
+                            </div>
+                            <div class="weather-column">
+                                <p><strong>Temperature:</strong> ${temperature}°C</p>
+                                <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
+                                <p><strong>Humidity:</strong> ${humidity}%</p>
+                                <p><strong>Pressure:</strong> ${pressure} hPa</p>
+                            </div>
+                        </div>
+                        <div class="hourly-forecast">
+                            <div class="hourly-forecast-title">8-Hour Forecast</div>
+                            <div class="hourly-forecast-row">
+                                ${hourlyForecast}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Display the weather information using SweetAlert
+                Swal.fire({
+                    title: '',
+                    html: weatherText,
+                    showConfirmButton: true,
+                    confirmButtonText: 'Close',
+                    customClass: {
+                        popup: 'swal2-weather-popup'
+                    }
+                });
+            }).fail(function() {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Unable to fetch weather data.',
+                    icon: 'error',
+                    confirmButtonText: 'Close'
+                });
+            });
+        }
+    </script>
+</body>
+</html>

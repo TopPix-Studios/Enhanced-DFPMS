@@ -1,0 +1,120 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'event.css' %}">
+<link rel="stylesheet" href="{% static 'announcement.css' %}">
+<link rel="stylesheet" href="{% static 'home.css' %}">
+<div class="event-page">
+    <div class="event-block-view">
+        <h1 id='event-page'>Events</h1>
+        <p id='event-page1'>{{ current_date }}</p>
+        {% if page_obj_past %}
+            {% for event in page_obj_past %}
+                <div class="event-container">
+                    {% if event.image %}
+                    <div class="event-image">
+                            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                        </div>
+                    {% else %}
+                        <div class="event-image">
+                            <img src="{% static 'img/event.png'  %}" alt="{{ event.title }}">
+                        </div>
+                    {% endif %}
+                    <div class="event-con-header">
+                        <h3><a href="{% url 'guest_event' event.id %}">{{ event.title }}</a></h3>
+                        <p>{{ event.start_datetime }}</p>
+                    </div>
+                    <p class="event-location"><i class="fas fa-map-marker-alt"></i> {{ event.location }}</p>
+                    <p>{{ event.organizer }}</p>
+                    <p>{{ event.description }}</p>
+                    {% comment %} <div class="tags-container">
+                        <div class="tag-p">
+                            <p>Tags:</p>
+                        </div>
+                        {% for tag in event.tags.all %}
+                            <span class="tag-box">
+                                <a href="{% url 'tag_filter_event_view' tag.id profile.account_id.account_id %}">{{ tag.name }}</a>
+                            </span>
+                        {% endfor %}
+                    </div> {% endcomment %}
+                </div>
+            {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj_past.has_previous %}
+                        <a href="?page_past=1&search={{ request.GET.search }}&tag={{ request.GET.tag }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">&laquo; First</a>
+                        <a href="?page_past={{ page_obj_past.previous_page_number }}&search={{ request.GET.search }}&tag={{ request.GET.tag }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">Previous</a>
+                    {% endif %}
+                    <span class="current">
+                        Page {{ page_obj_past.number }} of {{ page_obj_past.paginator.num_pages }}
+                    </span>
+                    {% if page_obj_past.has_next %}
+                        <a href="?page_past={{ page_obj_past.next_page_number }}&search={{ request.GET.search }}&tag={{ request.GET.tag }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">Next</a>
+                        <a href="?page_past={{ page_obj_past.paginator.num_pages }}&search={{ request.GET.search }}&tag={{ request.GET.tag }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            <p id='event-page'>There are no past events.</p>
+        {% endif %}
+    </div>
+    <div class="filters">
+        <form method="GET" action="{% url 'event' %}">
+            <div>
+                <h2>Search</h2>
+                <input type="text" id="search" name="search" value="{{ request.GET.search }}" placeholder="Search Events...">
+            </div>
+            <div>
+                {% comment %} <h2>Filter by Tags</h2>
+                <div class="tag-cards">
+                    {% for tag in all_tags %}
+                        <div class="tag-card">
+                            <a href="?tag={{ tag.id }}" class="tag-link">{{ tag.name }}</a>
+                        </div>
+                    {% endfor %}
+                </div> {% endcomment %}
+            </div>
+            <h2>Filter by Date</h2>
+            <div>
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}" class="date-input styled-input">
+            </div>
+            <div>
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}" class="date-input styled-input">
+            </div>
+
+            <h2>Sort by</h2>
+            <div class="radio-container">
+                {% comment %} <label>
+                    <input type="radio" name="sort" value="relevant" {% if sort == 'relevant' %}checked{% endif %}>
+                    Relevant
+                </label> {% endcomment %}
+
+                <label>
+                    <input type="radio" name="sort" value="latest" {% if sort == 'latest' %}checked{% endif %}>
+                    Latest
+                </label>
+
+                <label>
+                    <input type="radio" name="sort" value="oldest" {% if sort == 'oldest' %}checked{% endif %}>
+                    Oldest
+                </label>
+            </div>
+    
+            <div class="filter-button-container">
+                <button type="submit">Search</button>
+                <br>
+                <button type="button" onclick="window.location.href='{% url 'event'  %}'" class="styled-button">Reset</button>
+
+
+            </div>
+          
+        </form>
+
+        <!-- Reset Filter Button -->
+     
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,314 @@
+{% extends 'sign-up.html' %}
+{% load static %}
+{% block title %}Edit Resume & Project{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "resume-project-form.css" %}">
+<h1 id="reg-title-page">Edit Resume & Project</h1>
+<style>
+    .project-container {
+        justify-content: space-between;
+    }
+
+    .resume-container {
+        justify-content: space-between;
+    }
+</style>
+<style>
+    .status-message {
+        font-size: 0.85rem;
+        color: #4b5563; /* Tailwind slate-600 */
+        margin-top: 0.25rem;
+    }
+    .status-message.submitted {
+        color: #10b981; /* Tailwind green-500 */
+        font-weight: 500;
+    }
+    .btn-disabled {
+        background-color: #A0AEC0 !important;
+        color: #ffffff !important;
+        border: 1px solid #CBD5E0 !important;
+        pointer-events: none !important;
+        opacity: 0.5 !important;
+    }
+    
+    .label-disabled {
+        background-color: #A0AEC0 !important;
+        color: #ffffff !important;
+        border: 1px solid #CBD5E0 !important;
+        pointer-events: none !important;
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+    }
+    
+    
+</style>
+    
+<form method="post" enctype="multipart/form-data" action="{% url 'edit_resume_projects' df_id %}">
+    {% csrf_token %}
+    <input type="hidden" name="token" value="{{ token }}">
+
+    {% if messages %}
+        <script>
+            $(document).ready(function () {
+                {% for message in messages %}
+                Swal.fire({
+                    icon: '{{ message.tags }}',
+                    title: '{{ message.tags|title }}',
+                    text: '{{ message }}'
+                });
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
+    <div id="step3" class="registration-step">
+
+        <div class="step-3-container">
+            <div class="step-3-container-grid">
+
+                <div class="grid-container">
+                    <!-- Resume Upload -->
+                    <div class="resume-form form-column">
+                        <h3 class="h3-other-afil">Resume Upload</h3>
+                        <div class="resume-container">
+                            <div class="resume-text">
+                                <h4>Resume</h4>
+                                <p>PDF, DOC, DOCX files allowed.</p>
+                            </div>
+                            <div id="fileNameContainer" class="file-name-container" data-resume-name="{{ resume_file_name }}">
+                                <span><i class="fa fa-file"></i> No file selected</span>
+                            </div>
+                            <div class="upload-btn-container">
+                                <label class="upload-btn" id="customResumeLabel">Upload File</label>
+                                <div style="display:none">
+                                    {{ resume_form.resume_file }}
+                                </div>
+                            </div>
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const resumeInput = document.getElementById('id_resume_file');
+                                    const customLabel = document.getElementById('customResumeLabel');
+                            
+                                    if (resumeInput && customLabel) {
+                                        customLabel.addEventListener('click', function () {
+                                            resumeInput.click();  // ✅ Open file dialog manually
+                                        });
+                                    }
+                                });
+                            </script>
+                            
+                            <div id="resume-status-message" class="status-message"></div>
+
+                        </div>
+                    </div>
+
+                    <!-- Project Upload -->
+                    <div class="project-form form-column">
+                        
+                        <h3 class="h3-other-afil">Project Upload</h3>
+                        {{ project_form.title }}
+                        {% if project_form.title.errors %}
+                            <div class="text-danger small">{{ project_form.title.errors.0 }}</div>
+                        {% endif %}
+                        {{ project_form.description }}
+
+                        <div class="project-container">
+                            <div class="project-text">
+                                <h4>Project File</h4>
+                                <p>PDF file only.</p>
+                            </div>
+                            <div class="file-input-wrapper">
+                                <div class="project-file-name">
+                                    <i class="fa fa-file" style="color: var(--secondary-color);"></i>
+                                    <input type="text" id="fileDisplayInput" placeholder="No file selected" readonly>
+                                    
+                                </div>
+                                <button type="button" class="upload-btn" style="place-self: flex-end" onclick="document.getElementById('id_pdf_file').click();">Upload PDF</button>
+                                <div style="display:none">
+                                {{ project_form.pdf_file }}
+                                </div>
+                                <div id="portfolio-status-message" class="status-message"></div>
+
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="sign-up-buttons" style="display: flex; justify-content: flex-end;">
+                    <button class="button-signup" type="submit">Save Changes</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const resumeContainer = document.getElementById('fileNameContainer');
+        const prefilledName = resumeContainer.dataset.resumeName;
+        if (prefilledName) {
+            resumeContainer.innerHTML = `<span><i class="fa fa-file"></i> ${prefilledName}</span>`;
+        }
+
+        const fileInput = document.getElementById('id_resume_file');
+        fileInput.addEventListener('change', function () {
+            if (fileInput.files.length > 0) {
+                resumeContainer.innerHTML = `<span><i class="fa fa-file"></i> ${fileInput.files[0].name}</span>`;
+            }
+        });
+
+        const projectInput = document.getElementById('id_pdf_file');
+        const projectDisplay = document.getElementById('fileDisplayInput');
+        if (projectDisplay && '{{ project_file_name }}') {
+            projectDisplay.value = '{{ project_file_name }}';
+        }
+
+        if (projectInput && projectDisplay) {
+            projectInput.addEventListener('change', function () {
+                projectDisplay.value = projectInput.files[0]?.name || '';
+            });
+        }
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const missingItems = {{ missing_items|safe }};
+        console.log("Missing Items:", missingItems);
+
+        // === RESUME DISABLE LOGIC ===
+        const resumeInput = document.getElementById('id_resume_file');
+        const resumeLabel = document.querySelector('label[for="id_resume_file"]');
+        const resumeContainer = document.getElementById('fileNameContainer');
+
+        if (!missingItems.includes('resume')) {
+            if (resumeInput) resumeInput.disabled = true;
+            if (resumeLabel) {
+                resumeLabel.removeAttribute('for');
+                resumeLabel.style.pointerEvents = 'none';
+                resumeLabel.style.opacity = '0.5';
+            }
+
+            if (resumeInput) {
+                resumeInput.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Not Editable',
+                        text: 'Resume upload is not allowed at this stage.',
+                        confirmButtonColor: '#1E3A8A'
+                    });
+                });
+            }
+        }
+
+        // Resume file preview
+        const prefilledName = resumeContainer?.dataset.resumeName;
+        if (prefilledName) {
+            resumeContainer.innerHTML = `<span><i class="fa fa-file"></i> ${prefilledName}</span>`;
+        }
+
+        if (resumeInput && missingItems.includes('resume')) {
+            resumeInput.addEventListener('change', function () {
+                if (resumeInput.files.length > 0) {
+                    resumeContainer.innerHTML = `<span><i class="fa fa-file"></i> ${resumeInput.files[0].name}</span>`;
+                }
+            });
+        }
+
+        // === PORTFOLIO DISABLE LOGIC ===
+        const projectInput = document.getElementById('id_pdf_file');
+        const uploadButton = document.querySelector('.upload-btn[onclick*="id_pdf_file"]');
+        const titleInput = document.getElementById('id_title');
+        const descInput = document.getElementById('id_description');
+        const projectDisplay = document.getElementById('fileDisplayInput');
+
+        if (!missingItems.includes('projects/Portfolio')) {
+            if (projectInput) projectInput.disabled = true;
+            if (uploadButton) {
+                uploadButton.disabled = true;
+                uploadButton.style.pointerEvents = 'none';
+                uploadButton.style.opacity = '0.5';
+            }
+            if (titleInput) titleInput.disabled = true;
+            if (descInput) descInput.disabled = true;
+
+            // Warn user
+            const triggerElements = [projectInput, uploadButton, titleInput, descInput];
+            triggerElements.forEach(el => {
+                if (el) {
+                    el.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Not Editable',
+                            text: 'Portfolio upload is not allowed at this stage.',
+                            confirmButtonColor: '#1E3A8A'
+                        });
+                    });
+                }
+            });
+        }
+
+        // Project file preview
+        if (projectDisplay && '{{ project_file_name }}') {
+            projectDisplay.value = '{{ project_file_name }}';
+        }
+
+        if (projectInput && projectDisplay && missingItems.includes('projects/Portfolio')) {
+            projectInput.addEventListener('change', function () {
+                projectDisplay.value = projectInput.files[0]?.name || '';
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const missingItems = {{ missing_items|safe }};
+
+        // Custom label disable logic (since label can't use 'disabled' attr)
+        if (!missingItems.includes('resume')) {
+            const resumeLabel = document.getElementById('customResumeLabel');
+            if (resumeLabel) {
+                resumeLabel.classList.add('label-disabled');
+                resumeLabel.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Not Editable',
+                        text: 'Resume upload is not allowed at this stage.',
+                        confirmButtonColor: '#1E3A8A'
+                    });
+                });
+            }
+        }
+
+        if (!missingItems.includes('projects/Portfolio')) {
+            const portfolioLabel = document.querySelector('.upload-btn[onclick*="id_pdf_file"]');
+            if (portfolioLabel) {
+                portfolioLabel.classList.add('label-disabled');
+                portfolioLabel.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Not Editable',
+                        text: 'Portfolio upload is not allowed at this stage.',
+                        confirmButtonColor: '#1E3A8A'
+                    });
+                });
+            }
+        }
+    });
+</script>
+
+
+
+
+
+{% endblock %}

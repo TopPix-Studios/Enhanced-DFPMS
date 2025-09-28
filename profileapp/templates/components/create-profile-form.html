@@ -1,0 +1,405 @@
+{% extends 'sign-up.html' %}
+{% load static %}
+
+{% block title %}Step 2: Account Information{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "cropping.css" %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+<h1 id="reg-title-page">Personal Information</h1>
+<div id="step2" class="registration-step-2">
+    
+    {% if messages %}
+        <script>
+            $(document).ready(function() {
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: '{{ message }}'
+                        });
+                    {% elif message.tags == 'success' %}
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: '{{ message }}'
+                        });
+                {% elif message.tags == 'info' %}
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Info',
+                        text: '{{ message }}'
+                    });
+                {% endif %}
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
+
+    <!-- Form for Step 2 -->
+    <form method="post" action="{% url 'create_profile'  %}" enctype="multipart/form-data" id="profileForm" >
+        {% csrf_token %}
+        <div class="sign-up-2">
+            <div class="signup-input-field">
+                {% comment %} <label id="formlabel">Upload Profile Picture</label> {% endcomment %}
+                <div class="image-container">
+                    <div id="image-wrapper" class="image-wrapper">
+                        <img id="mainPreview" src="{% static "img/placeholder.jpeg" %}" alt="Image Placeholder" class="circular-image" onclick="openFilePicker()">
+                        <span id="pencilIcon" class="pencil-icon" onclick="openFilePicker()">
+                            <i class="fas fa-pencil-alt"></i>
+                        </span>
+                    </div>
+                    <input type="file" id="fileInput" style="display: none;" name="picture" onchange="handleFileSelect(event);" accept="image/*">
+                </div>
+                <p class="image-helptext">Add Profile Picture</p>
+
+                
+                <!-- Cropping Modal -->
+            
+                
+                <label id="formlabel">Full Name</label>
+                <div class="sign-up-row-2">
+                    {{ form.first_name }}
+                    {{ form.last_name }}
+                    {{ form.middle_name }}
+                    {{ form.suffix }}
+                </div>
+                <label id="formlabel">Additional Information</label>
+                <div class="sign-up-row-2-2-3">
+                    <!-- Date of Birth field with label in form-group -->
+                    <div class="form-group">
+                        <label for="id_date_of_birth">Date of Birth</label>
+                        {{ form.date_of_birth }}
+                    </div>
+                
+                    <!-- Contact Number field with label in form-group -->
+                    <div class="form-group">
+                        <label for="id_contact_no">Contact Number</label>
+                        {{ form.contact_no }}
+                    </div>
+                
+                    <!-- Gender field with label in form-group -->
+                    <div class="form-group">
+                        <label for="id_gender">Gender</label>
+                        {{ form.gender }}
+                    </div>
+                    
+                    <div class="sign-up-row-2-2-3-1">
+                        <!-- is_pwd field with label and description in form-group -->
+                        <div class="form-group">
+                            
+                            {{ form.is_pwd }}
+                            <p class="description">Person with Disability (PWD).</p> <!-- Description -->
+                        </div>
+                
+                        <!-- is_4ps field with label and description in form-group -->
+                        <div class="form-group">
+                            {{ form.is_4ps }}
+                            <p class="description">Pantawid Pamilyang Pilipino Program (4Ps).</p> <!-- Description -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="signup-input-field">
+                <label id="formlabel">Present Address</label>
+                <div class="sign-up-row-2-2">
+                    {{ form.region.label_tag }}
+                    {{ form.province.label_tag }}
+
+                    {{ form.region }}
+                    {{ form.province }}
+                    
+                    {{ form.city.label_tag }}
+                    {{ form.barangay.label_tag }}
+
+                    {{ form.city }}
+                    {{ form.barangay }}
+                </div>
+                <div class="sign-up-row-2-2-1">
+                    {{ form.house_no }}
+                    {{ form.street }}
+                    {{ form.zip }}
+                </div>
+                
+            </div>
+            
+                {{form.qoute}}
+                {{form.account_id}}
+           
+        </div>
+        <br>        
+        <div class="sign-up-footer">
+            <div class="sign-up-buttons">
+                <button class="button-signup" type="submit">Next</button>
+            </div>
+            <p>Already have an account? <a id="loginurl" href="{% url 'index' %}">Login</a></p>
+        </div>
+    </form>
+      
+    
+</div>
+<!-- Custom Modal Structure -->
+<div id="custom-modal" class="modal" style="height: 100vh; overflow: hidden;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="terms-content">
+            {% include 'components/privacy_policy_modal.html' %}
+        </div>
+    </div>
+</div>
+<!-- Cropping Modal -->
+<div id="croppingModal" class="crop-modal" style="display: none">
+    <div class="crop-modal-content">
+        <div class="crop-modal-header">
+            <h2>Edit your image</h2>
+            <span class="cropclose">&times;</span>
+
+        </div>
+        <!-- Notice for using real pictures -->
+        
+        <div class="crop-modal-body">
+            <div class="image-crop-section">
+                <img id="imageToCrop" src="" alt="Image for cropping">
+            </div>
+            <div class="preview-section">
+                <h4>Preview in different sizes:</h4>
+                <div class="preview-container">
+                    <div>
+                        <p>120x120</p>
+                        <img id="preview-120" class="circular-image-preview"  style="width:120px; height: 120px"  src="" alt="120x120 preview">
+                    </div>
+                    <div>
+                        <p>80x80</p>
+                        <img id="preview-80" class="circular-image-preview"  style="width:80px; height: 80px"  src="" alt="80x80 preview">
+                    </div>
+                    <div>
+                        <p>50x50</p>
+                        <img id="preview-50" class="circular-image-preview" style="width:50px; height: 50px" src="" alt="50x50 preview">
+                    </div>
+                </div>
+                <p class="notice">Please use a real picture of yourself. Avoid using animated or generated images.</p>
+            </div>
+
+        </div>
+        <div class="modal-button-container">
+            <button onclick="closeCroppingModal()" class="crop-btn">Cancel</button>
+            <button onclick="cropImage()" class="crop-btn">Crop</button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Main circular image preview -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    // Open file picker when clicking the image or pencil icon
+    function openFilePicker() {
+        document.getElementById('fileInput').click();
+    }
+
+    // Handle file selection and preview
+    function handleFileSelect(event) {
+        const fileInput = event.target;
+
+        if (fileInput.files.length > 0) {
+            const selectedFile = fileInput.files[0];
+
+            // Preview the image and open the cropping modal
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const modal = document.getElementById('croppingModal');
+                const imageToCrop = document.getElementById('imageToCrop');
+                imageToCrop.src = e.target.result;
+                modal.style.display = 'flex'; // Show the modal
+                initializeCropper(); // Initialize the cropping tool
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    }
+
+    // Initialize CropperJS with a circular cropping area and dynamic preview updates
+    let cropper;
+    function initializeCropper() {
+        const imageToCrop = document.getElementById('imageToCrop');
+
+        if (cropper) {
+            cropper.destroy(); // Destroy the old cropper if it exists
+        }
+
+        cropper = new Cropper(imageToCrop, {
+            aspectRatio: 1, // Maintain 1:1 aspect ratio for a square crop
+            viewMode: 1,
+            autoCropArea: 1,
+            scalable: true,
+            cropBoxResizable: true,
+            dragMode: 'move',
+            background: false,
+            crop(event) {
+                // Dynamically update previews whenever the crop area is changed
+                const croppedCanvas = cropper.getCroppedCanvas({
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high'
+                });
+
+                const croppedDataUrl = croppedCanvas.toDataURL();
+
+                // Update previews in different sizes dynamically
+                updatePreview(croppedDataUrl, 'preview-120', 120);
+                updatePreview(croppedDataUrl, 'preview-80', 80);
+                updatePreview(croppedDataUrl, 'preview-50', 50);
+            }
+        });
+    }
+
+    // Crop the image and update the preview in different sizes after confirming crop
+    function cropImage() {
+        const croppedCanvas = cropper.getCroppedCanvas({
+            width: 200,
+            height: 200,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        });
+    
+        // Convert canvas to Blob
+        croppedCanvas.toBlob((blob) => {
+            // Create a File object from Blob
+            const file = new File([blob], "cropped-image.png", { type: "image/png" });
+    
+            // Create a new DataTransfer object to update file input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            document.getElementById('fileInput').files = dataTransfer.files;
+    
+            // Update previews
+            const croppedDataUrl = URL.createObjectURL(file);
+            updatePreview(croppedDataUrl, 'preview-120', 120);
+            updatePreview(croppedDataUrl, 'preview-80', 80);
+            updatePreview(croppedDataUrl, 'preview-50', 50);
+    
+            // Update the main profile preview
+            document.getElementById('mainPreview').src = croppedDataUrl;
+    
+            // Hide the cropping modal
+            document.getElementById('croppingModal').style.display = 'none';
+        }, "image/png");
+    }
+    
+
+    // Function to update preview images in different sizes
+    function updatePreview(dataUrl, elementId, size) {
+        const previewCanvas = document.createElement('canvas');
+        previewCanvas.width = size;
+        previewCanvas.height = size;
+        const ctx = previewCanvas.getContext('2d');
+
+        const img = new Image();
+        img.onload = function () {
+            ctx.drawImage(img, 0, 0, size, size);
+            document.getElementById(elementId).src = previewCanvas.toDataURL();
+        };
+        img.src = dataUrl;
+    }
+
+    // Close the modal
+    document.querySelector('.cropclose').addEventListener('click', function() {
+        document.getElementById('croppingModal').style.display = 'none';
+    });
+
+    function closeCroppingModal() {
+        document.getElementById('croppingModal').style.display = 'none';
+    }
+    
+
+</script>
+<script>
+    function load_provinces(region_id) {
+        // Make an AJAX request to fetch provinces for the selected region
+        $.ajax({
+            url: '/get_provinces/',
+            data: {'region_id': region_id},
+            dataType: 'json',
+            success: function(data) {
+                // Update the options of the province select field
+    
+                // Now, 'provinces' is an array of objects, and you can access properties as needed
+                var provinceSelect = $('#id_province');
+                provinceSelect.empty();
+                var citySelect = $('#id_city');
+                citySelect.empty();
+                citySelect.append('<option value="" disabled selected>Select City</option>');
+                var barangaySelect = $('#id_barangay');
+                barangaySelect.empty();
+                barangaySelect.append('<option value="" disabled selected>Select Barangay</option>');
+                
+                provinceSelect.append('<option value="" disabled selected>Select Province</option>');
+                $.each(data.provinces, function(province_id, province) {
+                    provinceSelect.append('<option value="' + province.province_id + '">' + province.province + '</option>');
+                });
+                // Clear city and barangay options
+            },
+            error: function() {
+                console.error('Failed to fetch provinces.');
+            }
+        });
+    }
+    
+    
+    function load_cities(province_id) {
+        // Make an AJAX request to fetch cities for the selected province
+        $.ajax({
+            url: '/get_cities/',
+            data: {'province_id': province_id},
+            dataType: 'json',
+            success: function(data) {
+                // Update the options of the city select field
+                var citySelect = $('#id_city');
+                citySelect.empty();
+                citySelect.append('<option value="" disabled selected>Select City/Municipality</option>');
+                var barangaySelect = $('#id_barangay');
+                barangaySelect.empty();
+                barangaySelect.append('<option value="" disabled selected>Select Barangay</option>');
+                $.each(data.cities, function(city_id, city) {
+                    citySelect.append('<option value="' + city.city_id + '">' + city.city + '</option>');
+                });
+                // Clear barangay options
+            },
+            error: function() {
+                console.error('Failed to fetch cities.');
+            }
+        });
+    }
+    
+    
+    function load_barangays(city_id) {
+        // Make an AJAX request to fetch barangays for the selected city
+        $.ajax({
+            url: '/get_barangays/',
+            data: {'city_id': city_id},
+            dataType: 'json',
+            success: function(data) {
+                // Update the options of the barangay select field
+                var barangaySelect = $('#id_barangay');
+                barangaySelect.empty();
+                barangaySelect.append('<option value="" disabled selected>Select Barangay</option>');
+                $.each(data.barangays, function(barangay_id, barangay) {
+                    barangaySelect.append('<option value="' + barangay.barangay_id + '">' + barangay.barangay + '</option>');
+                });
+            },
+            error: function() {
+                console.error('Failed to fetch barangays.');
+            }
+        });
+    }
+
+    // Add an event listener for form submission
+   
+    
+</script>
+{% endblock %}

@@ -1,0 +1,2667 @@
+[
+  {
+    "model": "geolocations.barangay",
+    "pk": 1,
+    "fields": {
+      "barangay": "Lagao",
+      "city": 27,
+      "latitude": "6.115800",
+      "longitude": "125.176900",
+      "fun_fact": "Barangay Lagao is home to one of the city\u00c6s oldest public markets and is a bustling commercial area in GenSan."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 2,
+    "fields": {
+      "barangay": "Bula",
+      "city": 27,
+      "latitude": "6.108500",
+      "longitude": "125.163900",
+      "fun_fact": "Barangay Bula is known for its proximity to Sarangani Bay and hosts several fish processing plants, emphasizing GenSan\u00c6s moniker as the \u00f4Tuna Capital of the Philippines.\u00f6"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 3,
+    "fields": {
+      "barangay": "Apopong",
+      "city": 27,
+      "latitude": "6.110000",
+      "longitude": "125.155000",
+      "fun_fact": "Apopong is a residential area but also known for its significant contributions to local agriculture, particularly in livestock."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 4,
+    "fields": {
+      "barangay": "Calumpang",
+      "city": 27,
+      "latitude": "6.113100",
+      "longitude": "125.151500",
+      "fun_fact": "Barangay Calumpang is famous for the yearly Kalilangan Festival celebrations, showcasing the rich cultural heritage of the indigenous peoples of Mindanao."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 5,
+    "fields": {
+      "barangay": "Fatima",
+      "city": 27,
+      "latitude": "6.134000",
+      "longitude": "125.185100",
+      "fun_fact": "Barangay Fatima is the location of several educational institutions and has developed into a vibrant urban neighborhood with a mix of residential and commercial establishments."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 6,
+    "fields": {
+      "barangay": "Labangal",
+      "city": 27,
+      "latitude": "6.092200",
+      "longitude": "125.184700",
+      "fun_fact": "Labangal is home to one of the busiest ports in GenSan, Makar Wharf, where a large percentage of the country\u00c6s tuna exports are shipped internationally."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 7,
+    "fields": {
+      "barangay": "San Isidro",
+      "city": 27,
+      "latitude": "6.123100",
+      "longitude": "125.184300",
+      "fun_fact": "This barangay has grown rapidly in recent years, becoming a key residential area, and is known for its emerging subdivisions and housing projects."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 8,
+    "fields": {
+      "barangay": "Tambler",
+      "city": 27,
+      "latitude": "6.005800",
+      "longitude": "125.119400",
+      "fun_fact": "ambler is where you\u00c6ll find GenSan International Airport, connecting the city to the rest of the Philippines."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 9,
+    "fields": {
+      "barangay": "Buayan",
+      "city": 27,
+      "latitude": "6.051500",
+      "longitude": "125.132500",
+      "fun_fact": "Buayan is one of the key entry points to GenSan through its Buayan Airport, which has served both military and civilian flights in the past."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 10,
+    "fields": {
+      "barangay": "City Heights",
+      "city": 27,
+      "latitude": "6.124800",
+      "longitude": "125.171300",
+      "fun_fact": "Barangay City Heights has become a hotspot for housing developments"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 11,
+    "fields": {
+      "barangay": "Dadiangas North",
+      "city": 27,
+      "latitude": "6.116600",
+      "longitude": "125.171200",
+      "fun_fact": "This barangay is part of the central business district of GenSan and hosts many important commercial establishments and government offices."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 12,
+    "fields": {
+      "barangay": "Dadiangas South",
+      "city": 27,
+      "latitude": "6.108900",
+      "longitude": "125.170000",
+      "fun_fact": "It\u00c6s part of the heart of GenSan and is often associated with the city\u00c6s thriving tuna industry, with fish markets and businesses nearby."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 13,
+    "fields": {
+      "barangay": "Katangawan",
+      "city": 27,
+      "latitude": "6.065200",
+      "longitude": "125.210100",
+      "fun_fact": "Katangawan has agricultural roots and is known for its vast rice fields and peaceful rural life, providing a contrast to GenSan's bustling urban areas."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 14,
+    "fields": {
+      "barangay": "Baluan",
+      "city": 27,
+      "latitude": "6.071000",
+      "longitude": "125.133600",
+      "fun_fact": "This barangay is known for its agricultural produce and scenic landscapes, contributing significantly to the city\u00c6s supply of fresh vegetables."
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 15,
+    "fields": {
+      "barangay": "Conel",
+      "city": 27,
+      "latitude": "6.163200",
+      "longitude": "125.196500",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 16,
+    "fields": {
+      "barangay": "Dadiangas West",
+      "city": 27,
+      "latitude": "6.107900",
+      "longitude": "125.169200",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 19,
+    "fields": {
+      "barangay": "Ligaya",
+      "city": 27,
+      "latitude": "6.108100",
+      "longitude": "125.202900",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 20,
+    "fields": {
+      "barangay": "Mabuhay",
+      "city": 27,
+      "latitude": "6.081500",
+      "longitude": "125.237200",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 21,
+    "fields": {
+      "barangay": "Olympog",
+      "city": 27,
+      "latitude": "6.200100",
+      "longitude": "125.182800",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 22,
+    "fields": {
+      "barangay": "Siguel",
+      "city": 27,
+      "latitude": "6.032200",
+      "longitude": "125.189700",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 23,
+    "fields": {
+      "barangay": "Sinawal",
+      "city": 27,
+      "latitude": "6.032300",
+      "longitude": "125.152300",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 24,
+    "fields": {
+      "barangay": "Tinagacan",
+      "city": 27,
+      "latitude": "6.194400",
+      "longitude": "125.197900",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 25,
+    "fields": {
+      "barangay": "Upper Labay",
+      "city": 27,
+      "latitude": "6.145000",
+      "longitude": "125.285200",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 26,
+    "fields": {
+      "barangay": "San Jose",
+      "city": 27,
+      "latitude": "6.098500",
+      "longitude": "125.234900",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 27,
+    "fields": {
+      "barangay": "Dadiangas East",
+      "city": 27,
+      "latitude": "6.112700",
+      "longitude": "125.179600",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.barangay",
+    "pk": 28,
+    "fields": {
+      "barangay": "Batomelong",
+      "city": 27,
+      "latitude": "6.060600",
+      "longitude": "125.193500",
+      "fun_fact": "Fun Fact"
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 1,
+    "fields": {
+      "city": "Kidapawan City (Capital)",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 2,
+    "fields": {
+      "city": "Alamada",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 3,
+    "fields": {
+      "city": "Aleosan",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 4,
+    "fields": {
+      "city": "Antipas",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 5,
+    "fields": {
+      "city": "Arakan",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 6,
+    "fields": {
+      "city": "Banisilan",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 7,
+    "fields": {
+      "city": "Carmen",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 8,
+    "fields": {
+      "city": "Kabacan",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 9,
+    "fields": {
+      "city": "Libungan",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 10,
+    "fields": {
+      "city": "Magpet",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 11,
+    "fields": {
+      "city": "Makilala",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 12,
+    "fields": {
+      "city": "Matalam",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 13,
+    "fields": {
+      "city": "Midsayap",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 14,
+    "fields": {
+      "city": "M'lang",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 15,
+    "fields": {
+      "city": "Pigcawayan",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 16,
+    "fields": {
+      "city": "Pikit",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 17,
+    "fields": {
+      "city": "President Roxas",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 18,
+    "fields": {
+      "city": "Tulunan",
+      "province": 1
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 19,
+    "fields": {
+      "city": "Alabel",
+      "province": 2
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 20,
+    "fields": {
+      "city": "Glan",
+      "province": 2
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 21,
+    "fields": {
+      "city": "Kiamba",
+      "province": 2
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 22,
+    "fields": {
+      "city": "Maasim",
+      "province": 2
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 23,
+    "fields": {
+      "city": "Maitum",
+      "province": 2
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 24,
+    "fields": {
+      "city": "Malapatan",
+      "province": 2
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 25,
+    "fields": {
+      "city": "Malungon",
+      "province": 2
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 26,
+    "fields": {
+      "city": "Koronadal City",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 27,
+    "fields": {
+      "city": "General Santos City",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 28,
+    "fields": {
+      "city": "Banga",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 29,
+    "fields": {
+      "city": "Lake Sebu",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 30,
+    "fields": {
+      "city": "Norala",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 31,
+    "fields": {
+      "city": "Polomolok",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 32,
+    "fields": {
+      "city": "Santo Ni\u00b1o",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 33,
+    "fields": {
+      "city": "Surallah",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 34,
+    "fields": {
+      "city": "T'boli",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 35,
+    "fields": {
+      "city": "Tampakan",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 36,
+    "fields": {
+      "city": "Tantangan",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 37,
+    "fields": {
+      "city": "Tupi",
+      "province": 3
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 38,
+    "fields": {
+      "city": "Tacurong City",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 39,
+    "fields": {
+      "city": "Bagumbayan",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 40,
+    "fields": {
+      "city": "Columbio",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 41,
+    "fields": {
+      "city": "Esperanza",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 42,
+    "fields": {
+      "city": "Isulan",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 43,
+    "fields": {
+      "city": "Kalamansig",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 44,
+    "fields": {
+      "city": "Lambayong",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 45,
+    "fields": {
+      "city": "Lebak",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 46,
+    "fields": {
+      "city": "Lutayan",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 47,
+    "fields": {
+      "city": "Palimbang",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 48,
+    "fields": {
+      "city": "President Quirino",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.city",
+    "pk": 49,
+    "fields": {
+      "city": "Senator Ninoy Aquino",
+      "province": 4
+    }
+  },
+  {
+    "model": "geolocations.country",
+    "pk": 1,
+    "fields": {
+      "country": "United States of America"
+    }
+  },
+  {
+    "model": "geolocations.country",
+    "pk": 2,
+    "fields": {
+      "country": "Japan"
+    }
+  },
+  {
+    "model": "geolocations.country",
+    "pk": 3,
+    "fields": {
+      "country": "China"
+    }
+  },
+  {
+    "model": "geolocations.country",
+    "pk": 4,
+    "fields": {
+      "country": "Thailand"
+    }
+  },
+  {
+    "model": "geolocations.country",
+    "pk": 5,
+    "fields": {
+      "country": "Indonesia"
+    }
+  },
+  {
+    "model": "geolocations.country",
+    "pk": 6,
+    "fields": {
+      "country": "South Korea"
+    }
+  },
+  {
+    "model": "geolocations.country",
+    "pk": 7,
+    "fields": {
+      "country": "United Kingdom"
+    }
+  },
+  {
+    "model": "geolocations.province",
+    "pk": 1,
+    "fields": {
+      "province": "Cotabato (North Cotabato)",
+      "region": 15
+    }
+  },
+  {
+    "model": "geolocations.province",
+    "pk": 2,
+    "fields": {
+      "province": "Sarangani",
+      "region": 15
+    }
+  },
+  {
+    "model": "geolocations.province",
+    "pk": 3,
+    "fields": {
+      "province": "South Cotabato",
+      "region": 15
+    }
+  },
+  {
+    "model": "geolocations.province",
+    "pk": 4,
+    "fields": {
+      "province": "Sultan Kudarat",
+      "region": 15
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 1,
+    "fields": {
+      "region": "National Capital Region (NCR)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 2,
+    "fields": {
+      "region": "Cordillera Administrative Region (CAR)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 3,
+    "fields": {
+      "region": "Ilocos Region (Region I)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 4,
+    "fields": {
+      "region": "Cagayan Valley (Region II)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 5,
+    "fields": {
+      "region": "Central Luzon (Region III)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 6,
+    "fields": {
+      "region": "CALABARZON (Region IV-A)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 7,
+    "fields": {
+      "region": "MIMAROPA (Region IV-B)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 8,
+    "fields": {
+      "region": "Bicol Region (Region V)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 9,
+    "fields": {
+      "region": "Western Visayas (Region VI)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 10,
+    "fields": {
+      "region": "Central Visayas (Region VII)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 11,
+    "fields": {
+      "region": "Eastern Visayas (Region VIII)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 12,
+    "fields": {
+      "region": "Zamboanga Peninsula (Region IX)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 13,
+    "fields": {
+      "region": "Northern Mindanao (Region X)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 14,
+    "fields": {
+      "region": "Davao Region (Region XI)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 15,
+    "fields": {
+      "region": "SOCCSKSARGEN (Region XII)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 16,
+    "fields": {
+      "region": "Caraga (Region XIII)"
+    }
+  },
+  {
+    "model": "geolocations.region",
+    "pk": 17,
+    "fields": {
+      "region": "Bangsamoro Autonomous Region in Muslim Mindanao (BARMM)"
+    }
+  },
+  {
+    "model": "profiling.affiliation",
+    "pk": 3,
+    "fields": {
+      "aff_name": "Aff1",
+      "is_verified": true
+    }
+  },
+  {
+    "model": "profiling.affiliation",
+    "pk": 4,
+    "fields": {
+      "aff_name": "aff2",
+      "is_verified": false
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 1,
+    "fields": {
+      "language": "English"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 2,
+    "fields": {
+      "language": "Spanish"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 3,
+    "fields": {
+      "language": "French"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 4,
+    "fields": {
+      "language": "German"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 5,
+    "fields": {
+      "language": "Chinese"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 6,
+    "fields": {
+      "language": "Japanese"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 7,
+    "fields": {
+      "language": "English (Australia)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 8,
+    "fields": {
+      "language": "English (Canada)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 9,
+    "fields": {
+      "language": "English (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 10,
+    "fields": {
+      "language": "English (Ireland)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 11,
+    "fields": {
+      "language": "English (New Zealand)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 12,
+    "fields": {
+      "language": "English (Singapore)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 13,
+    "fields": {
+      "language": "English (South Africa)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 14,
+    "fields": {
+      "language": "English (UK)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 15,
+    "fields": {
+      "language": "English (US)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 16,
+    "fields": {
+      "language": "Espa\u2592ol"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 17,
+    "fields": {
+      "language": "Espa\u2592ol"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 18,
+    "fields": {
+      "language": "Italian"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 19,
+    "fields": {
+      "language": "Korean"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 20,
+    "fields": {
+      "language": "Japanese"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 21,
+    "fields": {
+      "language": "Filipino"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 22,
+    "fields": {
+      "language": "Amharic (Ethiopia)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 23,
+    "fields": {
+      "language": "Bengali (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 24,
+    "fields": {
+      "language": "Chinese (Simplified, China)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 25,
+    "fields": {
+      "language": "Chinese (Traditional, Taiwan)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 26,
+    "fields": {
+      "language": "Gujarati (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 27,
+    "fields": {
+      "language": "Hindi (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 28,
+    "fields": {
+      "language": "Japanese (Japan)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 29,
+    "fields": {
+      "language": "Kannada (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 30,
+    "fields": {
+      "language": "Korean (Korea)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 31,
+    "fields": {
+      "language": "Malayalam (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 32,
+    "fields": {
+      "language": "Marathi (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 33,
+    "fields": {
+      "language": "Nepali (Nepal)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 34,
+    "fields": {
+      "language": "Odia (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 35,
+    "fields": {
+      "language": "Punjabi (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 36,
+    "fields": {
+      "language": "Tamil (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 37,
+    "fields": {
+      "language": "Tamil (Sri Lanka)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 38,
+    "fields": {
+      "language": "Telugu (India)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 39,
+    "fields": {
+      "language": "Tigrinya (Ethiopia)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 40,
+    "fields": {
+      "language": "Vietnamese (Vietnam)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 41,
+    "fields": {
+      "language": "Yi (China)"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 42,
+    "fields": {
+      "language": "Tagalog"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 43,
+    "fields": {
+      "language": "Cebuano"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 44,
+    "fields": {
+      "language": "Ilocano"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 45,
+    "fields": {
+      "language": "Hiligaynon"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 46,
+    "fields": {
+      "language": "Bicolano"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 47,
+    "fields": {
+      "language": "Waray"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 48,
+    "fields": {
+      "language": "Pangasinense"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 49,
+    "fields": {
+      "language": "Kapampangan"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 50,
+    "fields": {
+      "language": "Maguindanaon"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 51,
+    "fields": {
+      "language": "Maranao"
+    }
+  },
+  {
+    "model": "profiling.language",
+    "pk": 52,
+    "fields": {
+      "language": "Tausug"
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 4,
+    "fields": {
+      "skill": "HTML",
+      "description": "incorporates HTML to develop wireframes and templates for website layouts.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 7,
+    "fields": {
+      "skill": "CSS",
+      "description": "designs and implements the visual and interactive elements of a website using CSS codes.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 8,
+    "fields": {
+      "skill": "JavaScript",
+      "description": "a combination of technical skills, soft skills, and domain knowledge to develop, and maintain Java-based applications.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 9,
+    "fields": {
+      "skill": "Angular",
+      "description": "technical skills including proficiency in NPM, Angular CLI, HTML, CSS, Angular framework, TypeScript, JavaScript, RxJS, Git, testing and debugging, responsive design, and RESTful API interaction to develop modern web applications.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 10,
+    "fields": {
+      "skill": "Vue.js",
+      "description": "proficiency in HTML, CSS, and JavaScript, as well as experience coding dynamic websites with the Vue.js framework.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 11,
+    "fields": {
+      "skill": "Django",
+      "description": "focus on server-side logic, manage databases, collaborate with front-end teams, and integrate applications with other systems using Django framework.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 12,
+    "fields": {
+      "skill": "Flask",
+      "description": "utilizing the Flask framework to design, develop, and maintain online applications while interacting with third-party services.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 13,
+    "fields": {
+      "skill": "Ruby on Rails",
+      "description": "writing codes for application development in the Ruby on Rails interface",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 14,
+    "fields": {
+      "skill": "PHP",
+      "description": "writing server-side scripts, building dynamic websites, and integrating databases.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 15,
+    "fields": {
+      "skill": "Laravel",
+      "description": "creating applications, managing MVC architecture, and using built-in features for authentication, routing, and database management.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 16,
+    "fields": {
+      "skill": "WordPress",
+      "description": "customizing themes, managing plugins, and creating responsive websites.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 17,
+    "fields": {
+      "skill": "Shopify",
+      "description": "setting up online businesses, designing themes, managing apps, and maximizing e-commerce capabilities",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 18,
+    "fields": {
+      "skill": "Magento",
+      "description": "customizing themes, managing extensions, and optimizing e-commerce websites for performance and usability.",
+      "tags": [
+        50
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 19,
+    "fields": {
+      "skill": "iOS Development (Swift, Objective-C)",
+      "description": "developing, testing, and optimization of apps using Swift and Objective-C for a range of Apple products, including the iPhone, iPad, and Apple Watch",
+      "tags": [
+        53
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 20,
+    "fields": {
+      "skill": "Android Development (Kotlin, Java)",
+      "description": "proficiency in Android development using Kotlin and Java to design, build, and maintain mobile applications for the Android platform",
+      "tags": [
+        53
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 21,
+    "fields": {
+      "skill": "React Native",
+      "description": "use of a single codebase and tap into the framework's native modules, extensive library ecosystem, and components",
+      "tags": [
+        53
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 22,
+    "fields": {
+      "skill": "Flutter",
+      "description": "utilize Flutter SDK and other tools to streamline cross-platform app development.",
+      "tags": [
+        53
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 23,
+    "fields": {
+      "skill": "Xamarin",
+      "description": "design and implement reusable user interface components using Xamarin.",
+      "tags": [
+        53
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 24,
+    "fields": {
+      "skill": "Ionic",
+      "description": "developing apps for the mobile web and all major app stores using a single codebase.",
+      "tags": [
+        53
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 25,
+    "fields": {
+      "skill": "User Interface Design",
+      "description": "creating visually appealing and user-friendly interfaces that enhance user experience through intuitive layouts and interactive elements",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 26,
+    "fields": {
+      "skill": "User Experience Design",
+      "description": "creating products or services that provide meaningful experiences for users, involving many different areas of product development including branding, usability, function, and design.",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 27,
+    "fields": {
+      "skill": "Figma",
+      "description": "create vector illustrations, optimize across devices, and export designs for prototyping.",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 28,
+    "fields": {
+      "skill": "Adobe XD",
+      "description": "create a variety of designs, including: Initial concept sketches for digital products. Wireframes for desktop and mobile devices.",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 29,
+    "fields": {
+      "skill": "Sketch",
+      "description": "communicating design  in the form of drawing to propose, explore and refine a multitude of ideas.",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 30,
+    "fields": {
+      "skill": "InVision",
+      "description": "use features such as Studio, Cloud, Freehand, and Craft to manage different aspects of the design process.",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 31,
+    "fields": {
+      "skill": "Wireframing",
+      "description": "creating functional websites or apps by sketching out the layout, structure, and features of the digital product before starting to code or design.",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 32,
+    "fields": {
+      "skill": "Prototyping",
+      "description": "the ability to create functional or visual representations of a product, system, or idea to test, evaluate, and iterate on its design",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 33,
+    "fields": {
+      "skill": "Graphic Design",
+      "description": "the use of software such as Adobe Photoshop, Illustrator and InDesign but many can also draw and design by hand and use these skills to create rough sketches and mock ups",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 34,
+    "fields": {
+      "skill": "Adobe Photoshop",
+      "description": "image editing, retouching, creating image compositions, website mockups, and adding effects.",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 35,
+    "fields": {
+      "skill": "Adobe Illustrator",
+      "description": "a software application for creating drawings, illustrations, and artwork using a Windows or MacOS compute",
+      "tags": [
+        54
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 36,
+    "fields": {
+      "skill": "Data Analysis",
+      "description": "communicate findings through visualization and storytelling techniques.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 37,
+    "fields": {
+      "skill": "Data Visualization",
+      "description": "convert complicated data into understandable, interactive graphics to gain insights, spot patterns, and improve data-driven decision-making",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 38,
+    "fields": {
+      "skill": "Machine Learning",
+      "description": "preprocess and analyze data, select and implement appropriate algorithms, and deploy models into production environments using tools such as scikit-learn, TensorFlow, or PyTorch",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 39,
+    "fields": {
+      "skill": "Deep Learning",
+      "description": "using frameworks like TensorFlow and PyTorch to build, train, and optimize neural networks",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 40,
+    "fields": {
+      "skill": "Natural Language Processing (NLP)",
+      "description": "use libraries such as NLTK, SpaCy, and the Transformers library from Hugging Face for NLP tasks",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 41,
+    "fields": {
+      "skill": "Python",
+      "description": "use libraries such as Pandas, NumPy, and SciPy for data manipulation, Matplotlib and Seaborn for data visualization, and scikit-learn, TensorFlow, or PyTorch for building and deploying machine learning models",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 42,
+    "fields": {
+      "skill": "R",
+      "description": "perform data manipulation and visualization, conduct statistical analysis, develop and validate machine learning models, and utilize R packages.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 43,
+    "fields": {
+      "skill": "SQL",
+      "description": "query and manipulate large datasets, perform complex joins and aggregations, optimize database performance, and integrate SQL queries into data analysis workflows",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 44,
+    "fields": {
+      "skill": "MATLAB",
+      "description": "access and preprocess diverse data sources, develop and optimize machine learning models, perform data visualization and documentation, and deploy models to production environments.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 45,
+    "fields": {
+      "skill": "TensorFlow",
+      "description": "create dataflow graphs - structures that describe how data moves through a graph, or a series of processing nodes.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 46,
+    "fields": {
+      "skill": "Keras",
+      "description": "use Python libraries for developing and evaluating deep learning models  wraps efficient numerical computation libraries Theano and TensorFlow.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 47,
+    "fields": {
+      "skill": "PyTorch",
+      "description": "build and train deep learning models using a variety of algorithms.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 48,
+    "fields": {
+      "skill": "Power BI",
+      "description": "design, develop, and deploy BI solutions such as reporting tools and build analysis services reporting models.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 49,
+    "fields": {
+      "skill": "Tableau",
+      "description": "visualize data, analyze trends, and create interactive dashboards using Tableau.",
+      "tags": [
+        55
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 50,
+    "fields": {
+      "skill": "SEO (Search Engine Optimization)",
+      "description": "focused on optimizing a website in order to get traffic from organic search results.",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 51,
+    "fields": {
+      "skill": "SEM (Search Engine Marketing)",
+      "description": "promotion and advertising to help companies' content rank higher among search engine traffic",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 52,
+    "fields": {
+      "skill": "Social Media Marketing",
+      "description": "develops social media marketing plans and programs for each product and directs promotional support",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 53,
+    "fields": {
+      "skill": "Content Marketing",
+      "description": "inbound marketing strategies to build a brand identity and online presence through the creation and dissemination of multimedia content online",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 54,
+    "fields": {
+      "skill": "Email Marketing",
+      "description": "creating and monitoring a wide variety of email marketing campaigns. Ensuring design and layouts of emails are optimized, user and mobile-friendly.",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 55,
+    "fields": {
+      "skill": "Pay-Per-Click (PPC)",
+      "description": "perform daily account management of pay-per-click accounts on Google AdWords, Bing, and other search platforms",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 56,
+    "fields": {
+      "skill": "Google Analytics",
+      "description": "proficiency in Google Analytics setup, including tracking code implementation, goal and funnel configuration, and data filtering.",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 59,
+    "fields": {
+      "skill": "LinkedIn Marketing",
+      "description": "utilizing LinkedIn to promote an individual or business to attract attention to their profile",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 60,
+    "fields": {
+      "skill": "Influencer Marketing",
+      "description": "identifies and partners with individuals with a strong online presence and considerable influence over their audience",
+      "tags": [
+        56
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 61,
+    "fields": {
+      "skill": "Copywriting",
+      "description": "the ability to research, creative writing, generating engaging content, understanding the target audience, and of course, strong grammar and writing.",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 63,
+    "fields": {
+      "skill": "Blog Writing",
+      "description": "writing, editing, and publishing content in a digital format to engage the target audience",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 64,
+    "fields": {
+      "skill": "Technical Writing",
+      "description": "taking statistical, and factual based information in a manual, sales copy, or educational piece and breaking it down into straight forward conten",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 65,
+    "fields": {
+      "skill": "Ghostwriting",
+      "description": "writing a piece of copy under someone else's name, crafting articles, blog posts, speeches, and books in the voice of their employer.  By which professional writers help polish and communicate the work of authors.",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 66,
+    "fields": {
+      "skill": "Creative Writing",
+      "description": "covers a range of writing styles that focus on imagination and originality through literary devices.Including poetry, fiction, songs & plays.",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 67,
+    "fields": {
+      "skill": "Editing",
+      "description": "involves revising contents, organization, grammar, and presentation of a piece of writing.",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 68,
+    "fields": {
+      "skill": "Proofreading",
+      "description": "revolve around a detailed review of texts ensuring every piece of writing is polished, error-free, and ready for publication.",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 69,
+    "fields": {
+      "skill": "Scriptwriting",
+      "description": "writing stories in the screenplay medium, and writing down the movement, actions, expression and dialogue of the characters in screenplay, in screenplay format",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 70,
+    "fields": {
+      "skill": "Translation",
+      "description": "converting text from one language to another, making text understandable to foreign readers who can\u255et speak the target native language",
+      "tags": [
+        57
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 71,
+    "fields": {
+      "skill": "Business Analysis",
+      "description": "gaining insight from data using specific techniques, and performing tasks to identify the needs of a business.",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 72,
+    "fields": {
+      "skill": "Financial Analysis",
+      "description": "evaluating businesses, projects, budgets, and other finance-related transactions",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 73,
+    "fields": {
+      "skill": "Accounting",
+      "description": "manage financial transactions, analyze financial data and generate financial reports.",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 74,
+    "fields": {
+      "skill": "Bookkeeping",
+      "description": "recording of financial events that take place in a company",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 75,
+    "fields": {
+      "skill": "Project Management",
+      "description": "technical expertise in ensuring projects are to the satisfaction of all stakeholders.",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 76,
+    "fields": {
+      "skill": "Virtual Assistant",
+      "description": "provides administrative services to clients while operating outside of the client's office",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 77,
+    "fields": {
+      "skill": "Customer Service",
+      "description": "managing service inquiries and identifying and assessing customer needs.",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 78,
+    "fields": {
+      "skill": "Sales",
+      "description": "equip sales professionals to successfully communicate with customers and close sales",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 79,
+    "fields": {
+      "skill": "Market Research",
+      "description": "mine for useful insights about a given line of business or industry.",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 80,
+    "fields": {
+      "skill": "Business Strategy",
+      "description": "market and trend research, critical thinking, and analysis creating viable strategies and solutions",
+      "tags": [
+        58
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 81,
+    "fields": {
+      "skill": "Video Editing",
+      "description": "arrange and alter video shots in order to create a cohesive structure.",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 82,
+    "fields": {
+      "skill": "Animation",
+      "description": "create 2D and 3D designs using specialized computer generation software",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 83,
+    "fields": {
+      "skill": "Motion Graphics",
+      "description": "works with animation, audio, and visual effects to create moving content and graphics for various media, such as television, the internet, and film",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 84,
+    "fields": {
+      "skill": "3D Modeling",
+      "description": "creating digital representations of objects, characters, environments, and scenes using specialized software and techniques",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 85,
+    "fields": {
+      "skill": "3D Animation",
+      "description": "blend technical knowledge of complicated digital animation software with creative techniques",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 86,
+    "fields": {
+      "skill": "After Effects",
+      "description": "manipulate and edit layers in video content",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 87,
+    "fields": {
+      "skill": "Final Cut Pro",
+      "description": "customizing themes, managing extensions, and optimizing e-commerce websites for performance and usability.",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 88,
+    "fields": {
+      "skill": "Premiere Pro",
+      "description": "customizing themes, managing extensions, and optimizing e-commerce websites for performance and usability.",
+      "tags": [
+        59
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 89,
+    "fields": {
+      "skill": "Network Administration",
+      "description": "maintaining computer infrastructures with emphasis on local area networks up to wide area networks.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 90,
+    "fields": {
+      "skill": "System Administration",
+      "description": "upkeep, configuration, and reliable operation of computer systems.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 92,
+    "fields": {
+      "skill": "Cybersecurity",
+      "description": "protecting company's hardware, software, and networks from theft, loss, or unauthorized access.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 93,
+    "fields": {
+      "skill": "Cloud Computing",
+      "description": "makes data backup, disaster recovery, and mirror at multiple redundant sites on the cloud provider's network.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 94,
+    "fields": {
+      "skill": "AWS (Amazon Web Services)",
+      "description": "design, install, maintain and upgrade cloud infrastructure systems.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 95,
+    "fields": {
+      "skill": "Azure",
+      "description": "cloud infrastructure management, network virtualization, data analytics, artificial intelligence, & machine learning.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 96,
+    "fields": {
+      "skill": "Google Cloud Platform",
+      "description": "building and managing secure cloud systems with the use of Google Cloud Platform.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 97,
+    "fields": {
+      "skill": "DevOps",
+      "description": "introduces processes, and methodologies to balance needs throughout the software development life cycle, from coding and deployment, to maintenance and updates.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 98,
+    "fields": {
+      "skill": "Docker",
+      "description": "design containerization technologies and build scalable complex applications.",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 99,
+    "fields": {
+      "skill": "Kubernetes",
+      "description": "design and manage scalable and expertise implementing automated deployments and rollbacks",
+      "tags": [
+        60
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 100,
+    "fields": {
+      "skill": "CAD (Computer-Aided Design)",
+      "description": "create, modify, analyze, and optimize designs for various purposes and industries.",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 101,
+    "fields": {
+      "skill": "Mechanical Engineering",
+      "description": "measuring the performance of mechanical components, devices and engines.",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 102,
+    "fields": {
+      "skill": "Electrical Engineering",
+      "description": "design, develop, test, and supervise the manufacture of electrical equipment",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 103,
+    "fields": {
+      "skill": "Civil Engineering",
+      "description": "analyze plans, survey reports, maps, and other data related to project design.",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 104,
+    "fields": {
+      "skill": "Structural Engineering",
+      "description": "analyzes and designs the gravity support and lateral force resistance of buildings, bridges, and other structures.",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 105,
+    "fields": {
+      "skill": "Architectural Design",
+      "description": "develop innovative and practical designs that meet the unique requirements of each project.",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 106,
+    "fields": {
+      "skill": "3D Rendering",
+      "description": "create immersive experiences that showcase ideas with exceptional detail.",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 107,
+    "fields": {
+      "skill": "Interior Design",
+      "description": "create, interpret, modify blueprints, and determine indoor space requirements as well as select essential and decorative items.",
+      "tags": [
+        61
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 108,
+    "fields": {
+      "skill": "Illustration",
+      "description": "interpret a brief, understand the intended message, and translate it into compelling visual content that resonates with the target audience.",
+      "tags": [
+        62
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 109,
+    "fields": {
+      "skill": "Painting",
+      "description": "create art and decorate surfaces with paint.",
+      "tags": [
+        62
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 110,
+    "fields": {
+      "skill": "Sculpture",
+      "description": "molding three-dimensional form made from a material such as clay, wax, and other materials .",
+      "tags": [
+        62
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 111,
+    "fields": {
+      "skill": "Photography",
+      "description": "make beautiful and unique designs for jewelry and other decorative or functional fashion accessories.",
+      "tags": [
+        62
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 112,
+    "fields": {
+      "skill": "Jewelry Design",
+      "description": "make beautiful and unique designs for jewelry and other decorative or functional fashion accessories.",
+      "tags": [
+        62
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 113,
+    "fields": {
+      "skill": "Crafting",
+      "description": "skills in making decorative devices by hand or by using simple tools.",
+      "tags": [
+        62
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 114,
+    "fields": {
+      "skill": "Tutoring",
+      "description": "one-on-one facilitation, small group facilitation, mentoring and reinforces study strategies, promotes independent learning.",
+      "tags": [
+        63
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 115,
+    "fields": {
+      "skill": "Language Teaching",
+      "description": "teaching language to enable learners to communicate effectively in the target language.",
+      "tags": [
+        63
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 116,
+    "fields": {
+      "skill": "Curriculum Development",
+      "description": "creating educational programs that are not only academically rigorous but also engaging and accessible to a diverse range of learners.",
+      "tags": [
+        63
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 117,
+    "fields": {
+      "skill": "Instructional Design",
+      "description": "implement, evaluate instructional materials and strategies to facilitate learning.",
+      "tags": [
+        63
+      ]
+    }
+  },
+  {
+    "model": "profiling.skills",
+    "pk": 118,
+    "fields": {
+      "skill": "eLearning Development",
+      "description": "researching and selecting appropriate content, creating and organizing course materials.",
+      "tags": [
+        63
+      ]
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 4,
+    "fields": {
+      "specialization": "Web Development",
+      "description": "also known as website development, refers to the tasks associated with creating, building, and maintaining websites and web applications that run online on a browser. It may, however, also include web design, web programming, and database management."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 5,
+    "fields": {
+      "specialization": "Mobile Development",
+      "description": "is the process of creating software applications that run on a mobile device, and a typical mobile application utilizes a network connection to work with remote computing resources."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 6,
+    "fields": {
+      "specialization": "UI/UX Design",
+      "description": "In digital design, user interface (UI) refers to the interactivity, look, and feel of a product screen or web page, while user experience (UX) covers a user's overall experience with the product or website."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 7,
+    "fields": {
+      "specialization": "Data Science & Analytics",
+      "description": "is a subset of data science. Data science is an umbrella term for all aspects of data processing\u2219from the collection to modeling to insights. On the other hand, data analytics is mainly concerned with statistics, mathematics, and statistical analysis."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 8,
+    "fields": {
+      "specialization": "Digital Marketing",
+      "description": "is the promotion of brands to connect with potential customers using the internet and other forms of digital communication. This includes not only email, social media, and web-based advertising, but also text and multimedia messages as a marketing channel"
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 9,
+    "fields": {
+      "specialization": "Writing & Content Creation",
+      "description": "Content creation involves producing diverse content types to engage audiences, including visuals and multimedia. Content writing, on the other hand, concentrates on crafting written material for websites, blogs, or other platforms. Both are essential for"
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 10,
+    "fields": {
+      "specialization": "Business & Finance",
+      "description": "the raising and managing of funds by business organizations. Planning, analysis, and control operations are responsibilities of the financial manager, who is usually close to the top of the organizational structure of a firm."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 11,
+    "fields": {
+      "specialization": "Video & Animation",
+      "description": "Animation is an art of drawing sketches of object and then showing them in a series of frames so that it looks like a moving and living thing to us while a video is a recording of either still or moving objects."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 12,
+    "fields": {
+      "specialization": "IT & Networking",
+      "description": "organisation, geographically disseminated, of IT systems interconnected to exchange data, and comprising the components of the interconnected IT systems and their interface with the supporting data or communica- tions networks."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 13,
+    "fields": {
+      "specialization": "Engineering & Architecture",
+      "description": "While architects are responsible for the design and planning of structures ranging from houses and factories to skyscrapers and museums, civil engineers oversee the entire design-to-completion process for buildings, roads, dams, bridges, water systems, an"
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 14,
+    "fields": {
+      "specialization": "Arts & Crafts",
+      "description": "the skills of making objects for decoration and practical uses by hand."
+    }
+  },
+  {
+    "model": "profiling.specialization",
+    "pk": 15,
+    "fields": {
+      "specialization": "Education & Training",
+      "description": "Training is the process of learning something with a goal of performing a specific skill or behavior. Education, on the other hand, is the systematic process of learning something with a goal of acquiring knowledge. In education, a person learns facts, co"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 14,
+    "fields": {
+      "name": "General"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 47,
+    "fields": {
+      "name": "Public"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 48,
+    "fields": {
+      "name": "Arts"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 49,
+    "fields": {
+      "name": "Tech"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 50,
+    "fields": {
+      "name": "Web Development"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 53,
+    "fields": {
+      "name": "Mobile Development"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 54,
+    "fields": {
+      "name": "UI/UX Design"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 55,
+    "fields": {
+      "name": "Data Science & Analytics"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 56,
+    "fields": {
+      "name": "Digital Marketing"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 57,
+    "fields": {
+      "name": "Writing & Content Creation"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 58,
+    "fields": {
+      "name": "Business & Finance"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 59,
+    "fields": {
+      "name": "Video & Animation"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 60,
+    "fields": {
+      "name": "IT & Networking"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 61,
+    "fields": {
+      "name": "Engineering & Architecture"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 62,
+    "fields": {
+      "name": "Arts & Crafts"
+    }
+  },
+  {
+    "model": "profiling.tag",
+    "pk": 63,
+    "fields": {
+      "name": "Education & Training"
+    }
+  }
+]

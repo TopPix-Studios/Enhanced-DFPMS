@@ -1,0 +1,15 @@
+{% load static %}
+<style>
+    .event-db-card-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
+<div class="event-container" style="width: 90% !important; align-items: center">
+    <div class="event-db-card-body" style="align-items: center">
+        <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No events" style="width: 150px;">
+        <p class="event-card-missing-text">{{ message }}</p>
+    </div>
+</div>

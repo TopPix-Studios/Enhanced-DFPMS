@@ -1,0 +1,156 @@
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.login-container{
+    background-color: #f2f9fc;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    width: 537px;
+    height: 557px;
+    flex-shrink: 0;
+    position: absolute;
+}
+
+.login-container h2{
+    color: #005A82;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+.login-divider{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-divider hr{
+    display: block;
+    width: 206px;
+    height: 2px;
+    flex-shrink: 0;
+    background-color: #005A82;
+}
+
+.login-divider h3{
+    color: #005A82;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+/* Third Party Logins*/
+.third-party-login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:20px;
+}
+
+
+.third-party-login-container{
+    width: 401px;
+    height: 20px;
+    padding: 10px;
+    border-radius: 29px;
+    border: 2px solid #005A82;
+    background: rgba(217, 217, 217, 0.00);
+    align-items: center;
+    margin-bottom: 2px;
+    flex-direction:row ;
+    text-align: center;
+}
+  
+.third-party-login-container a{
+    color: #005A82;
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+.third-party-login-container img{
+    margin-bottom: -2px;
+}
+
+.login-container input{
+    color: #005A82;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 467px;
+    height: 48px;
+    flex-shrink: 0;
+    background-color: #DCF0FA;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    border: none;
+    border-radius: 8px;
+}
+
+.form-group input.focus-border:focus {
+    border-color: #00bfff;  /* Set your desired focus border color */
+    outline: none;  /* Remove the default outline */
+    box-shadow: 0 0 5px #00bfff;  /* Optional: Add a box shadow for emphasis */
+}
+
+
+#loginForm{
+    display: grid;
+    place-items: center;
+    gap: 20px;
+}
+
+#login-button{
+    width: 401px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 29px;
+    border: 2px solid #0078AE;
+    background: #0078AE;
+    color: var(--Color, #FFF);
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.signin a{
+    color: #0078AE;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.signin p{
+    color: var(--50b8e7, #000);
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.signin{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}

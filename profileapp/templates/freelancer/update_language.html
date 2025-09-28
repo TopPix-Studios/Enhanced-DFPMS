@@ -1,0 +1,74 @@
+{% extends "home.html" %}
+{% load static %}
+{% block title %}DFPS Profiling: Update Language {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "language-view.css" %}">
+
+<style>
+    .update-language-form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Align items to the left */
+        margin: 20px; /* Add some margin for spacing */
+    }
+    .update-form-lang {
+        padding: 20px;
+    }
+    .form-group {
+        margin-bottom: 15px; /* Space between form elements */
+        width: 100%; /* Optional: Make the form group take full width */
+    }
+    
+    .form-group label {
+        display: block; /* Make label block-level to ensure it appears above the input */
+        margin-bottom: 5px; /* Space between label and input */
+    }
+
+    .form-group select {
+        width: 40vw !important; /* Set the select element width */
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between; /* Align buttons to the left and right */
+        width: 100%; /* Ensure full width for button alignment */
+        margin-top: 20px; /* Optional: Add some top margin */
+    }
+
+    .btn-cancel {
+        margin-right: auto; /* Align the Cancel button to the left */
+    }
+
+    .btn-submit {
+        margin-left: auto; /* Align the Update button to the right */
+    }
+</style>
+
+<div class="update-form-lang">
+    <div class="header-container">
+        <button class="back-button" onclick="window.history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h1 style="margin-right: auto;">Update Language</h1>
+    
+    </div>
+    <hr class="freelancer">
+    <div class="update-language-form-container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="languageSelect">Language:</label>
+                {{ update_language_form.language }}
+            </div>
+            <div class="form-group">
+                <label for="proficiencySelect">Proficiency Level:</label>
+                {{ update_language_form.proficiency_level }}
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

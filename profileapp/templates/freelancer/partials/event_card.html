@@ -1,0 +1,31 @@
+<div class="event-container">
+    <a href="{% url 'event_detail_view' event.id %}">
+        <div class="event-image-container">
+            <div class="event-image">
+                <img src="{{ event.image.url|default:'static/img/event.png' }}" alt="{{ event.title }}">
+            </div>
+            <div class="ann-image-text-all">
+                <div class="header-align" style="display:flex; gap: 0.5rem;">
+                    <h2>{{ event.title }}</h2>
+                    {% if event.is_cancelled %}<span class="cancelled-tag">Cancelled</span>{% endif %}
+                    {% if event.is_moved %}<span class="tag-box moved-tag">Moved</span>{% endif %}
+                </div>
+                <p>{{ event.start_datetime }} to {{ event.end_datetime }}</p>
+            </div>
+        </div>
+    </a>
+    {% if event.location %}
+        <p class="event-location"><i class="fas fa-map-marker-alt"></i> {{ event.location }}</p>
+    {% endif %}
+    {% if event.virtual_details %}
+        <p class="event-virtual"><i class="fas fa-globe"></i> 
+            <a href="{{ event.virtual_details.url }}" target="_blank">{{ event.virtual_details.platform }}</a>
+        </p>
+    {% endif %}
+    <p><strong>Organizer:</strong> {{ event.organizer }}</p>
+    <p><strong>Created At:</strong> {{ event.created_at }}</p>
+    <p>{{ event.description }}</p>
+    {% if event.is_moved %}
+        <small style="color: #333"><i>This event was moved, check the date and address again.</i></small>
+    {% endif %}
+</div>

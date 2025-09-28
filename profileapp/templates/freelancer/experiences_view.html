@@ -1,0 +1,118 @@
+{% extends "home.html" %}
+{% load static %}
+{% block title %}DFPS Profiling: Work Experiences {% endblock title %}
+
+{% block content %}
+<style>
+    .button-container {
+        display:none;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'experience-view.css' %}">
+<div class="experiences-page">
+    <div class="header-container">
+        <button class="back-button" onclick="window.history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h1 style="margin-right: auto;">Work Experiences</h1>
+        <li class="experience-item-btn-add fade-in">
+            <button type="button" class="btn-add" onclick="redirectToAddExperience()">
+                &#43;
+            </button>
+            
+            <script>
+            function redirectToAddExperience() {
+                window.location.href = "{% url 'add_experience' %}";
+            }
+            </script>
+        </li>
+     
+    </div>
+    <hr class="freelancer">
+    <ul class="experience-list">
+        {% if experiences %}
+        {% for experience in experiences %}
+        <li class="experience-item fade-in">
+            <div class="experience-header">
+                <div class="experience-details">
+                    <span class="experience-title">{{ experience.client }}</span>
+                    <div class="experience-meta">{{ experience.country }} - {{ experience.year|date:"F d, Y" }}</div>
+                    <div class="experience-description">
+                        <p>{{ experience.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <form method="post" class="experience-remove-form" onsubmit="return confirmRemoveExperience(event, '{{ experience.past_exp_id }}')">
+                {% csrf_token %}
+                <input type="hidden" name="remove_experience" value="{{ experience.past_exp_id }}">
+                <button type="submit" title="Remove" class="remove-button">&#10006;</button>
+            </form>
+        </li>
+        {% endfor %}
+        {% else %}
+        <div style="text-align: center; justify-self: center;">
+            <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No projects image" style="width: 150px;">
+            <p>No Wprk Experiences found. Please add a Work Experience to get started! 
+                <a href="#" onclick="experienceShowModal()" style="text-decoration: underline; color: var(--border-color)">Add here</a>
+            </p>
+        </div>
+        
+        {% endif %}
+       
+        
+    </ul>
+
+    <div id="addExperienceModal" class="experience-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Experience</h3>
+                <button type="button" class="btn-close" onclick="experienceCloseModal()">
+                    <span>&times;</span> 
+                </button>
+            </div>
+           
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" id="addExperienceForm">
+                    {% csrf_token %}
+                    {{ past_experience_form.as_p }}
+                    <br>
+                    <button type="submit" class="btn-submit" name='past_exp_submit'>Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function confirmRemoveExperience(event, experienceId) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Please note: this action cannot be undone.!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<b>Yes</b>',
+            cancelButtonText: 'No',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true // Ensures Yes is on the right
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); // Submit the form if confirmed
+            }
+        });
+    }
+
+    function experienceShowModal() {
+        var modal = document.querySelector(".experience-modal");
+        modal.style.display = "block";
+    }
+
+    function experienceCloseModal() {
+        var modal = document.querySelector(".experience-modal");
+        modal.style.display = "none";
+    }
+</script>
+
+{% endblock %}

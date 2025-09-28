@@ -1,0 +1,234 @@
+{% extends "home.html" %}
+{% load custom_tags %}
+
+{% load static %}
+
+{% block title %}DFPS Profiling: Certificates {% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'certificate-view.css' %}">
+
+<style>
+    #addCertificateModal input, textarea{
+        width: 500px !important;
+    }
+
+    #addCertificateModal form{
+        padding: 0;
+    }
+</style>
+
+<div class="certificate-page">
+    <div class="header-container">
+        <button class="back-button" onclick="window.history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h1 style="margin-right: auto;">Certificates</h1>
+        <button type="button" class="btn-add" style="margin-right: 0" onclick="redirectToAddCertificate()">
+            &#43;
+        </button>
+     
+        
+        <script>
+            function redirectToAddCertificate() {
+                window.location.href = "{% url 'add_certificate' %}";
+            }
+        </script>
+    </div>
+    <hr class="freelancer">
+ 
+    <div class="certificate-container">
+        
+        {% if certificates.exists %}
+            {% for certificate in certificates %}
+                <div class="certificate-details">
+                    <div class="details-container">
+                        <div class="certificate-image">
+                            {% if certificate.image_file %}
+                                <img src="{{ certificate.image_file.url }}" alt="{{ certificate.certificate_title }}" class="certificate-placeholder">  
+                            {% else %}
+                                <img src="{% static 'img/default_certificate.png' %}" alt="Default Certificate Image" class="certificate-placeholder"> <!-- Default image if none is available -->
+                            {% endif %}
+                        </div>
+                        <div class="certificate-header">
+                            <p class="certificate-title">
+                                <strong>{{ certificate.certificate_title|default:"No Title Provided" }}</strong>
+                            </p>
+                            <p class="issued_date">
+                                {{ certificate.date_issued|date:"F j, Y"|default:"Date not available" }}
+                            </p>
+                        </div>
+                        <div class="certificate-info">
+                            <p><strong>Issued by:</strong> {{ certificate.issued_by|default:"Unknown Issuer" }}</p>
+                            <p>{{ certificate.description|default:"No description provided." }}</p>
+                        </div>
+                        <br>
+                        <div class="button-container">
+                            <!-- Update Button -->
+                            <button class="update-button" onclick="window.location.href='{% url 'edit_certificate' certificate.id %}'">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            
+                            <button class="download-button" onclick="downloadCertificate('{{ certificate.image_file.url }}')">
+                                <i class="fas fa-download"></i>
+                            </button>
+        
+                            <!-- Delete Form -->
+                            <form id="delete_form_{{ certificate.id }}" action="{% url 'certificates_view' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete_{{ certificate.id }}" value="1">
+                                <button type="button" class="delete-button" onclick="confirmDelete({{ certificate.id }})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Modal for Update Form -->
+                <div id="modal-{{ certificate.id }}" class="modal">
+                    <div class="modal-content">
+                        <button class="modal-close-button" onclick="closeModal({{ certificate.id }})">&times;</button>
+                        <h2>Update Certificate: {{ certificate.certificate_title }}</h2>
+                        <form id="edit_form_{{ certificate.id }}" class="edit-form" action="{% url 'certificates_view' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="update_{{ certificate.id }}" value="1">
+                            {% with form=forms|dict_key:certificate.id %}
+                            <div class="modal-form-group">
+                                <label for="id_certificate_title">Title</label>
+                                {{ form.certificate_title }}
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="id_description">Description</label>
+                                {{ form.description }}
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="id_issued_by">Issued By</label>
+                                {{ form.issued_by }}
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="id_date_issued">Date Issued</label>
+                                {{ form.date_issued }}
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="id_image_file">Image File</label>
+                                {{ form.image_file }}
+                            </div>
+                            {% endwith %}
+                            <div class="modal-button-container">
+                                <button type="submit" class="modal-update-button">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; justify-self: center;">
+                <img src="{% static 'img/DarkBlue/dark blue.png' %}" alt="No certificates image" style="width: 150px;">
+                <p>No Certificate found. Please add a Certificate to get started! 
+                    <a href="#" onclick="redirectToAddCertificate()" style="text-decoration: underline; color: var(--border-color)">
+                        Add here
+                    </a>
+                </p>
+            </div>
+        {% endif %}
+    
+       
+      
+    </div>
+</div>
+
+<script>
+    function confirmDelete(certificateId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will delete the certificate permanently!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<b>Yes</b>',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#007bff',
+            cancelButtonColor: '#6c757d',    
+            reverseButtons: true // Ensures Yes is on the right
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the form ONLY if the user clicks 'Yes, delete it!'
+                document.getElementById(`delete_form_${certificateId}`).submit();
+            }
+        });
+    }
+    
+    function downloadCertificate(url) {
+        window.location.href = url;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.edit-form').forEach(form => {
+            const submitButton = form.querySelector('button[type="submit"]');
+            const initialData = new FormData(form);
+
+            form.addEventListener('input', () => {
+                const currentData = new FormData(form);
+                let isChanged = false;
+
+                for (let [key, value] of currentData.entries()) {
+                    if (value !== initialData.get(key)) {
+                        isChanged = true;
+                        break;
+                    }
+                }
+
+                submitButton.disabled = !isChanged;
+            });
+        });
+    });
+
+    function openModal(certificateId) {
+        const modal = document.getElementById(`modal-${certificateId}`);
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.style.opacity = '1';
+        }, 10);
+    }
+
+    function closeModal(certificateId) {
+        const modal = document.getElementById(`modal-${certificateId}`);
+        modal.style.opacity = '0';
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+
+    function certificateShowModal() {
+        var modal = document.querySelector("#addCertificateModal");
+        if (modal) {
+            modal.style.display = "block";
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+    }
+
+    function certificateCloseModal() {
+        var modal = document.querySelector("#addCertificateModal");
+        if (modal) {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+        }
+    }
+
+    var btn = document.querySelector(".btn-add");
+    if (btn) {
+        btn.addEventListener("click", certificateShowModal);
+    }
+
+    var closeBtn = document.querySelector("#addCertificateModal .modal-close-button");
+    if (closeBtn) {
+        closeBtn.addEventListener("click", certificateCloseModal);
+    }
+</script>
+{% endblock content %}

@@ -1,0 +1,314 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-3">Overall Event Statistics</h1>
+    <!-- Chart Grid for Event Statistics -->
+    <div class="row">
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">Attendance per Event</h2>
+            <canvas id="attendanceChart"></canvas>
+        </div>
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">RSVP and Attendance Comparison</h2>
+            <canvas id="rsvpAttendanceChart"></canvas>
+        </div>
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">Gender Ratio</h2>
+            <canvas id="genderRatioChart"></canvas>
+        </div>
+        <div class="col-md-6 chart-card">
+            <h2 class="text-center">Age Range Distribution</h2>
+            <canvas id="ageRangeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h2>Overall Other Event Statistics</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Total Number of Attendees:</strong> <span id="total-attendees"></span>
+            </li>
+            <li class="list-group-item">
+                <strong>Number of PWD attendees:</strong> <span id="pwd-count"></span> (<span id="pwd-percentage"></span>%)
+            </li>
+            <li class="list-group-item">
+                <strong>Number of 4Ps attendees:</strong> <span id="four-ps-count"></span> (<span id="four-ps-percentage"></span>%)
+            </li>
+            <li class="list-group-item">
+                <strong>RSVP to Attendance Conversion:</strong> <span id="rsvp-to-attendance-count"></span> (<span id="rsvp-to-attendance-percentage"></span>%)
+            </li>
+            <li class="list-group-item">
+                <strong>Percentage of freelancers with matching skills:</strong>
+                <div class="progress progress-container">
+                    <div id="matching-skills-bar" class="progress-bar" role="progressbar"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="d-flex justify-content-center align-items-center gap-3 mb-4">
+        <!-- PDF Export Button -->
+        <button class="btn btn-secondary w-50 mx-2" style="height: 50px;" onclick="exportOverallReport()">Download PDF Report</button>
+    
+        <!-- Excel Export Button -->
+        <button class="btn btn-primary w-50 mx-2" style="height: 50px;" onclick="exportOverallExcel()">Download Excel Report</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/generateEventPDF.js' %}"></script> <!-- Include generateEventPDF.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script>
+    const chartDataForReport = {};
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('{% url "overall_event_statistics" %}')
+            .then(response => response.json())
+            .then(data => {
+                displayInsights(data);
+                createCharts(data);
+            })
+            .catch(error => console.error('Error fetching event statistics:', error));
+    });
+    function exportOverallExcel() {
+        window.location.href = '/export-event-chart-excel/';
+    }
+    function displayInsights(data) {
+        document.getElementById('total-attendees').innerText = data.total_attendees;
+        document.getElementById('pwd-count').innerText = data.pwd_count;
+        document.getElementById('pwd-percentage').innerText = data.pwd_percentage.toFixed(2);
+        document.getElementById('four-ps-count').innerText = data.four_ps_count;
+        document.getElementById('four-ps-percentage').innerText = data.four_ps_percentage.toFixed(2);
+        document.getElementById('rsvp-to-attendance-count').innerText = data.rsvp_to_attendance_count;
+        document.getElementById('rsvp-to-attendance-percentage').innerText = data.rsvp_to_attendance_percentage.toFixed(2);
+
+        const matchingSkillsPercentage = data.matching_skills_percentage.toFixed(2);
+        const matchingSkillsBar = document.getElementById('matching-skills-bar');
+        matchingSkillsBar.style.width = `${matchingSkillsPercentage}%`;
+        matchingSkillsBar.innerText = `${matchingSkillsPercentage}%`;
+    }
+
+    function createCharts(data) {
+        createAttendanceChart(data.attendance_by_event);
+        createRSVPAttendanceChart(data);
+        createGenderRatioChart(data.gender_ratio);
+        createAgeRangeChart(data.age_distribution);
+    }
+
+    function createAttendanceChart(attendanceData) {
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+
+        const eventTitles = attendanceData.map(item => item.event);
+        const attendanceCounts = attendanceData.map(item => item.count);
+        chartDataForReport.attendance = attendanceData.map(item => [item.event, item.count]);
+
+        
+    
+        window.attendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: eventTitles,
+                datasets: [{
+                    label: 'Attendance',
+                    data: attendanceCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,  // fixed size
+                maintainAspectRatio: true, 
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Attendance Per Event' }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Event Name' },
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 45,
+                            minRotation: 30,
+                            callback: function(value, index, ticks) {
+                                const label = this.getLabelForValue(value);
+                                // Shorten if label is too long
+                                return label.length > 15 ? label.substring(0, 12) + '...' : label;
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Attendance Count' }
+                    }
+                }
+                
+            }
+        });
+    }
+
+    function createRSVPAttendanceChart(data) {
+        chartDataForReport.rsvp = [
+            ["Interested", data.interested_count, data.interested_percentage.toFixed(2)],
+            ["Attending", data.attending_count, data.attending_percentage.toFixed(2)],
+            ["Not Attending", data.not_attending_count, data.not_attending_percentage.toFixed(2)],
+            ["Converted Attendance", data.rsvp_to_attendance_count, data.rsvp_to_attendance_percentage.toFixed(2)]
+        ];
+    
+        const ctx = document.getElementById('rsvpAttendanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Interested', 'Attending', 'Not Attending', 'Converted Attendance'],
+                datasets: [
+                    {
+                        label: 'RSVP Count',
+                        data: [data.interested_count, data.attending_count, data.not_attending_count, data.rsvp_to_attendance_count],
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Percentage (%)',
+                        data: [data.interested_percentage, data.attending_percentage, data.not_attending_percentage, data.rsvp_to_attendance_percentage],
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: true, position: 'top' },
+                    title: { display: true, text: 'RSVP and Attendance Comparison' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.datasetIndex === 1) { // Check if it's the second dataset
+                                    return `${context.label}: ${context.raw}%`;
+                                } else {
+                                    return `${context.label}: ${context.raw}`;
+                                }
+                            }
+                        }
+                        
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Count / Percentage' } },
+                    x: { title: { display: true, text: 'RSVP Status' } }
+                }
+            }
+        });
+    }
+    
+    function createGenderRatioChart(genderData) {
+        const labels = genderData.map(item => item.gender);
+        const counts = genderData.map(item => item.count);
+        chartDataForReport.genderRatio = genderData.map(item => [item.gender, item.count]);
+
+        const ctx = document.getElementById('genderRatioChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Gender Ratio',
+                    data: counts,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',   // red
+                        'rgba(54, 162, 235, 0.2)',   // blue
+                        'rgba(255, 206, 86, 0.2)'    // yellow
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',     // red
+                        'rgba(54, 162, 235, 1)',     // blue
+                        'rgba(255, 206, 86, 1)'      // yellow
+                    ],
+                    borderWidth: 1
+                    
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: true, position: 'top' }, title: { display: true, text: 'Gender Ratio Distribution' } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Count' } }, x: { title: { display: true, text: 'Gender' } } }
+            }
+        });
+    }
+
+    function createAgeRangeChart(ageDistribution) {
+        const ageRanges = ageDistribution.map(item => item.age_range);
+        const counts = ageDistribution.map(item => item.count);
+        chartDataForReport.ageRange = ageDistribution.map(item => [item.age_range, item.count]);
+
+        const ctx = document.getElementById('ageRangeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ageRanges,
+                datasets: [{
+                    label: 'Age Range Distribution',
+                    data: counts,
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: true, position: 'top' }, title: { display: true, text: 'Age Range Distribution' } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Count' } }, x: { title: { display: true, text: 'Age Range' } } }
+            }
+        });
+    }
+
+    function exportOverallReport() {
+        const insights = [
+            ["Total Number of Attendees", document.getElementById('total-attendees').innerText],
+            ["Number of PWD attendees", `${document.getElementById('pwd-count').innerText} (${document.getElementById('pwd-percentage').innerText}%)`],
+            ["Number of 4Ps attendees", `${document.getElementById('four-ps-count').innerText} (${document.getElementById('four-ps-percentage').innerText}%)`],
+            ["RSVP to Attendance Conversion", `${document.getElementById('rsvp-to-attendance-count').innerText} (${document.getElementById('rsvp-to-attendance-percentage').innerText}%)`],
+            ["Percentage of freelancers with matching skills", `${document.getElementById('matching-skills-bar').innerText}`]
+        ];
+    
+        const charts = [
+            {
+                id: 'attendanceChart',
+                label: 'Attendance per Day',
+                data: chartDataForReport.attendance.map(([date, count]) => [`Date: ${date}`, `Count: ${count}`])
+            },
+            {
+                id: 'rsvpAttendanceChart',
+                label: 'RSVP and Attendance Comparison',
+                data: chartDataForReport.rsvp.map(([status, count, percentage]) => [`Status: ${status}`, `Count: ${count}`, `Percentage: ${percentage}%`])
+            },
+            {
+                id: 'genderRatioChart',
+                label: 'Gender Ratio',
+                data: chartDataForReport.genderRatio.map(([gender, count]) => [`Gender: ${gender}`, `Count: ${count}`])
+            },
+            {
+                id: 'ageRangeChart',
+                label: 'Age Range Distribution',
+                data: chartDataForReport.ageRange.map(([ageRange, count]) => [`Age Range: ${ageRange}`, `Count: ${count}`])
+            }
+        ];
+    
+        generateEventPDF({
+            title: "Overall Event Statistics Report",
+            charts: charts,
+            insights: insights,
+            fileName: "Overall_Event_Statistics_Report.pdf"
+        });
+    }
+    
+</script>
+{% endblock %}

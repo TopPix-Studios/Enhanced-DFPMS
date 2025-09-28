@@ -1,0 +1,202 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'header.css' %}">
+{% include 'links/links.html' %}
+
+<div class="header" id='home'>
+    <script>
+        $(document).ready(function() {
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '{{ message }}',
+                        width: '600px', // Adjust the width here
+                        customClass: {
+                            popup: 'custom-swal',
+                            content: 'custom-content',     // Custom class for the content
+                        }
+                    });
+                {% elif message.tags == 'warning' %}
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: '{{ message }}',
+                        width: '600px', // Adjust the width here
+                        customClass: {
+                            popup: 'custom-swal',
+                            content: 'custom-content',     // Custom class for the content
+                        }
+                    });
+                {% elif message.tags == 'success' %}
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: '{{ message }}',
+                        width: '600px', // Adjust the width here
+                        customClass: {
+                            popup: 'custom-swal',
+                            content: 'custom-content',     // Custom class for the content
+                        }
+                    });
+                {% endif %}
+            {% endfor %}
+        });
+    </script>
+    
+    <style>
+        .custom-swal {
+            max-width: 600px;
+
+        }
+        
+        .custom-content {
+            text-align: center;
+            justify-content: center;
+            align-content: center;
+        }
+    </style>
+    <!-- Menu Icon with Link -->
+    <div class="menu-icon">
+        <a href="{% url 'profile_detail' %}">
+            <img src="{% static 'img/DarkBlue/dark blue.png' %}" style="width: 56px; height: 56px" alt="brand-logo">
+        </a>
+    </div>
+
+    <!-- Header Logo with Link -->
+    <a href="{% url 'profile_detail' %}">
+        <img src="{% static 'img/DarkBlue/dark blue text.png' %}" class="header-logo" style="margin-left: 16px; width: 150px; height: auto" alt="header">
+    </a>
+
+    <div class="links">
+        <!-- Links go here -->
+    </div>
+    
+    <div class="header-notifications">
+        <div class="notification-icon" id="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-count">{{ notifications_unread|length }}</span>
+        </div>
+        <div class="dropdown-content" id="notification-dropdown" style="width: 20vw; max-height: 40vh; overflow-y: auto; display: none;">
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'Unread')">Unread</button>
+                <button class="tablinks" onclick="openTab(event, 'Read')">Read</button>
+            </div>
+            <div id="Unread" class="tabcontent">
+                {% for notification in notifications_unread %}
+                    {% if notification.notification_type == 'announcement' %}
+                        <a href="{% url 'mark_notification_as_read' notification_id=notification.id %}">
+                            <strong style="font-size: 16px">{{ notification.announcement.title }}</strong><br>
+                            <small>{{ notification.message }}</small><br>
+                            <small  style="font-size: 12px">{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+                        </a>
+                    {% elif notification.notification_type == 'event' %}
+                        <a href="{% url 'mark_notification_as_read' notification_id=notification.id %}">
+                            <strong  style="font-size: 16px"> {{ notification.event.title }}</strong><br>
+                            <small>{{ notification.message }}</small><br>
+                            <small  style="font-size: 12px">{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+                        </a>
+                    {% endif %}
+                {% empty %}
+                    <a href="#">No new notifications</a>
+                {% endfor %}
+            </div>
+            <div id="Read" class="tabcontent">
+                {% for notification in notifications_read %}
+                    {% if notification.notification_type == 'announcement' %}
+                        <a href="{% url 'announcement_detail' announcement_id=notification.announcement.id %}">
+                            <strong  style="font-size: 16px">{{ notification.announcement.title }}</strong><br>
+                            <small class="truncate-content">{{ notification.announcement.content }}</small>
+                            <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+                        </a>
+                    {% elif notification.notification_type == 'event' %}
+                        <a href="{% url 'event_detail_view' event_id=notification.event.id %}">
+                            <strong  style="font-size: 16px">{{ notification.event.title }}</strong><br>
+                            <small class="truncate-content">{{ notification.event.description }}</small>
+                            <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+                        </a>
+                    {% endif %}
+                {% empty %}
+                    <a href="#">No notifications</a>
+                {% endfor %}
+            </div>
+            <div class="dropdown-footer">
+                <a href="{% url 'notification_page' %}"> See More
+                    <span class="arrow">→</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-image" id="profile-image">
+        {% if profile.picture %}
+            <img src="{{ profile.picture.url }}" alt="Profile Image">
+        {% else %}
+            <div class="profile-initials-header">
+                {{ profile.first_name|slice:":1" }}{{ profile.last_name|slice:":1" }}
+            </div>
+        {% endif %}
+        <div class="dropdown-content" id="profile-dropdown-content" style="display: none; ">
+            <a href="{% url 'profile_page' %}" style="padding: 1rem;"><i class="fas fa-user"></i> View Profile</a>
+            <a href="{% url 'update_account' %}" style="padding: 1rem;" class="setting-button"><i class="fas fa-cog"></i><span class="menu-text">Setting</span></a>
+            <a href="{% url 'logout' %}" style="padding: 1rem;" ><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Open the "Unread" tab by default
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.tablinks').click();
+    });
+
+    document.getElementById("profile-image").addEventListener("click", function() {
+        var dropdown = document.getElementById("profile-dropdown-content");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    });
+
+    document.getElementById("notification-icon").addEventListener("click", function() {
+        var dropdown = document.getElementById("notification-dropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdown = document.getElementById('notification-dropdown');
+        const notifications = dropdown.getElementsByTagName('a');
+
+        // Calculate the height based on the number of notifications
+        const notificationCount = notifications.length;
+        const maxNotificationHeight = 70; // Each notification estimated height in pixels
+        const maxDropdownHeight = window.innerHeight * 0.4; // 40vh in pixels
+        const calculatedHeight = notificationCount * maxNotificationHeight;
+
+        // Set the height of the dropdown
+        if (calculatedHeight < maxDropdownHeight) {
+            dropdown.style.height = calculatedHeight + 'px';
+        } else {
+            dropdown.style.height = maxDropdownHeight + 'px';
+        }
+    });
+</script>

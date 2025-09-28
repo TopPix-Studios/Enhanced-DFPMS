@@ -1,0 +1,209 @@
+
+:root {
+    --primary-color: #00072d;
+    --secondary-color: #051650;
+    --accent-color: #0a2472;
+    --text-color: white;
+    --background-color: #FAFAFA;
+    --border-color: #1a43bf;
+    --button-bg-color: #0a2472; /* Added for buttons */
+    --button-hover-bg-color: #1a43bf; /* Hover color for buttons */
+    --button-danger-bg-color: #0a2472; /* Background color for delete button */
+    --button-danger-hover-bg-color: #1a43bf; /* Hover color for delete button */
+    --modal-bg-color: rgba(0, 0, 0, 0.5); /* Background color for modal */
+    --modal-content-bg-color: #fefefe; /* Background color for modal content */
+}
+
+/* Container and Layout */
+.container {
+    padding: 20px;
+    width: 90vw;
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    width: 88vw;
+}
+
+h2 {
+    text-shadow: 1px 0 var(--secondary-color);
+}
+
+.notification-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+/* Tag Box */
+.tag-box {
+    display: flex;
+    gap: 10px;
+    border: unset !important;
+}
+
+.tag-box:hover{
+    background-color: inherit !important;
+    cursor: unset !important;
+}
+
+.tag-button {
+    padding: 8px 16px;
+    font-weight: bold;
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tag-button:hover,
+.tag-button.active {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* Notification Cards */
+.notification-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: box-shadow 0.3s;
+    background-color: #f8f9fa;
+    overflow: hidden;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 1rem;
+    width: auto;
+    max-width: 95%; /* Set the width to 80% */
+}
+
+.notification-card:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+/* Notification Tag */
+.notification-tag {
+    background-color: var(--background-color);
+    border: var(--secondary-color) 1px solid;
+    color: var(--secondary-color);
+    border-radius: 8px;
+    width: fit-content;
+    padding: 4px 8px;
+    margin-right: 8px;
+    margin-bottom: 0.75rem;
+    font-size: 12px;
+    font-weight: bold;
+    justify-self: flex-end;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.notification-tag:hover {
+    background-color: var(--secondary-color); /* Reverse the background color */
+    color: var(--background-color); /* Reverse the text color */
+}
+
+/* Truncate Notification Content */
+.truncate-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Headings */
+h3 {
+    padding-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+/* Card Content Styling */
+.notification-card strong {
+    color: var(--secondary-color);
+    font-size: 16px;
+}
+
+.notification-card small {
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* Responsive Design for Smaller Devices */
+@media (max-width: 768px) {
+    .notification-grid {
+        gap: 20px;
+    }
+}
+
+
+.cancelled-badge {
+    background-color: white;
+    color: #d7282f;
+    border: 2px solid #d7282f;
+    border-radius: 1rem;
+    font-weight: bold;
+    text-shadow: 1px 0;
+    font-size: 12px;
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-left: 1rem;
+    padding: 4px 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.cancelled-badge:hover {
+    background-color: #d7282f; /* Change background color on hover */
+    color: white; /* Change text color on hover */
+    border-color: #b22222; /* Change border color on hover */
+    transform: scale(1.05); /* Slightly increase size on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Add a subtle shadow on hover */
+}
+
+
+.notification-tag-container {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.tags-container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag-badge {
+    background-color: #ddd;
+    color: #555;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.tag-badge:hover {
+    background-color: #555; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+    transform: scale(1.05); /* Slightly increase size on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow on hover */
+}
