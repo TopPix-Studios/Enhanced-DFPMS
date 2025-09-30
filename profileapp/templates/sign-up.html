@@ -21,8 +21,21 @@
                 </div>
                
                 <div class="content">
-                    {% extends 'sign-up.html' %}
-                    
+                    {% block content %}
+                    <div class="registration-container">
+                        <div class="center-box">
+                            <div class="breadcrumbs">
+                                {% include 'components/breadcrumbs-signup.html' %}
+                            </div>
+
+                            <div class="content">
+                                <h2>Three-Step Registration</h2>
+
+                                {# Insert your signup form here #}
+                                {% include "components/signup-form-1.html" %}
+                            </div>
+                        </div>
+                    </div>
                     {% endblock %}
 
                 </div>
